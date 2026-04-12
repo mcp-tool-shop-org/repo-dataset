@@ -1,0 +1,54 @@
+{
+  "name": "@mcptoolshop/repo-dataset",
+  "version": "0.1.0",
+  "description": "Convert any git repository into LLM training datasets — code, commits, docs, tests",
+  "type": "module",
+  "bin": {
+    "repo-dataset": "./dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test dist/tests/**/*.test.js",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run build && npm test",
+    "prepublishOnly": "npm run verify"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "SECURITY.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "mcp-tool-shop",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcp-tool-shop-org/repo-dataset.git"
+  },
+  "keywords": [
+    "llm",
+    "dataset",
+    "fine-tuning",
+    "training-data",
+    "repository",
+    "code",
+    "jsonl",
+    "machine-learning"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
