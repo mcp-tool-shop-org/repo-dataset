@@ -1,0 +1,18 @@
+{
+  "id": "cmp_001",
+  "asset_a": "keth_soldier_front_01",
+  "asset_b": "keth_soldier_front_02",
+  "chosen": "a",
+  "source": "human",
+  "reasoning": "A has cleaner faction silhouette — the organic crest reads at 64px while B's forged plate reads as generic sci-fi armor.",
+  "criteria_scores": {
+    "silhouette_clarity": {"a": 9, "b": 4},
+    "palette_adherence": {"a": 8, "b": 3},
+    "style_consistency": {"a": 9, "b": 3}
+  },
+  "rubric_citations": [
+    {"rule_id": "constitution.shape_language.1", "verdict": "a_passes_b_fails"}
+  ],
+  "reviewer": "human:mike",
+  "reviewed_at": "2026-04-12T10:00:00Z"
+}

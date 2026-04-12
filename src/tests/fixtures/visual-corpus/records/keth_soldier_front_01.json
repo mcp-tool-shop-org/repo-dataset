@@ -1,0 +1,22 @@
+{
+  "id": "keth_soldier_front_01",
+  "asset_path": "assets/approved/keth_soldier_front_01.png",
+  "status": "approved",
+  "lane": "character",
+  "faction": "keth_communion",
+  "view": "front",
+  "tags": {
+    "shape_language": ["grown armor", "segmented", "organic crest"],
+    "palette": ["amber", "bone", "cyan accent"],
+    "silhouette": ["top-heavy", "hooked forearms"]
+  },
+  "must_have": ["grown-not-forged armor feel", "alien silhouette first"],
+  "must_not_have": ["generic human sci-fi armor", "surface noise over mass clarity"],
+  "canon_explanation": "Approved because the silhouette and material language read as Communion before details are inspected.",
+  "failure_modes": [],
+  "neighbors": ["keth_soldier_side_01", "keth_priest_front_01"],
+  "canon_assertions": [
+    {"rule_id": "constitution.shape_language.1", "rule_text": "Alien silhouette first", "verdict": "pass", "reviewer": "human:mike"},
+    {"rule_id": "rubric.palette_adherence", "rule_text": "Faction palette compliance", "verdict": "pass", "reviewer": "human:mike"}
+  ]
+}

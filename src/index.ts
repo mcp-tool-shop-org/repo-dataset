@@ -29,3 +29,18 @@ export { applyBalance, getAutoBalanceConfig } from "./pipeline/balance.js";
 export { estimateTokens } from "./pipeline/tokens.js";
 export { RepoDatasetError, ErrorCodes } from "./errors.js";
 export { runValidation } from "./validate/report.js";
+
+// Visual pipeline
+export type {
+  AssetRecord,
+  ComparisonRecord,
+  VisualRepoInfo,
+  ExtractionYield,
+  VisualPipelineConfig,
+  VisualPipelineResult,
+  VisualOutputFormat,
+  VisualExtractorName,
+} from "./types.js";
+export { scanVisualRepo } from "./visual/scanner.js";
+export { runVisualPipeline, inspectVisualPipeline } from "./visual/runner.js";
+export { getVisualFormatter, getAllVisualFormats } from "./visual/formatters.js";

@@ -58,4 +58,33 @@ describe("CLI", () => {
     const { exitCode } = run(["generate", "/nonexistent/path"]);
     assert.equal(exitCode, 1);
   });
+
+  it("validate with no path exits 1", () => {
+    const { exitCode } = run(["validate"]);
+    assert.equal(exitCode, 1);
+  });
+
+  it("validate with nonexistent file exits 1", () => {
+    const { exitCode } = run(["validate", "/nonexistent/dataset.jsonl"]);
+    assert.equal(exitCode, 1);
+  });
+
+  it("validate with non-jsonl file exits 1", () => {
+    const { exitCode } = run(["validate", "package.json"]);
+    assert.equal(exitCode, 1);
+  });
+
+  it("info shows completion and fim", () => {
+    const { stdout, exitCode } = run(["info"]);
+    assert.equal(exitCode, 0);
+    assert.ok(stdout.includes("completion"), "Should show completion format");
+    assert.ok(stdout.includes("fim"), "Should show fim format");
+  });
+
+  it("info shows auto-balance", () => {
+    const { stdout, exitCode } = run(["info"]);
+    assert.equal(exitCode, 0);
+    // The help or info should mention auto-balance
+    assert.ok(stdout.includes("auto-balance") || stdout.includes("balance"), "Should mention balance");
+  });
 });

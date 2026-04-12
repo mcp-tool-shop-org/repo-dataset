@@ -161,6 +161,110 @@ export interface Formatter {
   formatPair(pair: ExtractedPair): string;
 }
 
+// ── Visual corpus types ──
+
+export interface AssetRecord {
+  id: string;
+  asset_path: string;
+  status: "approved" | "rejected" | "borderline" | "wip" | "unknown";
+  status_source: "record" | "folder" | "filename" | "inferred";
+  lane: string | null;
+  faction: string | null;
+  view: string | null;
+  tags: Record<string, string[]>;
+  must_have: string[];
+  must_not_have: string[];
+  canon_explanation: string | null;
+  failure_modes: string[];
+  neighbors: string[];
+  canon_assertions: CanonAssertion[];
+  record_path: string | null;
+  metadata_confidence: number;
+}
+
+export interface CanonAssertion {
+  rule_id: string;
+  rule_text?: string;
+  verdict: "pass" | "fail" | "skip";
+  reviewer: string;
+}
+
+export interface ComparisonRecord {
+  id: string;
+  asset_a_id: string;
+  asset_b_id: string;
+  asset_a_path: string;
+  asset_b_path: string;
+  chosen: "a" | "b" | "tie";
+  source: "human" | "synthetic_status_pair" | "model";
+  reasoning: string | null;
+  criteria_scores: Record<string, { a: number; b: number }>;
+  rubric_citations: Array<{ rule_id: string; verdict: string }>;
+  reviewer: string | null;
+  reviewed_at: string | null;
+}
+
+export interface VisualRepoInfo {
+  path: string;
+  name: string;
+  structureTier: "perfect" | "structured" | "partial" | "messy";
+  assets: AssetRecord[];
+  comparisons: ComparisonRecord[];
+  canonDocs: FileEntry[];
+  rubricDocs: FileEntry[];
+  yield: ExtractionYield;
+}
+
+export interface ExtractionYield {
+  totalAssets: number;
+  assetsWithRecords: number;
+  assetsWithStatus: number;
+  assetsInComparisons: number;
+  assetsWithCanonLinks: number;
+  orphanAssets: number;
+  explicitComparisons: number;
+  syntheticComparisons: number;
+  recordCoverage: number;
+  comparisonCoverage: number;
+  wasteRate: number;
+}
+
+export type VisualExtractorName = "asset_record" | "comparison" | "constitution" | "set_coherence";
+
+export type VisualSignalType =
+  | "style_classification"
+  | "style_critique"
+  | "canon_explanation"
+  | "pairwise_preference"
+  | "canon_grounded_critique"
+  | "set_coherence";
+
+export type VisualOutputFormat = "visual_universal" | "visual_dpo" | "visual_kto" | "visual_contrastive" | "visual_pointwise";
+
+export interface VisualPipelineConfig {
+  repoPath: string;
+  repoName: string;
+  outputDir: string;
+  format: VisualOutputFormat;
+  extractors: VisualExtractorName[];
+  generateSyntheticPairs: boolean;
+  json: boolean;
+}
+
+export interface VisualPipelineResult {
+  structureTier: string;
+  totalAssets: number;
+  yield: ExtractionYield;
+  classificationPairs: number;
+  preferencePairs: number;
+  critiquePairs: number;
+  totalTrainingUnits: number;
+  outputPath: string;
+  manifestPath: string | null;
+  warnings: string[];
+  trainability: "good" | "marginal" | "insufficient";
+}
+
 // ── Manifest ──
 
 export interface DatasetManifest {

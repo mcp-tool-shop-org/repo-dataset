@@ -1,0 +1,20 @@
+{
+  "id": "keth_soldier_front_02",
+  "asset_path": "assets/rejected/keth_soldier_front_02.png",
+  "status": "rejected",
+  "lane": "character",
+  "faction": "keth_communion",
+  "view": "front",
+  "tags": {
+    "shape_language": ["plate armor", "symmetrical", "human proportions"],
+    "palette": ["steel gray", "brown leather"]
+  },
+  "must_have": [],
+  "must_not_have": [],
+  "canon_explanation": "Rejected because the armor reads as forged metal, not grown chitin. Silhouette is too humanoid and symmetrical.",
+  "failure_modes": ["too terran in torso structure", "forged-not-grown armor feel", "too symmetrical"],
+  "neighbors": ["keth_soldier_front_01"],
+  "canon_assertions": [
+    {"rule_id": "constitution.shape_language.1", "rule_text": "Alien silhouette first", "verdict": "fail", "reviewer": "human:mike"}
+  ]
+}
