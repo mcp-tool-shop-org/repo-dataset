@@ -84,7 +84,25 @@ describe("CLI", () => {
   it("info shows auto-balance", () => {
     const { stdout, exitCode } = run(["info"]);
     assert.equal(exitCode, 0);
-    // The help or info should mention auto-balance
     assert.ok(stdout.includes("auto-balance") || stdout.includes("balance"), "Should mention balance");
+  });
+
+  it("visual generate with no path exits 1", () => {
+    const { exitCode } = run(["visual", "generate"]);
+    assert.equal(exitCode, 1);
+  });
+
+  it("visual bogus subcommand exits 1", () => {
+    const { exitCode } = run(["visual", "bogus"]);
+    assert.equal(exitCode, 1);
+  });
+
+  it("info shows visual formats", () => {
+    const { stdout, exitCode } = run(["info"]);
+    assert.equal(exitCode, 0);
+    assert.ok(
+      stdout.includes("visual_universal") || stdout.includes("visual_dpo") || stdout.includes("visual"),
+      "Should show visual formats"
+    );
   });
 });
