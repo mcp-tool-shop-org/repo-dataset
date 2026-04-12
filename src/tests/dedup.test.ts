@@ -3,12 +3,20 @@ import assert from "node:assert/strict";
 import { Deduplicator } from "../pipeline/dedup.js";
 import type { ExtractedPair } from "../types.js";
 
+let pairCounter = 0;
 function makePair(instruction: string, input: string, output: string): ExtractedPair {
   return {
     instruction,
     input,
     output,
-    metadata: { source: "code", tokens: 10 },
+    metadata: {
+      id: `test-${++pairCounter}`, source: "code", repo_name: "test", file: null, language: null,
+      commit_sha: null, line_start: null, line_end: null,
+      extractor_type: "code:function", extractor_version: "0.2.0",
+      extracted_at: new Date().toISOString(),
+      tokens: 10, char_count: 0, has_docstring: false, has_tests: false,
+      complexity: "low", quality_score: 0.5, signal_type: "explanation",
+    },
   };
 }
 

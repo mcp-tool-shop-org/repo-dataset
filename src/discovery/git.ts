@@ -7,6 +7,15 @@ import type { CommitInfo } from "../types.js";
 
 const exec = promisify(execFile);
 
+export async function getHeadSha(path: string): Promise<string | null> {
+  try {
+    const { stdout } = await exec("git", ["rev-parse", "HEAD"], { cwd: path });
+    return stdout.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function isGitRepo(path: string): Promise<boolean> {
   try {
     await exec("git", ["rev-parse", "--git-dir"], { cwd: path });

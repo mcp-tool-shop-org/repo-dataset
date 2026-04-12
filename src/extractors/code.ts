@@ -1,14 +1,19 @@
-/** Code extractor — heuristic function detection, generates explanation pairs */
+/** Code extractor — heuristic function detection, completion mode, quality scoring */
 
 import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { estimateTokens } from "../pipeline/tokens.js";
-import type { Extractor, ExtractedPair, ExtractionContext } from "../types.js";
+import type { Extractor, ExtractedPair, ExtractionContext, PairMetadata, ExtractorSubType, SignalType } from "../types.js";
+
+const EXTRACTOR_VERSION = "0.2.0";
 
 export class CodeExtractor implements Extractor {
   name = "code" as const;
-  description = "Extracts function/class explanations and docstring pairs from source files";
+  description = "Extracts code as completion training data, with optional instruction pairs";
 
   async *extract(ctx: ExtractionContext): AsyncIterable<ExtractedPair> {
+    const isCompletionMode = ctx.config.format === "completion" || ctx.config.format === "fim";
+
     for (const file of ctx.repoInfo.sourceFiles) {
       let content: string;
       try {
@@ -19,56 +24,246 @@ export class CodeExtractor implements Extractor {
 
       if (!content.trim()) continue;
 
-      // Extract function-level chunks
+      const imports = extractImports(content, file.language);
       const functions = extractFunctions(content, file.language);
+
+      // Function-level extraction
       for (const fn of functions) {
         const tokens = estimateTokens(fn.body);
         if (tokens < ctx.config.minTokens || tokens > ctx.config.maxTokens) continue;
 
-        yield {
-          instruction: `Explain what this ${fn.type} does in ${file.language}`,
-          input: fn.body,
-          output: generateExplanation(fn),
-          metadata: {
-            source: "code",
-            file: file.relativePath,
-            language: file.language,
-            tokens,
-          },
+        const qualityScore = scoreFunctionQuality(fn, tokens);
+        const id = createHash("sha256").update(fn.body).digest("hex").slice(0, 16);
+        const subType: ExtractorSubType = fn.type === "class" ? "code:class" : fn.type === "method" ? "code:method" : "code:function";
+
+        const baseMeta: PairMetadata = {
+          id,
+          source: "code",
+          repo_name: ctx.repoName,
+          file: file.relativePath,
+          language: file.language,
+          commit_sha: ctx.headSha,
+          line_start: fn.startLine,
+          line_end: fn.endLine,
+          extractor_type: subType,
+          extractor_version: EXTRACTOR_VERSION,
+          extracted_at: new Date().toISOString(),
+          tokens,
+          char_count: fn.body.length,
+          has_docstring: !!fn.docstring,
+          has_tests: false, // populated by pipeline if test pairing exists
+          complexity: estimateComplexity(fn.body),
+          quality_score: qualityScore,
+          signal_type: isCompletionMode ? "implementation" : "explanation",
         };
+
+        if (isCompletionMode) {
+          // Completion mode: code IS the signal, include imports for context
+          const codeWithContext = imports
+            ? `${imports}\n\n${fn.body}`
+            : fn.body;
+
+          yield {
+            instruction: "",
+            input: codeWithContext,
+            output: "",
+            metadata: { ...baseMeta, signal_type: "implementation", tokens: estimateTokens(codeWithContext) },
+          };
+        } else {
+          // Instruction mode: generate explanation pairs
+          yield {
+            instruction: `Explain what this ${fn.type} does in ${file.language}`,
+            input: fn.body,
+            output: fn.docstring || `The ${fn.type} "${fn.name}" performs its defined operations.`,
+            metadata: baseMeta,
+          };
+        }
       }
 
-      // File-level chunk if file is reasonably sized
-      const fileTokens = estimateTokens(content);
-      if (fileTokens >= ctx.config.minTokens && fileTokens <= ctx.config.maxTokens) {
-        yield {
-          instruction: `Explain the purpose and structure of this ${file.language} file`,
-          input: `// File: ${file.relativePath}\n${content}`,
-          output: `This file (${file.relativePath}) contains ${file.language} code with ${functions.length} function(s).`,
-          metadata: {
-            source: "code",
-            file: file.relativePath,
-            language: file.language,
-            tokens: fileTokens,
-          },
-        };
+      // File-level extraction (for completion/fim — whole file as training example)
+      if (isCompletionMode) {
+        const fileTokens = estimateTokens(content);
+        if (fileTokens >= ctx.config.minTokens && fileTokens <= ctx.config.maxTokens) {
+          const id = createHash("sha256").update(content).digest("hex").slice(0, 16);
+          yield {
+            instruction: "",
+            input: content,
+            output: "",
+            metadata: {
+              id,
+              source: "code",
+              repo_name: ctx.repoName,
+              file: file.relativePath,
+              language: file.language,
+              commit_sha: ctx.headSha,
+              line_start: 1,
+              line_end: content.split("\n").length,
+              extractor_type: "code:file",
+              extractor_version: EXTRACTOR_VERSION,
+              extracted_at: new Date().toISOString(),
+              tokens: fileTokens,
+              char_count: content.length,
+              has_docstring: false,
+              has_tests: false,
+              complexity: "medium",
+              quality_score: scoreFileQuality(content, fileTokens),
+              signal_type: "implementation",
+            },
+          };
+        }
+      } else {
+        // Instruction mode: file-level summary for small files
+        const fileTokens = estimateTokens(content);
+        if (fileTokens >= ctx.config.minTokens && fileTokens <= ctx.config.maxTokens && functions.length > 0) {
+          const id = createHash("sha256").update(`file:${file.relativePath}`).digest("hex").slice(0, 16);
+          yield {
+            instruction: `Explain the purpose and structure of this ${file.language} file`,
+            input: `// File: ${file.relativePath}\n${content}`,
+            output: `This file contains ${functions.length} ${file.language} function(s)/class(es): ${functions.map((f) => f.name).join(", ")}.`,
+            metadata: {
+              id,
+              source: "code",
+              repo_name: ctx.repoName,
+              file: file.relativePath,
+              language: file.language,
+              commit_sha: ctx.headSha,
+              line_start: 1,
+              line_end: content.split("\n").length,
+              extractor_type: "code:file",
+              extractor_version: EXTRACTOR_VERSION,
+              extracted_at: new Date().toISOString(),
+              tokens: fileTokens,
+              char_count: content.length,
+              has_docstring: false,
+              has_tests: false,
+              complexity: "medium",
+              quality_score: 0.4, // file-level summaries are low-signal
+              signal_type: "explanation",
+            },
+          };
+        }
       }
     }
   }
 }
+
+// ── Quality scoring ──
+
+function scoreFunctionQuality(fn: FunctionChunk, tokens: number): number {
+  let score = 0;
+
+  // Token count in sweet spot (50-500)
+  if (tokens >= 50 && tokens <= 500) score += 0.3;
+  else if (tokens >= 20 && tokens <= 1000) score += 0.15;
+
+  // Has docstring
+  if (fn.docstring) score += 0.25;
+
+  // Has meaningful name (not generic)
+  if (!isGenericName(fn.name)) score += 0.15;
+
+  // Reasonable complexity (not trivial, not insane)
+  const lines = fn.body.split("\n").length;
+  if (lines >= 5 && lines <= 100) score += 0.15;
+
+  // Has control flow (branches, loops = non-trivial logic)
+  if (/\b(if|else|for|while|switch|match|try|catch)\b/.test(fn.body)) score += 0.15;
+
+  return Math.min(score, 1.0);
+}
+
+function scoreFileQuality(content: string, tokens: number): number {
+  let score = 0.3; // baseline for whole files
+
+  // Good token range
+  if (tokens >= 100 && tokens <= 1000) score += 0.2;
+
+  // Has imports (indicates real module, not config)
+  if (/^(import|from|require|use |using )/m.test(content)) score += 0.1;
+
+  // Not mostly comments
+  const lines = content.split("\n");
+  const commentLines = lines.filter((l) => /^\s*(\/\/|#|--|\/\*|\*)/.test(l)).length;
+  if (commentLines / lines.length < 0.5) score += 0.1;
+
+  // Has exports (indicates module boundary)
+  if (/\b(export|module\.exports|pub fn|pub struct)\b/.test(content)) score += 0.1;
+
+  return Math.min(score, 1.0);
+}
+
+function isGenericName(name: string): boolean {
+  const generic = new Set([
+    "foo", "bar", "baz", "test", "test1", "test2",
+    "handle", "process", "run", "execute", "do", "main",
+    "temp", "tmp", "x", "y", "z", "a", "b", "c",
+  ]);
+  return generic.has(name.toLowerCase());
+}
+
+function estimateComplexity(code: string): "low" | "medium" | "high" {
+  const branches = (code.match(/\b(if|else if|elif|case|catch|&&|\|\|)\b/g) || []).length;
+  if (branches <= 1) return "low";
+  if (branches <= 8) return "medium";
+  return "high";
+}
+
+// ── Import extraction ──
+
+function extractImports(content: string, language: string): string {
+  const lines = content.split("\n");
+  const importLines: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (isImportLine(trimmed, language)) {
+      importLines.push(line);
+    } else if (importLines.length > 0 && trimmed === "") {
+      // Allow one blank line between imports
+      continue;
+    } else if (importLines.length > 0) {
+      break; // End of import block
+    }
+  }
+
+  return importLines.join("\n");
+}
+
+function isImportLine(line: string, language: string): boolean {
+  switch (language) {
+    case "typescript":
+    case "javascript":
+      return /^(import |export .* from )/.test(line);
+    case "python":
+      return /^(import |from .* import )/.test(line);
+    case "rust":
+      return /^use /.test(line);
+    case "go":
+      return /^import /.test(line) || /^\t"/.test(line);
+    case "java":
+    case "kotlin":
+      return /^import /.test(line);
+    case "csharp":
+      return /^using /.test(line);
+    default:
+      return /^(import |from |use |using |require)/.test(line);
+  }
+}
+
+// ── Function extraction ──
 
 interface FunctionChunk {
   name: string;
   type: "function" | "class" | "method";
   body: string;
   docstring?: string;
+  startLine: number;
+  endLine: number;
 }
 
 function extractFunctions(content: string, language: string): FunctionChunk[] {
   const chunks: FunctionChunk[] = [];
   const lines = content.split("\n");
-
-  // Language-specific function patterns
   const patterns = getFunctionPatterns(language);
 
   let i = 0;
@@ -82,12 +277,18 @@ function extractFunctions(content: string, language: string): FunctionChunk[] {
 
         if (endLine > startLine) {
           const body = lines.slice(startLine, endLine + 1).join("\n");
-          const tokens = estimateTokens(body);
-          // Only include functions with meaningful content (>5 lines, >20 tokens)
-          if (endLine - startLine >= 5 && tokens >= 20) {
-            // Check for docstring above
+          const lineCount = endLine - startLine + 1;
+          // Only include functions with meaningful content (>=5 lines)
+          if (lineCount >= 5) {
             const docstring = extractDocstring(lines, startLine, language);
-            chunks.push({ name, type: pattern.type, body, docstring });
+            chunks.push({
+              name,
+              type: pattern.type,
+              body,
+              docstring,
+              startLine: startLine + 1, // 1-indexed
+              endLine: endLine + 1,
+            });
           }
           i = endLine;
         }
@@ -150,7 +351,6 @@ function getFunctionPatterns(language: string): FunctionPattern[] {
 
 function findBlockEnd(lines: string[], startLine: number, language: string): number {
   if (language === "python") {
-    // Python: indentation-based
     const baseIndent = getIndent(lines[startLine]);
     for (let i = startLine + 1; i < lines.length; i++) {
       const line = lines[i];
@@ -179,7 +379,6 @@ function findBlockEnd(lines: string[], startLine: number, language: string): num
     }
   }
 
-  // Fallback: take next 30 lines
   return Math.min(startLine + 30, lines.length - 1);
 }
 
@@ -190,7 +389,6 @@ function getIndent(line: string): number {
 
 function extractDocstring(lines: string[], fnLine: number, language: string): string | undefined {
   if (language === "python") {
-    // Look for docstring inside function (line after def)
     for (let i = fnLine + 1; i < Math.min(fnLine + 3, lines.length); i++) {
       const trimmed = lines[i].trim();
       if (trimmed.startsWith('"""') || trimmed.startsWith("'''")) {
@@ -221,11 +419,4 @@ function extractDocstring(lines: string[], fnLine: number, language: string): st
   }
 
   return undefined;
-}
-
-function generateExplanation(fn: FunctionChunk): string {
-  if (fn.docstring) {
-    return fn.docstring;
-  }
-  return `The ${fn.type} "${fn.name}" performs its defined operations as shown in the implementation.`;
 }

@@ -14,11 +14,18 @@ export type {
   Formatter,
   OutputFormat,
   ExtractorName,
+  SignalType,
+  ExtractorSubType,
+  BalanceConfig,
+  SourceStats,
+  DatasetManifest,
 } from "./types.js";
 
 export { runPipeline, inspectPipeline } from "./pipeline/runner.js";
 export { scanRepo } from "./discovery/scanner.js";
 export { getExtractors, getAllExtractorNames } from "./extractors/registry.js";
 export { getFormatter, getAllFormats } from "./formatters/registry.js";
+export { applyBalance, getAutoBalanceConfig } from "./pipeline/balance.js";
 export { estimateTokens } from "./pipeline/tokens.js";
 export { RepoDatasetError, ErrorCodes } from "./errors.js";
+export { runValidation } from "./validate/report.js";
