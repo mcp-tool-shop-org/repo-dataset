@@ -251,4 +251,156 @@ describe("Visual Format Registry", () => {
     const fmt = getVisualFormatter("visual_dpo");
     assert.equal(fmt.name, "visual_dpo");
   });
+
+  it("all framework-native formats exist", () => {
+    for (const name of ["trl", "axolotl", "llava", "llama_factory", "qwen2vl"] as const) {
+      assert.ok(isValidVisualFormat(name), `${name} should be valid`);
+      const fmt = getVisualFormatter(name);
+      assert.equal(fmt.name, name);
+    }
+  });
+});
+
+// ══════════════════════════════════════════════
+// Framework-Native Format Tests (Phase 3)
+// ══════════════════════════════════════════════
+
+describe("TrlFormatter", () => {
+  const fmt = getVisualFormatter("trl");
+
+  it("formats classify as SFT with messages + images", () => {
+    const line = fmt.formatUnit(makeClassifyUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(Array.isArray(parsed.messages));
+    assert.ok(Array.isArray(parsed.images));
+    assert.equal(parsed.images.length, 1);
+  });
+
+  it("formats preference as DPO with prompt/chosen/rejected", () => {
+    const line = fmt.formatUnit(makePreferenceUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(Array.isArray(parsed.prompt));
+    assert.ok(Array.isArray(parsed.chosen));
+    assert.ok(Array.isArray(parsed.rejected));
+    assert.ok(Array.isArray(parsed.images));
+    assert.equal(parsed.images.length, 2);
+  });
+
+  it("SFT messages use content-array with image placeholder", () => {
+    const parsed = JSON.parse(fmt.formatUnit(makeClassifyUnit())!);
+    const userMsg = parsed.messages.find((m: { role: string }) => m.role === "user");
+    assert.ok(Array.isArray(userMsg.content));
+    assert.ok(userMsg.content.some((p: { type: string }) => p.type === "image"));
+  });
+});
+
+describe("AxolotlFormatter", () => {
+  const fmt = getVisualFormatter("axolotl");
+
+  it("formats classify with messages array", () => {
+    const line = fmt.formatUnit(makeClassifyUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(Array.isArray(parsed.messages));
+  });
+
+  it("image refs include path field", () => {
+    const parsed = JSON.parse(fmt.formatUnit(makeClassifyUnit())!);
+    const userMsg = parsed.messages.find((m: { role: string }) => m.role === "user");
+    const imgPart = userMsg.content.find((p: { type: string }) => p.type === "image");
+    assert.ok(imgPart);
+    assert.ok(imgPart.path);
+  });
+
+  it("returns null for contrastive", () => {
+    assert.equal(fmt.formatUnit(makeContrastiveUnit()), null);
+  });
+});
+
+describe("LlavaFormatter", () => {
+  const fmt = getVisualFormatter("llava");
+
+  it("formats classify with id/image/conversations", () => {
+    const line = fmt.formatUnit(makeClassifyUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(parsed.id);
+    assert.ok(parsed.image);
+    assert.ok(Array.isArray(parsed.conversations));
+  });
+
+  it("conversations use from/value format", () => {
+    const parsed = JSON.parse(fmt.formatUnit(makeClassifyUnit())!);
+    for (const turn of parsed.conversations) {
+      assert.ok(turn.from === "human" || turn.from === "gpt");
+      assert.ok(typeof turn.value === "string");
+    }
+  });
+
+  it("human turn contains <image> token", () => {
+    const parsed = JSON.parse(fmt.formatUnit(makeClassifyUnit())!);
+    const human = parsed.conversations.find((c: { from: string }) => c.from === "human");
+    assert.ok(human.value.includes("<image>"));
+  });
+
+  it("returns null for preference (no DPO support)", () => {
+    assert.equal(fmt.formatUnit(makePreferenceUnit()), null);
+  });
+});
+
+describe("LlamaFactoryFormatter", () => {
+  const fmt = getVisualFormatter("llama_factory");
+
+  it("formats SFT with images + conversations", () => {
+    const line = fmt.formatUnit(makeClassifyUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(Array.isArray(parsed.images));
+    assert.ok(Array.isArray(parsed.conversations));
+  });
+
+  it("formats DPO with chosen/rejected objects", () => {
+    const line = fmt.formatUnit(makePreferenceUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(parsed.chosen);
+    assert.ok(parsed.rejected);
+    assert.equal(parsed.chosen.from, "gpt");
+    assert.equal(parsed.rejected.from, "gpt");
+  });
+
+  it("conversations use human/gpt from fields", () => {
+    const parsed = JSON.parse(fmt.formatUnit(makeClassifyUnit())!);
+    for (const turn of parsed.conversations) {
+      assert.ok(turn.from === "human" || turn.from === "gpt" || turn.from === "system");
+    }
+  });
+});
+
+describe("Qwen2VlFormatter", () => {
+  const fmt = getVisualFormatter("qwen2vl");
+
+  it("formats with query/response/images", () => {
+    const line = fmt.formatUnit(makeClassifyUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(typeof parsed.query === "string");
+    assert.ok(typeof parsed.response === "string");
+    assert.ok(Array.isArray(parsed.images));
+  });
+
+  it("query contains <image> token", () => {
+    const parsed = JSON.parse(fmt.formatUnit(makeClassifyUnit())!);
+    assert.ok(parsed.query.includes("<image>"));
+  });
+
+  it("DPO adds rejected_response field", () => {
+    const line = fmt.formatUnit(makePreferenceUnit());
+    assert.ok(line);
+    const parsed = JSON.parse(line);
+    assert.ok(parsed.rejected_response);
+    assert.ok(typeof parsed.response === "string");
+  });
 });

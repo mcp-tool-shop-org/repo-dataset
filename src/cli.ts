@@ -381,6 +381,99 @@ async function cmdVisualInspect(args: string[]): Promise<void> {
   }
 }
 
+async function cmdVisualValidate(args: string[]): Promise<void> {
+  const positional = positionalArgs(args);
+  const jsonlPath = positional[0];
+
+  if (!jsonlPath) {
+    fail("MISSING_PATH", "No JSONL file path provided", "Usage: repo-dataset visual validate <path-to-dataset.jsonl>");
+  }
+
+  const resolved = resolve(jsonlPath);
+  try { await stat(resolved); } catch {
+    fail("FILE_NOT_FOUND", `File not found: ${resolved}`, "Provide a valid path to a .jsonl file");
+  }
+
+  // Read and parse JSONL
+  const { readFile: rf } = await import("node:fs/promises");
+  const content = await rf(resolved, "utf-8");
+  const lines = content.trim().split("\n").filter((l) => l.trim());
+
+  let validLines = 0;
+  let triangleComplete = 0;
+  let hasBindingField = 0;
+  let totalUnits = 0;
+  const taskCounts: Record<string, number> = {};
+  const extractorCounts: Record<string, number> = {};
+
+  for (const line of lines) {
+    try {
+      const obj = JSON.parse(line);
+      validLines++;
+      totalUnits++;
+
+      if (obj.metadata?.extractor) {
+        extractorCounts[obj.metadata.extractor] = (extractorCounts[obj.metadata.extractor] || 0) + 1;
+      }
+
+      const task = obj.task || "unknown";
+      taskCounts[task] = (taskCounts[task] || 0) + 1;
+
+      if (obj.binding) {
+        hasBindingField++;
+        if (obj.binding.triangle_complete) triangleComplete++;
+      }
+    } catch {
+      // invalid JSON line
+    }
+  }
+
+  const triangleRate = totalUnits > 0 ? Math.round((triangleComplete / totalUnits) * 100) : 0;
+  const bindingRate = totalUnits > 0 ? Math.round((hasBindingField / totalUnits) * 100) : 0;
+
+  if (hasFlag(args, "json")) {
+    console.log(JSON.stringify({
+      file: resolved,
+      totalLines: lines.length,
+      validLines,
+      totalUnits,
+      triangleComplete,
+      triangleCompletionRate: triangleRate,
+      taskCounts,
+      extractorCounts,
+    }, null, 2));
+    return;
+  }
+
+  log(`${BOLD}VISUAL DATASET HEALTH REPORT${RESET}`);
+  log("═".repeat(52));
+  log("");
+  log(`  File: ${resolved}`);
+  log(`  Lines: ${lines.length}  |  Valid JSON: ${validLines}`);
+  log("");
+
+  log(`${CYAN}BINDING INTEGRITY${RESET}`);
+  log(`  Units with binding .......... ${hasBindingField}/${totalUnits} (${bindingRate}%)`);
+  log(`  Triangle complete ........... ${triangleComplete}/${totalUnits} (${triangleRate}%)`);
+  if (triangleRate < 70) {
+    warn("Low triangle completion — many units missing image/canon/judgment");
+  } else if (triangleRate >= 90) {
+    ok("Triangle completion ≥ 90%");
+  }
+  log("");
+
+  log(`${CYAN}TASK DISTRIBUTION${RESET}`);
+  for (const [task, count] of Object.entries(taskCounts)) {
+    log(`  ${task.padEnd(18)} ${count}`);
+  }
+  log("");
+
+  log(`${CYAN}EXTRACTOR DISTRIBUTION${RESET}`);
+  for (const [ext, count] of Object.entries(extractorCounts)) {
+    log(`  ${ext.padEnd(18)} ${count}`);
+  }
+}
+
 function buildVisualConfig(repoPath: string, args: string[]): VisualPipelineConfig {
   const format = getFlagValue(args, "format") || "visual_universal";
   if (!isValidVisualFormat(format)) {
@@ -426,10 +519,17 @@ function cmdInfo(): void {
   log("  --balance code:3,docs:1    Custom ratios");
   log("  --max-pairs docs:50        Hard cap per source");
   log("");
-  log(`${CYAN}Visual formats:${RESET}`);
-  log("  visual_universal    Superset (converts to LLaVA/Qwen-VL/InternVL/TRL)");
+  log(`${CYAN}Visual formats (framework-native):${RESET}`);
+  log("  trl               TRL / Unsloth (content-array, DPO/SFT)");
+  log("  axolotl           Axolotl (content-array, path/base64)");
+  log("  llava             LLaVA (inline <image> tokens, SFT only)");
+  log("  llama_factory     LLaMA-Factory (ShareGPT + DPO)");
+  log("  qwen2vl           Qwen2-VL / MS-Swift (query/response)");
+  log("");
+  log(`${CYAN}Visual formats (generic):${RESET}`);
+  log("  visual_universal    Superset (inspection/debugging)");
   log("  visual_dpo          DPO preference pairs (chosen/rejected)");
-  log("  visual_kto          KTO unpaired labels (approved=true, rejected=false)");
+  log("  visual_kto          KTO unpaired labels");
   log("  visual_contrastive  CLIP-style positive/negative pairs");
   log("  visual_pointwise    Per-asset quality scores");
   log("");
@@ -438,6 +538,12 @@ function cmdInfo(): void {
   log("  comparison      A vs B judgments → DPO preference pairs");
   log("  constitution    Asset + rubric → grounded critique with rule citations");
   log("  set_coherence   Grouped assets → coherence judgments");
+  log("");
+  log(`${CYAN}Visual flags:${RESET}`);
+  log("  --embed                    Base64-encode images into JSONL");
+  log("  --allow-incomplete         Keep units with incomplete triangle");
+  log("  --no-copy-images           Don't copy images to output folder");
+  log("  --no-synthetic             Skip synthetic pair generation");
 }
 
 function printHelp(): void {
@@ -449,7 +555,8 @@ function printHelp(): void {
   log("  inspect <path>           Preview extraction without writing (dry run)");
   log("  visual generate <path>   Generate training data from a visual style repo");
   log("  visual inspect <path>    Preview visual extraction (dry run)");
-  log("  validate <jsonl>         Quality report on a generated dataset");
+  log("  visual validate <jsonl>  Quality report on a visual dataset");
+  log("  validate <jsonl>         Quality report on a generated code dataset");
   log("  info                     Show supported formats and extractors");
   log("");
   log(`${CYAN}Flags:${RESET}`);
@@ -578,8 +685,10 @@ try {
         await cmdVisualGenerate(visualArgs);
       } else if (subCommand === "inspect") {
         await cmdVisualInspect(visualArgs);
+      } else if (subCommand === "validate") {
+        await cmdVisualValidate(visualArgs);
       } else {
-        fail(ErrorCodes.UNKNOWN_COMMAND, `Unknown visual subcommand: ${subCommand}`, "Usage: repo-dataset visual generate|inspect <path>");
+        fail(ErrorCodes.UNKNOWN_COMMAND, `Unknown visual subcommand: ${subCommand}`, "Usage: repo-dataset visual generate|inspect|validate <path>");
       }
       break;
     }

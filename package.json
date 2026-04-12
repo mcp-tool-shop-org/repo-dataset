@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/repo-dataset",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Convert any git repository into LLM training datasets — code, commits, docs, tests",
   "type": "module",
   "bin": {
