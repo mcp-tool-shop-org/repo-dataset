@@ -163,6 +163,16 @@ export interface Formatter {
 
 // ── Visual corpus types ──
 
+export interface AssetImageInfo {
+  format: "png" | "jpeg" | "webp";
+  width: number;
+  height: number;
+  bytes: number;
+  valid: boolean;
+  error?: string;
+  base64?: string;
+}
+
 export interface AssetRecord {
   id: string;
   asset_path: string;
@@ -180,6 +190,7 @@ export interface AssetRecord {
   canon_assertions: CanonAssertion[];
   record_path: string | null;
   metadata_confidence: number;
+  image?: AssetImageInfo;
 }
 
 export interface CanonAssertion {
@@ -239,7 +250,11 @@ export type VisualSignalType =
   | "canon_grounded_critique"
   | "set_coherence";
 
-export type VisualOutputFormat = "visual_universal" | "visual_dpo" | "visual_kto" | "visual_contrastive" | "visual_pointwise";
+export type VisualOutputFormat =
+  // Legacy (kept for backward compat)
+  | "visual_universal" | "visual_dpo" | "visual_kto" | "visual_contrastive" | "visual_pointwise"
+  // Framework-native formats (Phase 3)
+  | "trl" | "axolotl" | "llava" | "llama_factory" | "qwen2vl";
 
 export interface VisualPipelineConfig {
   repoPath: string;
@@ -249,6 +264,19 @@ export interface VisualPipelineConfig {
   extractors: VisualExtractorName[];
   generateSyntheticPairs: boolean;
   json: boolean;
+  embed: boolean;
+  allowIncomplete: boolean;
+  copyImages: boolean;
+}
+
+// ── Binding integrity (Phase 3) ──
+
+export interface BindingReport {
+  has_image: boolean;
+  has_canon: boolean;
+  has_judgment: boolean;
+  triangle_complete: boolean;
+  critique_specificity?: number;
 }
 
 export interface VisualPipelineResult {
@@ -259,8 +287,13 @@ export interface VisualPipelineResult {
   preferencePairs: number;
   critiquePairs: number;
   totalTrainingUnits: number;
+  droppedIncomplete: number;
+  triangleCompletionRate: number;
+  imagesEmbedded: boolean;
+  invalidImages: number;
   outputPath: string;
   manifestPath: string | null;
+  imageDir: string | null;
   warnings: string[];
   trainability: "good" | "marginal" | "insufficient";
 }

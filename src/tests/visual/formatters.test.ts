@@ -3,19 +3,26 @@ import assert from "node:assert/strict";
 import { getVisualFormatter, isValidVisualFormat, getAllVisualFormats } from "../../visual/formatters.js";
 import type { VisualTrainingUnit } from "../../visual/extractors.js";
 
+const MOCK_IMG_REF = { path: "assets/approved/test.png", format: "png" as const, width: 64, height: 64, bytes: 512, valid: true };
+const MOCK_IMG_REF_B = { path: "assets/rejected/b.png", format: "png" as const, width: 64, height: 64, bytes: 512, valid: true };
+const BINDING_FULL = { has_image: true, has_canon: true, has_judgment: true, triangle_complete: true };
+const BINDING_NO_CANON = { has_image: true, has_canon: false, has_judgment: true, triangle_complete: false };
+
 function makeClassifyUnit(approved = true): VisualTrainingUnit {
   return {
     id: "cls_test_001",
     task: "classify",
     images: ["assets/approved/test.png"],
+    imageRefs: [MOCK_IMG_REF],
     messages: [
       { role: "system", content: "You are a style judge." },
       { role: "user", content: [{ type: "image" }, { type: "text", text: "Is this on-style?" }] },
       { role: "assistant", content: approved ? "APPROVED. On-style." : "REJECTED. Off-style." },
     ],
+    binding: BINDING_FULL,
     label: approved,
     metadata: {
-      source_repo: "test", extractor: "asset_record", asset_id: "test_001",
+      source_repo: "test", extractor: "asset_record", extractor_version: "1.1.0", asset_id: "test_001",
       status: approved ? "approved" : "rejected",
       signal_type: "style_classification", quality_score: 0.7, extracted_at: new Date().toISOString(),
     },
@@ -27,16 +34,18 @@ function makePreferenceUnit(): VisualTrainingUnit {
     id: "pref_test_001",
     task: "preference",
     images: ["assets/approved/a.png", "assets/rejected/b.png"],
+    imageRefs: [{ ...MOCK_IMG_REF, path: "assets/approved/a.png" }, MOCK_IMG_REF_B],
     messages: [
       { role: "system", content: "You are a style judge." },
       { role: "user", content: [{ type: "image" }, { type: "image" }, { type: "text", text: "Which is more on-style?" }] },
       { role: "assistant", content: "Image 1 is better. Cleaner silhouette." },
     ],
+    binding: BINDING_FULL,
     preferred_index: 0,
     chosen: "Image 1 is better. Cleaner silhouette.",
     rejected: "Image 2 is more on-style.",
     metadata: {
-      source_repo: "test", extractor: "comparison", comparison_id: "cmp_test",
+      source_repo: "test", extractor: "comparison", extractor_version: "1.1.0", comparison_id: "cmp_test",
       signal_type: "pairwise_preference", quality_score: 0.8, extracted_at: new Date().toISOString(),
     },
   };
@@ -47,10 +56,12 @@ function makeContrastiveUnit(): VisualTrainingUnit {
     id: "contr_test_001",
     task: "contrastive",
     images: ["assets/approved/a.png", "assets/rejected/b.png"],
+    imageRefs: [{ ...MOCK_IMG_REF, path: "assets/approved/a.png" }, MOCK_IMG_REF_B],
     messages: [],
+    binding: BINDING_NO_CANON,
     margin: 0.8,
     metadata: {
-      source_repo: "test", extractor: "comparison", comparison_id: "cmp_test",
+      source_repo: "test", extractor: "comparison", extractor_version: "1.1.0", comparison_id: "cmp_test",
       signal_type: "pairwise_preference", quality_score: 0.6, extracted_at: new Date().toISOString(),
     },
   };
@@ -195,7 +206,7 @@ describe("ContrastiveFormatter", () => {
 
   it("returns null if < 2 images", () => {
     const unit = makeContrastiveUnit();
-    unit.images = ["only-one.png"];
+    unit.imageRefs = [MOCK_IMG_REF];
     assert.equal(fmt.formatUnit(unit), null);
   });
 });
@@ -231,9 +242,9 @@ describe("Visual Format Registry", () => {
     assert.equal(isValidVisualFormat("invalid"), false);
   });
 
-  it("getAllVisualFormats returns 5", () => {
+  it("getAllVisualFormats returns 10", () => {
     const formats = getAllVisualFormats();
-    assert.equal(formats.length, 5);
+    assert.equal(formats.length, 10);
   });
 
   it("getVisualFormatter returns correct name", () => {

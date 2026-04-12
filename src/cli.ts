@@ -398,6 +398,9 @@ function buildVisualConfig(repoPath: string, args: string[]): VisualPipelineConf
     extractors,
     generateSyntheticPairs: !hasFlag(args, "no-synthetic"),
     json: hasFlag(args, "json"),
+    embed: hasFlag(args, "embed"),
+    allowIncomplete: hasFlag(args, "allow-incomplete"),
+    copyImages: !hasFlag(args, "no-copy-images"),
   };
 }
 

@@ -19,6 +19,9 @@ function makeVisualConfig(repoPath: string, overrides?: Partial<VisualPipelineCo
     extractors: ["asset_record", "comparison", "constitution"],
     generateSyntheticPairs: true,
     json: false,
+    embed: false,
+    allowIncomplete: true, // fixture stubs are tiny, won't validate as real images
+    copyImages: false,
     ...overrides,
   };
 }
@@ -63,7 +66,7 @@ describe("runVisualPipeline", () => {
     const config = makeVisualConfig(VISUAL_FIXTURE, { outputDir: join(outDir, "run4") });
     const result = await runVisualPipeline(config);
     const manifest = JSON.parse(await readFile(result.manifestPath!, "utf-8"));
-    assert.equal(manifest.schema_version, "2");
+    assert.equal(manifest.schema_version, "3");
     assert.equal(manifest.mode, "visual");
     assert.equal(manifest.stats.total_units, result.totalTrainingUnits);
   });

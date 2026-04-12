@@ -1,8 +1,9 @@
 /** Visual repo scanner — detects structure tier, scans assets/records/comparisons/canon */
 
 import { readdir, stat, readFile } from "node:fs/promises";
-import { join, extname, basename, relative, dirname } from "node:path";
-import type { AssetRecord, ComparisonRecord, VisualRepoInfo, ExtractionYield, FileEntry, CanonAssertion } from "../types.js";
+import { join, extname, basename, relative } from "node:path";
+import type { AssetRecord, AssetImageInfo, ComparisonRecord, VisualRepoInfo, ExtractionYield, FileEntry, CanonAssertion } from "../types.js";
+import { loadImage } from "./image.js";
 
 const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tga", ".tiff"]);
 
@@ -18,7 +19,13 @@ const STATUS_FOLDERS: Record<string, AssetRecord["status"]> = {
   iterations: "wip",
 };
 
-export async function scanVisualRepo(repoPath: string): Promise<VisualRepoInfo> {
+export interface ScanOptions {
+  embed?: boolean;
+  validateImages?: boolean;
+}
+
+export async function scanVisualRepo(repoPath: string, options: ScanOptions = {}): Promise<VisualRepoInfo> {
+  const { embed = false, validateImages = true } = options;
   const assets: AssetRecord[] = [];
   const comparisons: ComparisonRecord[] = [];
   const canonDocs: FileEntry[] = [];
@@ -26,6 +33,11 @@ export async function scanVisualRepo(repoPath: string): Promise<VisualRepoInfo> 
 
   // Scan for image assets
   await scanAssets(repoPath, repoPath, assets);
+
+  // Validate/embed images
+  if (validateImages) {
+    await validateAssetImages(repoPath, assets, embed);
+  }
 
   // Scan for record JSONs
   await loadRecords(repoPath, assets);
@@ -308,6 +320,34 @@ function computeYield(assets: AssetRecord[], comparisons: ComparisonRecord[]): E
     comparisonCoverage: total > 0 ? Math.round((inComparisons / total) * 100) / 100 : 0,
     wasteRate: total > 0 ? Math.round((orphan / total) * 100) / 100 : 0,
   };
+}
+
+// ── Image validation ──
+
+async function validateAssetImages(repoPath: string, assets: AssetRecord[], embed: boolean): Promise<void> {
+  for (const asset of assets) {
+    if (!asset.asset_path) continue;
+    const fullPath = join(repoPath, asset.asset_path);
+    const result = await loadImage(fullPath, embed);
+
+    if (!result) {
+      asset.image = { format: "png", width: 0, height: 0, bytes: 0, valid: false, error: "file not found" };
+      continue;
+    }
+
+    const info: AssetImageInfo = {
+      format: result.format,
+      width: result.width,
+      height: result.height,
+      bytes: result.bytes,
+      valid: result.valid,
+    };
+
+    if (result.reason) info.error = result.reason;
+    if ("base64" in result && result.base64) info.base64 = (result as { base64: string }).base64;
+
+    asset.image = info;
+  }
 }
 
 // ── Helpers ──

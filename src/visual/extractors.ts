@@ -1,22 +1,32 @@
 /** Visual extractors — asset record, comparison, constitution linker, synthetic pairs */
 
 import { readFile } from "node:fs/promises";
-import { createHash } from "node:crypto";
-import { estimateTokens } from "../pipeline/tokens.js";
 import type {
-  AssetRecord, ComparisonRecord, VisualRepoInfo, FileEntry,
+  AssetRecord, ComparisonRecord, VisualRepoInfo, FileEntry, BindingReport, AssetImageInfo,
 } from "../types.js";
 
-const EXTRACTOR_VERSION = "1.0.0";
+const EXTRACTOR_VERSION = "1.1.0";
 
-// ── Output record types ──
+// ── Output record types ─���
+
+export interface ImageRef {
+  path: string;
+  format: string;
+  width: number;
+  height: number;
+  bytes: number;
+  valid: boolean;
+  base64?: string;
+}
 
 export interface VisualTrainingUnit {
   id: string;
   task: "classify" | "critique" | "preference" | "contrastive" | "coherence";
   images: string[];
+  imageRefs: ImageRef[];
   messages: Message[];
   metadata: VisualUnitMetadata;
+  binding: BindingReport;
   // DPO-specific fields (only for preference tasks)
   preferred_index?: number;
   chosen?: string;
@@ -29,16 +39,17 @@ export interface VisualTrainingUnit {
   scores?: Record<string, number>;
 }
 
-interface Message {
+export interface Message {
   role: "system" | "user" | "assistant";
   content: ContentPart[] | string;
 }
 
-type ContentPart = { type: "image" } | { type: "text"; text: string };
+export type ContentPart = { type: "image" } | { type: "text"; text: string };
 
 interface VisualUnitMetadata {
   source_repo: string;
   extractor: string;
+  extractor_version: string;
   asset_id?: string;
   comparison_id?: string;
   status?: string;
@@ -46,6 +57,52 @@ interface VisualUnitMetadata {
   signal_type: string;
   quality_score: number;
   extracted_at: string;
+}
+
+// ── Binding helpers ──
+
+function imageRefFromAsset(asset: AssetRecord): ImageRef {
+  if (asset.image) {
+    return {
+      path: asset.asset_path,
+      format: asset.image.format,
+      width: asset.image.width,
+      height: asset.image.height,
+      bytes: asset.image.bytes,
+      valid: asset.image.valid,
+      ...(asset.image.base64 && { base64: asset.image.base64 }),
+    };
+  }
+  return { path: asset.asset_path, format: "png", width: 0, height: 0, bytes: 0, valid: false };
+}
+
+function computeBinding(asset: AssetRecord, hasCanonText: boolean): BindingReport {
+  const has_image = !!asset.image?.valid;
+  const has_canon = hasCanonText || !!asset.canon_explanation || asset.canon_assertions.length > 0;
+  const has_judgment = asset.status === "approved" || asset.status === "rejected" ||
+    asset.failure_modes.length > 0 || asset.must_have.length > 0;
+  return {
+    has_image,
+    has_canon,
+    has_judgment,
+    triangle_complete: has_image && has_canon && has_judgment,
+  };
+}
+
+function computePreferenceBinding(
+  assetA: AssetRecord | undefined,
+  assetB: AssetRecord | undefined,
+  cmp: ComparisonRecord,
+): BindingReport {
+  const has_image = !!(assetA?.image?.valid && assetB?.image?.valid);
+  const has_canon = !!cmp.reasoning || cmp.rubric_citations.length > 0;
+  const has_judgment = cmp.chosen !== "tie" && Object.keys(cmp.criteria_scores).length > 0;
+  return {
+    has_image,
+    has_canon,
+    has_judgment,
+    triangle_complete: has_image && has_canon && has_judgment,
+  };
 }
 
 // ── Record-Bound Asset Extractor ──
@@ -61,6 +118,9 @@ export function* extractAssetRecords(
     const hasRichMetadata = asset.canon_explanation || asset.must_have.length > 0 || Object.keys(asset.tags).length > 0;
     const qualityScore = computeAssetQuality(asset);
 
+    const imgRef = imageRefFromAsset(asset);
+    const binding = computeBinding(asset, false);
+
     // KTO classification: approved/rejected/borderline as label
     if (asset.status === "approved" || asset.status === "rejected") {
       const explanation = buildClassificationExplanation(asset);
@@ -68,15 +128,18 @@ export function* extractAssetRecords(
         id: `cls_${asset.id}`,
         task: "classify",
         images: [asset.asset_path],
+        imageRefs: [imgRef],
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: [{ type: "image" }, { type: "text", text: "Is this asset on-style? Classify as approved or rejected and explain." }] },
           { role: "assistant", content: explanation },
         ],
+        binding,
         label: asset.status === "approved",
         metadata: {
           source_repo: repoInfo.name,
           extractor: "asset_record",
+          extractor_version: EXTRACTOR_VERSION,
           asset_id: asset.id,
           status: asset.status,
           faction: asset.faction || undefined,
@@ -94,19 +157,22 @@ export function* extractAssetRecords(
         id: `crit_${asset.id}`,
         task: "critique",
         images: [asset.asset_path],
+        imageRefs: [imgRef],
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: [{ type: "image" }, { type: "text", text: "Provide a style critique of this asset. What works, what fails, what are the key style signals?" }] },
           { role: "assistant", content: critique },
         ],
+        binding: { ...binding, has_canon: true },
         metadata: {
           source_repo: repoInfo.name,
           extractor: "asset_record",
+          extractor_version: EXTRACTOR_VERSION,
           asset_id: asset.id,
           status: asset.status,
           faction: asset.faction || undefined,
           signal_type: "style_critique",
-          quality_score: qualityScore + 0.1, // critiques with rich data are higher value
+          quality_score: qualityScore + 0.1,
           extracted_at: new Date().toISOString(),
         },
       };
@@ -118,14 +184,17 @@ export function* extractAssetRecords(
         id: `canon_${asset.id}`,
         task: "critique",
         images: [asset.asset_path],
+        imageRefs: [imgRef],
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: [{ type: "image" }, { type: "text", text: `Why was this asset ${asset.status}? Explain the style judgment.` }] },
           { role: "assistant", content: asset.canon_explanation },
         ],
+        binding: { ...binding, has_canon: true, triangle_complete: binding.has_image && binding.has_judgment },
         metadata: {
           source_repo: repoInfo.name,
           extractor: "asset_record",
+          extractor_version: EXTRACTOR_VERSION,
           asset_id: asset.id,
           status: asset.status,
           signal_type: "canon_explanation",
@@ -143,10 +212,18 @@ export function* extractComparisons(
   repoInfo: VisualRepoInfo,
   systemPrompt: string
 ): Generator<VisualTrainingUnit> {
+  const assetMap = new Map<string, AssetRecord>();
+  for (const a of repoInfo.assets) assetMap.set(a.id, a);
+
   for (const cmp of repoInfo.comparisons) {
     if (cmp.chosen === "tie") continue; // exclude ties from DPO
     if (!cmp.asset_a_path || !cmp.asset_b_path) continue;
 
+    const assetA = assetMap.get(cmp.asset_a_id);
+    const assetB = assetMap.get(cmp.asset_b_id);
+    const imgRefA = assetA ? imageRefFromAsset(assetA) : { path: cmp.asset_a_path, format: "png" as const, width: 0, height: 0, bytes: 0, valid: false };
+    const imgRefB = assetB ? imageRefFromAsset(assetB) : { path: cmp.asset_b_path, format: "png" as const, width: 0, height: 0, bytes: 0, valid: false };
+    const binding = computePreferenceBinding(assetA, assetB, cmp);
     const qualityScore = computeComparisonQuality(cmp);
 
     // DPO preference pair
@@ -163,6 +240,7 @@ export function* extractComparisons(
       id: `pref_${cmp.id}`,
       task: "preference",
       images: [cmp.asset_a_path, cmp.asset_b_path],
+      imageRefs: [imgRefA, imgRefB],
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: [
@@ -171,12 +249,14 @@ export function* extractComparisons(
         ]},
         { role: "assistant", content: chosenResponse },
       ],
+      binding,
       preferred_index: cmp.chosen === "a" ? 0 : 1,
       chosen: chosenResponse,
       rejected: rejectedResponse,
       metadata: {
         source_repo: repoInfo.name,
         extractor: "comparison",
+        extractor_version: EXTRACTOR_VERSION,
         comparison_id: cmp.id,
         signal_type: "pairwise_preference",
         quality_score: qualityScore,
@@ -185,12 +265,11 @@ export function* extractComparisons(
     };
 
     // Contrastive pair (for CLIP-style training)
-    const winnerAsset = cmp.chosen === "a"
-      ? repoInfo.assets.find((a) => a.id === cmp.asset_a_id)
-      : repoInfo.assets.find((a) => a.id === cmp.asset_b_id);
+    const winnerAsset = cmp.chosen === "a" ? assetA : assetB;
 
     if (winnerAsset) {
-      const anchorText = buildAnchorText(winnerAsset);
+      const winnerRef = cmp.chosen === "a" ? imgRefA : imgRefB;
+      const loserRef = cmp.chosen === "a" ? imgRefB : imgRefA;
       yield {
         id: `contr_${cmp.id}`,
         task: "contrastive",
@@ -198,11 +277,14 @@ export function* extractComparisons(
           cmp.chosen === "a" ? cmp.asset_a_path : cmp.asset_b_path,
           cmp.chosen === "a" ? cmp.asset_b_path : cmp.asset_a_path,
         ],
+        imageRefs: [winnerRef, loserRef],
         messages: [],
+        binding: { ...binding, triangle_complete: false }, // contrastive has no canon text
         margin: 0.8,
         metadata: {
           source_repo: repoInfo.name,
           extractor: "comparison",
+          extractor_version: EXTRACTOR_VERSION,
           comparison_id: cmp.id,
           signal_type: "pairwise_preference",
           quality_score: qualityScore * 0.8,
@@ -298,16 +380,20 @@ export async function* extractConstitutionLinked(
     if (asset.canon_assertions.length === 0) continue;
     if (!asset.asset_path) continue;
 
-    const citations = asset.canon_assertions
-      .map((a) => `[${a.rule_id}] ${a.rule_text || ""}: ${a.verdict}`)
-      .join("\n");
-
+    const imgRef = imageRefFromAsset(asset);
     const critique = buildGroundedCritique(asset, canonText, rubricText);
+    const binding: BindingReport = {
+      has_image: !!asset.image?.valid,
+      has_canon: true, // constitution-linked always has canon
+      has_judgment: true, // canon_assertions are judgments
+      triangle_complete: !!asset.image?.valid,
+    };
 
     yield {
       id: `grounded_${asset.id}`,
       task: "critique",
       images: [asset.asset_path],
+      imageRefs: [imgRef],
       messages: [
         { role: "system", content: `${systemPrompt}\n\nStyle Constitution:\n${canonText?.slice(0, 2000) || "(not available)"}\n\nReview Rubric:\n${rubricText?.slice(0, 2000) || "(not available)"}` },
         { role: "user", content: [
@@ -316,13 +402,15 @@ export async function* extractConstitutionLinked(
         ]},
         { role: "assistant", content: critique },
       ],
+      binding,
       metadata: {
         source_repo: repoInfo.name,
         extractor: "constitution",
+        extractor_version: EXTRACTOR_VERSION,
         asset_id: asset.id,
         status: asset.status,
         signal_type: "canon_grounded_critique",
-        quality_score: 0.85, // grounded critiques are high value
+        quality_score: 0.85,
         extracted_at: new Date().toISOString(),
       },
     };
