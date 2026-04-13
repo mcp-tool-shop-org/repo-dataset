@@ -1,8 +1,10 @@
 # @mcptoolshop/repo-dataset
 
-Convert any git repository into LLM training datasets.
+Convert any git repository or visual style repo into LLM training datasets.
 
-Extracts training signals from code, commits, documentation, and tests — outputs JSONL in formats ready for fine-tuning (Alpaca, ShareGPT, OpenAI) or continued pre-training (raw text chunks).
+**Code pipeline:** Extracts training signals from code, commits, documentation, and tests. Outputs JSONL in 6 formats ready for fine-tuning or pre-training.
+
+**Visual pipeline:** Extracts multimodal training data from curated visual repos. Validates images, enforces asset+canon+judgment binding, outputs in 10 framework-native formats for vision-language model fine-tuning.
 
 ## Install
 
@@ -10,20 +12,23 @@ Extracts training signals from code, commits, documentation, and tests — outpu
 npm install -g @mcptoolshop/repo-dataset
 ```
 
-## Usage
+## Code Pipeline
 
 ```bash
-# Generate training data from a local repo
+# Generate training data from a code repo
 repo-dataset generate ./my-project --format alpaca
 
-# Preview what would be extracted
+# Preview extraction (dry run)
 repo-dataset inspect ./my-project
 
-# Show supported languages and extractors
-repo-dataset info
+# Quality report on generated data
+repo-dataset validate ./dataset-output/dataset.jsonl
+
+# Control signal balance
+repo-dataset generate ./my-project --format completion --auto-balance
 ```
 
-## Output Formats
+### Code Output Formats
 
 | Format | Use Case |
 |--------|----------|
@@ -31,24 +36,87 @@ repo-dataset info
 | `sharegpt` | Multi-turn conversation fine-tuning |
 | `openai` | OpenAI messages format |
 | `raw` | Continued pre-training / RAG ingestion |
+| `completion` | Raw code as text (language modeling) |
+| `fim` | Fill-in-the-middle (StarCoder tokens) |
 
-## Extractors
+### Code Extractors
 
 | Extractor | Source | Training Signal |
 |-----------|--------|-----------------|
-| `code` | Source files | Function explanations, docstring pairs |
-| `commits` | Git history | Change explanations, implementation pairs |
-| `docs` | Markdown files | Concept explanations |
+| `code` | Source files | Function/class extraction with import context |
+| `commits` | Git history | Change explanation pairs |
+| `docs` | Markdown files | Section-based concept explanations |
 | `tests` | Test files | Code-to-test generation pairs |
+
+## Visual Pipeline
+
+```bash
+# Generate training data from a visual style repo
+repo-dataset visual generate ./my-style-repo --format trl
+
+# With base64-embedded images (self-contained JSONL)
+repo-dataset visual generate ./my-style-repo --format trl --embed
+
+# Preview visual extraction
+repo-dataset visual inspect ./my-style-repo
+
+# Corpus health report
+repo-dataset visual validate ./exports/dataset.jsonl
+```
+
+### Visual Output Formats
+
+**Framework-native (recommended):**
+
+| Format | Framework | DPO Support |
+|--------|-----------|-------------|
+| `trl` | HuggingFace TRL, Unsloth | Yes |
+| `axolotl` | Axolotl | Yes |
+| `llava` | LLaVA, LLaVA-NeXT | SFT only |
+| `llama_factory` | LLaMA-Factory | Yes |
+| `qwen2vl` | Qwen2-VL, MS-Swift | Yes |
+
+**Generic:**
+
+| Format | Use Case |
+|--------|----------|
+| `visual_universal` | Inspection, debugging, conversion |
+| `visual_dpo` | DPO preference pairs |
+| `visual_kto` | KTO binary labels |
+| `visual_contrastive` | CLIP-style positive/negative pairs |
+| `visual_pointwise` | Per-asset quality scores |
+
+### Visual Flags
+
+```bash
+--embed              # Base64-encode images into JSONL
+--allow-incomplete   # Keep units without full asset+canon+judgment triangle
+--no-copy-images     # Skip copying images to output folder
+--no-synthetic       # Skip synthetic pair generation
+```
+
+### Binding Integrity
+
+Every visual training unit is checked for the **training triangle**:
+
+1. **Image** — valid image file (PNG/JPEG/WebP, dimensions extracted, truncation detected)
+2. **Canon** — canonical explanation grounded in style rules
+3. **Judgment** — approved/rejected status with per-dimension scores
+
+Units without all three are dropped by default. Use `--allow-incomplete` to keep partial units.
 
 ## Backpropagate Integration
 
-Pipe output directly into fine-tuning:
-
 ```bash
 repo-dataset generate ./my-project --pipe-to-backpropagate
-# Outputs: backprop train --data ./dataset-output/dataset.jsonl --steps 100
 ```
+
+## Stats
+
+- **Version:** 1.1.0
+- **Tests:** 445
+- **Runtime deps:** 0
+- **Node:** 20+
 
 ## License
 
