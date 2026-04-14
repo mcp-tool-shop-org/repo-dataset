@@ -4,6 +4,7 @@ import { CodeExtractor } from "./code.js";
 import { CommitExtractor } from "./commits.js";
 import { DocsExtractor } from "./docs.js";
 import { TestExtractor } from "./tests.js";
+import { ConfigExtractor } from "./config.js";
 import type { Extractor, ExtractorName } from "../types.js";
 
 const EXTRACTORS: Record<ExtractorName, () => Extractor> = {
@@ -11,6 +12,7 @@ const EXTRACTORS: Record<ExtractorName, () => Extractor> = {
   commits: () => new CommitExtractor(),
   docs: () => new DocsExtractor(),
   tests: () => new TestExtractor(),
+  config: () => new ConfigExtractor(),
 };
 
 export function getExtractors(names: ExtractorName[]): Extractor[] {

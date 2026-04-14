@@ -1,11 +1,12 @@
 /** Visual repo scanner — detects structure tier, scans assets/records/comparisons/canon */
 
 import { readdir, stat, readFile } from "node:fs/promises";
-import { join, extname, basename, relative } from "node:path";
+import { join, extname, basename, relative, resolve, sep } from "node:path";
 import type { AssetRecord, AssetImageInfo, ComparisonRecord, VisualRepoInfo, ExtractionYield, FileEntry, CanonAssertion } from "../types.js";
 import { loadImage } from "./image.js";
 
-const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tga", ".tiff"]);
+/** Only formats with built-in parsers in image.ts. Add new extensions here when a parser is added. */
+const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 
 const STATUS_FOLDERS: Record<string, AssetRecord["status"]> = {
   approved: "approved",
@@ -68,7 +69,13 @@ export async function scanVisualRepo(repoPath: string, options: ScanOptions = {}
 
 // ── Asset scanning ──
 
-async function scanAssets(rootPath: string, dirPath: string, assets: AssetRecord[]): Promise<void> {
+async function scanAssets(rootPath: string, dirPath: string, assets: AssetRecord[], maxDepth: number = 20): Promise<void> {
+  if (maxDepth <= 0) {
+    const relPath = relative(rootPath, dirPath).replace(/\\/g, "/");
+    process.stderr.write(`Warning: Maximum scan depth reached at ${relPath} — deeper directories skipped\n`);
+    return;
+  }
+
   let entries;
   try {
     entries = await readdir(dirPath, { withFileTypes: true });
@@ -78,13 +85,14 @@ async function scanAssets(rootPath: string, dirPath: string, assets: AssetRecord
 
   for (const entry of entries) {
     if (entry.name.startsWith(".")) continue;
+    if (entry.isSymbolicLink()) continue; // V-F002: skip symlinks
     const fullPath = join(dirPath, entry.name);
     const relPath = relative(rootPath, fullPath).replace(/\\/g, "/");
 
     if (entry.isDirectory()) {
       // Skip non-asset directories
       if (["node_modules", "records", "comparisons", ".git"].includes(entry.name)) continue;
-      await scanAssets(rootPath, fullPath, assets);
+      await scanAssets(rootPath, fullPath, assets, maxDepth - 1);
     } else if (entry.isFile() && isImageFile(entry.name)) {
       const status = inferStatusFromPath(relPath);
       const id = basename(entry.name, extname(entry.name));
@@ -128,6 +136,8 @@ async function loadRecords(repoPath: string, assets: AssetRecord[]): Promise<voi
     assetMap.set(asset.id, asset);
   }
 
+  const parseFailures: { file: string; reason: string }[] = [];
+
   for (const file of entries) {
     if (!file.endsWith(".json")) continue;
     const fullPath = join(recordsDir, file);
@@ -143,11 +153,18 @@ async function loadRecords(repoPath: string, assets: AssetRecord[]): Promise<voi
         mergeRecord(existing, record, relative(repoPath, fullPath).replace(/\\/g, "/"));
       } else {
         // Record exists but no matching image found — create asset entry anyway
-        assets.push(recordToAsset(record, id, relative(repoPath, fullPath).replace(/\\/g, "/")));
+        assets.push(recordToAsset(record, id, relative(repoPath, fullPath).replace(/\\/g, "/"), repoPath));
       }
-    } catch {
-      // Skip malformed JSON
+    } catch (err: unknown) {
+      const reason = err instanceof Error ? err.message : String(err);
+      parseFailures.push({ file, reason });
     }
+  }
+
+  if (parseFailures.length > 0) {
+    const names = parseFailures.map((f) => f.file);
+    const preview = names.length <= 3 ? names.join(", ") : `${names.slice(0, 3).join(", ")}, ...`;
+    process.stderr.write(`Warning: Skipped ${parseFailures.length} malformed record files (${preview})\n`);
   }
 }
 
@@ -155,8 +172,9 @@ function mergeRecord(asset: AssetRecord, record: Record<string, unknown>, record
   asset.record_path = recordPath;
   asset.metadata_confidence = 0.9;
 
+  const validStatuses = new Set(["approved", "rejected", "borderline", "wip", "unknown"]);
   if (record.status && typeof record.status === "string") {
-    asset.status = record.status as AssetRecord["status"];
+    asset.status = (validStatuses.has(record.status) ? record.status : "unknown") as AssetRecord["status"];
     asset.status_source = "record";
   }
   if (record.lane && typeof record.lane === "string") asset.lane = record.lane;
@@ -171,11 +189,18 @@ function mergeRecord(asset: AssetRecord, record: Record<string, unknown>, record
   if (Array.isArray(record.canon_assertions)) asset.canon_assertions = record.canon_assertions as CanonAssertion[];
 }
 
-function recordToAsset(record: Record<string, unknown>, id: string, recordPath: string): AssetRecord {
+function recordToAsset(record: Record<string, unknown>, id: string, recordPath: string, repoPath?: string): AssetRecord {
+  let assetPath = (record.asset_path as string) || "";
+  // V-F001: sanitize asset_path from user-supplied JSON
+  if (repoPath && assetPath && !isInsideRepo(repoPath, assetPath)) {
+    assetPath = ""; // path escapes repo — clear it
+  }
+  const validStatusSet = new Set(["approved", "rejected", "borderline", "wip", "unknown"]);
+  const rawStatus = typeof record.status === "string" ? record.status : "";
   return {
     id,
-    asset_path: (record.asset_path as string) || "",
-    status: (record.status as AssetRecord["status"]) || "unknown",
+    asset_path: assetPath,
+    status: (validStatusSet.has(rawStatus) ? rawStatus : "unknown") as AssetRecord["status"],
     status_source: "record",
     lane: (record.lane as string) || null,
     faction: (record.faction as string) || null,
@@ -216,14 +241,25 @@ async function loadComparisons(repoPath: string, comparisons: ComparisonRecord[]
       const assetA = assetMap.get(cmp.asset_a || cmp.asset_a_id);
       const assetB = assetMap.get(cmp.asset_b || cmp.asset_b_id);
 
+      // V-F001: sanitize comparison paths from user-supplied JSON
+      let aPath: string = assetA?.asset_path || cmp.asset_a_path || "";
+      let bPath: string = assetB?.asset_path || cmp.asset_b_path || "";
+      if (aPath && !isInsideRepo(repoPath, aPath)) aPath = "";
+      if (bPath && !isInsideRepo(repoPath, bPath)) bPath = "";
+
+      let chosen: string = cmp.chosen || cmp.winner || "tie";
+      if (!["a", "b", "tie"].includes(chosen)) chosen = "tie";
+      let source: string = cmp.source || "human";
+      if (!["human", "synthetic_status_pair", "model"].includes(source)) source = "human";
+
       comparisons.push({
         id,
         asset_a_id: cmp.asset_a || cmp.asset_a_id || "",
         asset_b_id: cmp.asset_b || cmp.asset_b_id || "",
-        asset_a_path: assetA?.asset_path || cmp.asset_a_path || "",
-        asset_b_path: assetB?.asset_path || cmp.asset_b_path || "",
-        chosen: cmp.chosen || cmp.winner || "tie",
-        source: cmp.source || "human",
+        asset_a_path: aPath,
+        asset_b_path: bPath,
+        chosen: chosen as ComparisonRecord["chosen"],
+        source: source as ComparisonRecord["source"],
         reasoning: cmp.reasoning || cmp.reason || null,
         criteria_scores: cmp.criteria_scores || {},
         rubric_citations: cmp.rubric_citations || [],
@@ -362,6 +398,13 @@ function inferStatusFromPath(relPath: string): AssetRecord["status"] | null {
     if (STATUS_FOLDERS[part]) return STATUS_FOLDERS[part];
   }
   return null;
+}
+
+/** Returns true if `filePath` resolves inside `root` (path traversal guard). */
+function isInsideRepo(root: string, filePath: string): boolean {
+  const resolvedRoot = resolve(root);
+  const resolvedPath = resolve(root, filePath);
+  return resolvedPath === resolvedRoot || resolvedPath.startsWith(resolvedRoot + sep);
 }
 
 function inferViewFromFilename(filename: string): string | null {

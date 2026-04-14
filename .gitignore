@@ -5,3 +5,7 @@ dist/
 Thumbs.db
 dataset-output/
 benchmark/
+site/.astro/
+site/dist/
+site/node_modules/
+.polyglot-cache.json

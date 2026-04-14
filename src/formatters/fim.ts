@@ -36,10 +36,10 @@ export class FimFormatter implements Formatter {
 
   private applyFim(code: string): string {
     const lines = code.split("\n");
-    if (lines.length < 3) return code; // Too short for meaningful FIM
+    if (lines.length < 4) return code; // Too short for meaningful FIM (need prefix, middle, suffix)
 
     // Pick two random split points (at line boundaries for readability)
-    const point1 = Math.floor(this.rng() * (lines.length - 2)) + 1;
+    const point1 = Math.floor(this.rng() * (lines.length - 3)) + 1;
     const point2 = Math.floor(this.rng() * (lines.length - point1 - 1)) + point1 + 1;
 
     const prefix = lines.slice(0, point1).join("\n");
@@ -47,11 +47,14 @@ export class FimFormatter implements Formatter {
     const suffix = lines.slice(point2).join("\n");
 
     // SPM (suffix-prefix-middle) or PSM (prefix-suffix-middle)
+    // Both formats: the part after <fim_middle> is what the model predicts.
+    // PSM: <fim_prefix>{prefix}<fim_suffix>{suffix}<fim_middle>{middle}
+    // SPM: <fim_suffix>{suffix}<fim_prefix>{prefix}<fim_middle>{middle}
     if (this.rng() < this.spmRate) {
-      // SPM ordering
-      return `${FIM_PREFIX}${FIM_SUFFIX}${suffix}\n${FIM_MIDDLE}${prefix}\n${middle}`;
+      // SPM ordering — suffix token first, then prefix, then middle (prediction target)
+      return `${FIM_SUFFIX}${suffix}\n${FIM_PREFIX}${prefix}\n${FIM_MIDDLE}${middle}`;
     } else {
-      // PSM ordering (standard)
+      // PSM ordering (standard) — prefix token first, then suffix, then middle (prediction target)
       return `${FIM_PREFIX}${prefix}\n${FIM_SUFFIX}${suffix}\n${FIM_MIDDLE}${middle}`;
     }
   }

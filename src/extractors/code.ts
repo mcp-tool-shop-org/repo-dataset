@@ -24,6 +24,11 @@ export class CodeExtractor implements Extractor {
 
       if (!content.trim()) continue;
 
+      // Skip binary files — null bytes in the first 8KB indicate non-text content
+      // that would produce garbage training pairs and poison a fine-tune
+      const probe = content.slice(0, 8192);
+      if (probe.includes("\0")) continue;
+
       const imports = extractImports(content, file.language);
       const functions = extractFunctions(content, file.language);
 
@@ -71,12 +76,25 @@ export class CodeExtractor implements Extractor {
           };
         } else {
           // Instruction mode: generate explanation pairs
-          yield {
-            instruction: `Explain what this ${fn.type} does in ${file.language}`,
-            input: fn.body,
-            output: fn.docstring || `The ${fn.type} "${fn.name}" performs its defined operations.`,
-            metadata: baseMeta,
-          };
+          if (fn.docstring) {
+            yield {
+              instruction: `Explain what this ${fn.type} does in ${file.language}`,
+              input: fn.body,
+              output: fn.docstring,
+              metadata: baseMeta,
+            };
+          } else {
+            // No docstring — generate structural summary or skip if too short
+            const bodyLines = fn.body.split("\n").length;
+            if (bodyLines < 3) continue; // too short for meaningful structure, skip in instruction mode
+            const summary = generateStructuralSummary(fn);
+            yield {
+              instruction: `Explain what this ${fn.type} does in ${file.language}`,
+              input: fn.body,
+              output: summary,
+              metadata: { ...baseMeta, quality_score: Math.max(0, baseMeta.quality_score - 0.1) },
+            };
+          }
         }
       }
 
@@ -206,6 +224,74 @@ function estimateComplexity(code: string): "low" | "medium" | "high" {
   if (branches <= 1) return "low";
   if (branches <= 8) return "medium";
   return "high";
+}
+
+/** Build a structural summary from a function body when no docstring exists.
+ *  Produces a factual description of parameters, return type, branching, error handling, and async usage. */
+function generateStructuralSummary(fn: FunctionChunk): string {
+  const body = fn.body;
+  const parts: string[] = [];
+
+  // Count parameters from the signature (first line)
+  const sigMatch = body.match(/\(([^)]*)\)/);
+  if (sigMatch) {
+    const paramStr = sigMatch[1].trim();
+    const paramCount = paramStr ? paramStr.split(",").length : 0;
+    parts.push(`takes ${paramCount} parameter${paramCount !== 1 ? "s" : ""}`);
+  }
+
+  // Detect return type or return statements
+  const returnTypeMatch = body.match(/\)\s*:\s*([\w<>\[\]|&\s]+?)\s*[{=]/);
+  const hasReturn = /\breturn\b/.test(body);
+  if (returnTypeMatch) {
+    const rt = returnTypeMatch[1].trim();
+    if (rt === "void") {
+      parts.push("returns void");
+    } else {
+      parts.push(`returns ${rt}`);
+    }
+  } else if (hasReturn) {
+    parts.push("returns a value");
+  }
+
+  // Count conditional branches
+  const branchKeywords = body.match(/\b(if|else if|elif|else|switch|case|match)\b/g) || [];
+  const branchCount = branchKeywords.length;
+  if (branchCount > 0) {
+    parts.push(`contains ${branchCount} conditional branch${branchCount !== 1 ? "es" : ""}`);
+  }
+
+  // Detect try/catch (error handling)
+  if (/\b(try|catch|except|finally)\b/.test(body)) {
+    parts.push("error handling");
+  }
+
+  // Detect async/await
+  if (/\b(async|await)\b/.test(body)) {
+    parts.push("async/await");
+  }
+
+  // Detect loops
+  const loopKeywords = body.match(/\b(for|while|loop)\b/g) || [];
+  if (loopKeywords.length > 0) {
+    parts.push(`${loopKeywords.length} loop${loopKeywords.length !== 1 ? "s" : ""}`);
+  }
+
+  if (parts.length === 0) {
+    // Absolute fallback — still more informative than the old tautology
+    const lineCount = body.split("\n").length;
+    return `A ${fn.type} with a ${lineCount}-line body.`;
+  }
+
+  // Build sentence: "A function that takes 2 parameters, returns a Promise, contains 3 conditional branches and error handling."
+  const head = `A ${fn.type} that ${parts[0]}`;
+  if (parts.length === 1) return `${head}.`;
+
+  // Join with commas, last item with "and"
+  const middle = parts.slice(1, -1).join(", ");
+  const last = parts[parts.length - 1];
+  const tail = middle ? `, ${middle} and ${last}` : ` and ${last}`;
+  return `${head}${tail}.`;
 }
 
 // ── Import extraction ──
@@ -354,19 +440,41 @@ function findBlockEnd(lines: string[], startLine: number, language: string): num
     const baseIndent = getIndent(lines[startLine]);
     for (let i = startLine + 1; i < lines.length; i++) {
       const line = lines[i];
-      if (line.trim() === "") continue;
+      const trimmed = line.trim();
+      if (trimmed === "") continue;
       if (getIndent(line) <= baseIndent && i > startLine + 1) {
+        // Don't end on decorators or continuation keywords at base indent
+        if (trimmed.startsWith("@")) continue;
+        if (/^(elif|else|except|finally)\b/.test(trimmed)) continue;
         return i - 1;
       }
     }
     return lines.length - 1;
   }
 
-  // Brace-based languages
+  // Brace-based languages — strip strings and comments before counting braces
   let braceCount = 0;
   let foundOpen = false;
+  let inBlockComment = false;
   for (let i = startLine; i < lines.length; i++) {
-    for (const ch of lines[i]) {
+    let cleaned = lines[i];
+    // Handle block comments that span lines
+    if (inBlockComment) {
+      const endIdx = cleaned.indexOf("*/");
+      if (endIdx === -1) { cleaned = ""; } else { cleaned = cleaned.slice(endIdx + 2); inBlockComment = false; }
+    }
+    // Remove single-line // comments
+    cleaned = cleaned.replace(/\/\/.*$/, "");
+    // Remove inline /* ... */ comments and string literals iteratively
+    cleaned = cleaned.replace(/\/\*.*?\*\//g, " ");
+    // Check for unclosed block comment
+    const blockStart = cleaned.indexOf("/*");
+    if (blockStart !== -1) { cleaned = cleaned.slice(0, blockStart); inBlockComment = true; }
+    // Remove string literals (double-quoted, single-quoted, backtick)
+    cleaned = cleaned.replace(/"(?:[^"\\]|\\.)*"/g, " ");
+    cleaned = cleaned.replace(/'(?:[^'\\]|\\.)*'/g, " ");
+    cleaned = cleaned.replace(/`(?:[^`\\]|\\.)*`/g, " ");
+    for (const ch of cleaned) {
       if (ch === "{") {
         braceCount++;
         foundOpen = true;

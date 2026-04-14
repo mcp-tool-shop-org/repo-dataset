@@ -82,8 +82,8 @@ function parseJpeg(buf: Buffer): { width: number; height: number; truncated: boo
 
     const marker = buf[offset + 1];
 
-    // SOF0 (baseline) or SOF2 (progressive) — dimensions here
-    if (marker === 0xc0 || marker === 0xc2) {
+    // SOF markers — dimensions here (covers SOF0-SOF3, SOF5-SOF7, SOF9-SOF11, SOF13-SOF15; excludes DHT 0xC4, JPG 0xC8)
+    if ((marker >= 0xc0 && marker <= 0xc3) || (marker >= 0xc5 && marker <= 0xc7) || (marker >= 0xc9 && marker <= 0xcb) || (marker >= 0xcd && marker <= 0xcf)) {
       const height = buf.readUInt16BE(offset + 5);
       const width = buf.readUInt16BE(offset + 7);
       const hasEOI = buf[buf.length - 2] === 0xff && buf[buf.length - 1] === 0xd9;
@@ -99,6 +99,7 @@ function parseJpeg(buf: Buffer): { width: number; height: number; truncated: boo
     // Skip marker segment
     if (offset + 3 >= buf.length) return null;
     const segLen = buf.readUInt16BE(offset + 2);
+    if (segLen < 2) return null;
     offset += 2 + segLen;
   }
 

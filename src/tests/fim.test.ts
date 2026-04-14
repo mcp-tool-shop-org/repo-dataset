@@ -80,8 +80,12 @@ describe("FimFormatter", () => {
     const formatter = new FimFormatter(1.0, 1.0, 42);
     const parsed = JSON.parse(formatter.formatPair(makePair()));
     const text = parsed.text;
-    // SPM: <fim_prefix><fim_suffix>suffix\n<fim_middle>prefix\nmiddle
-    assert.ok(text.startsWith("<fim_prefix><fim_suffix>"), "SPM should start with prefix+suffix tokens");
+    // SPM: <fim_suffix>{suffix}\n<fim_prefix>{prefix}\n<fim_middle>{middle}
+    const suffixIdx = text.indexOf("<fim_suffix>");
+    const prefixIdx = text.indexOf("<fim_prefix>");
+    const middleIdx = text.indexOf("<fim_middle>");
+    assert.ok(suffixIdx < prefixIdx, "suffix token should come before prefix token in SPM");
+    assert.ok(prefixIdx < middleIdx, "prefix token should come before middle token in SPM");
   });
 
   it("short code (<3 lines) is not FIM-transformed", () => {

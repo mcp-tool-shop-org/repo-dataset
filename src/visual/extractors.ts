@@ -3,6 +3,7 @@
 import { readFile } from "node:fs/promises";
 import type {
   AssetRecord, ComparisonRecord, VisualRepoInfo, FileEntry, BindingReport, AssetImageInfo,
+  VisualSignalType,
 } from "../types.js";
 
 const EXTRACTOR_VERSION = "1.1.0";
@@ -150,8 +151,38 @@ export function* extractAssetRecords(
       };
     }
 
-    // Critique pair (only for assets with rich metadata)
-    if (hasRichMetadata) {
+    // Borderline assets: KTO label=false (near-miss), classification with nuanced scoring
+    if (asset.status === "borderline") {
+      const borderlineExplanation = buildBorderlineExplanation(asset);
+      const borderlineQuality = Math.max(qualityScore * 0.7, 0.15); // between rejected and approved scoring
+      yield {
+        id: `cls_${asset.id}`,
+        task: "classify",
+        images: [asset.asset_path],
+        imageRefs: [imgRef],
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: [{ type: "image" }, { type: "text", text: "Is this asset on-style? Classify as approved or rejected and explain." }] },
+          { role: "assistant", content: borderlineExplanation },
+        ],
+        binding,
+        label: false,
+        metadata: {
+          source_repo: repoInfo.name,
+          extractor: "asset_record",
+          extractor_version: EXTRACTOR_VERSION,
+          asset_id: asset.id,
+          status: asset.status,
+          faction: asset.faction || undefined,
+          signal_type: "style_classification",
+          quality_score: borderlineQuality,
+          extracted_at: new Date().toISOString(),
+        },
+      };
+    }
+
+    // Critique pair: assets with rich metadata OR borderline assets (highest-value critique targets)
+    if (hasRichMetadata || asset.status === "borderline") {
       const critique = buildCritique(asset);
       yield {
         id: `crit_${asset.id}`,
@@ -172,7 +203,7 @@ export function* extractAssetRecords(
           status: asset.status,
           faction: asset.faction || undefined,
           signal_type: "style_critique",
-          quality_score: qualityScore + 0.1,
+          quality_score: Math.min(qualityScore + 0.1, 1.0),
           extracted_at: new Date().toISOString(),
         },
       };
@@ -198,7 +229,7 @@ export function* extractAssetRecords(
           asset_id: asset.id,
           status: asset.status,
           signal_type: "canon_explanation",
-          quality_score: qualityScore + 0.15,
+          quality_score: Math.min(qualityScore + 0.15, 1.0),
           extracted_at: new Date().toISOString(),
         },
       };
@@ -417,6 +448,117 @@ export async function* extractConstitutionLinked(
   }
 }
 
+// ── Set Coherence Extractor ──
+
+export function* extractSetCoherence(
+  repoInfo: VisualRepoInfo,
+  systemPrompt: string
+): Generator<VisualTrainingUnit> {
+  // Group assets by available grouping fields: faction, lane, character tag
+  const groups = new Map<string, AssetRecord[]>();
+
+  for (const asset of repoInfo.assets) {
+    if (asset.status === "unknown" || asset.status === "wip") continue;
+    if (!asset.asset_path) continue;
+
+    const groupKeys: string[] = [];
+
+    if (asset.faction) {
+      groupKeys.push(`faction:${asset.faction}`);
+    }
+    if (asset.lane) {
+      groupKeys.push(`lane:${asset.lane}`);
+    }
+    // Check tags for character/role groupings
+    for (const tagKey of ["character", "role", "class"] as const) {
+      const values = asset.tags[tagKey];
+      if (values && values.length > 0) {
+        for (const v of values) {
+          groupKeys.push(`${tagKey}:${v}`);
+        }
+      }
+    }
+
+    // If no grouping field, skip (asset can't participate in coherence)
+    if (groupKeys.length === 0) continue;
+
+    for (const key of groupKeys) {
+      let arr = groups.get(key);
+      if (!arr) {
+        arr = [];
+        groups.set(key, arr);
+      }
+      arr.push(asset);
+    }
+  }
+
+  // Emit coherence units for groups of 3+
+  for (const [groupName, assets] of groups) {
+    if (assets.length < 3) continue;
+
+    const imageRefs = assets.map((a) => imageRefFromAsset(a));
+    const imagePaths = assets.map((a) => a.asset_path);
+
+    const approvedCount = assets.filter((a) => a.status === "approved").length;
+    const rejectedCount = assets.filter((a) => a.status === "rejected").length;
+    const borderlineCount = assets.filter((a) => a.status === "borderline").length;
+
+    const allApproved = approvedCount === assets.length;
+
+    let assistantMessage: string;
+    if (allApproved) {
+      assistantMessage = `These ${assets.length} assets from ${groupName} are stylistically coherent. All assets are approved and share consistent visual qualities.`;
+    } else {
+      const parts: string[] = [];
+      parts.push(`These ${assets.length} assets from ${groupName} show inconsistency.`);
+      if (approvedCount > 0) parts.push(`${approvedCount} approved`);
+      if (rejectedCount > 0) parts.push(`${rejectedCount} rejected`);
+      if (borderlineCount > 0) parts.push(`${borderlineCount} borderline`);
+      assistantMessage = `${parts[0]} ${parts.slice(1).join(", ")}. The mix of approval states indicates visual style drift within this group.`;
+    }
+
+    // Binding: has_image if all refs are valid, has_canon from system prompt, has_judgment from status mix
+    const has_image = imageRefs.every((r) => r.valid);
+    const has_judgment = true; // coherence judgment from status analysis
+    const binding: BindingReport = {
+      has_image,
+      has_canon: true, // system prompt provides canon context
+      has_judgment,
+      triangle_complete: has_image && has_judgment,
+    };
+
+    // Quality: higher for groups with more assets and clear signals
+    const qualityScore = Math.min(0.5 + (assets.length * 0.05) + (allApproved ? 0.15 : 0), 1.0);
+
+    const userContent: ContentPart[] = [
+      ...assets.map((): ContentPart => ({ type: "image" })),
+      { type: "text", text: `Evaluate the stylistic coherence of these ${assets.length} assets from ${groupName}.` },
+    ];
+
+    yield {
+      id: `coh_${groupName.replace(/[^a-zA-Z0-9]/g, "_")}`,
+      task: "coherence",
+      images: imagePaths,
+      imageRefs,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userContent },
+        { role: "assistant", content: assistantMessage },
+      ],
+      binding,
+      metadata: {
+        source_repo: repoInfo.name,
+        extractor: "set_coherence",
+        extractor_version: EXTRACTOR_VERSION,
+        faction: groupName,
+        signal_type: "set_coherence" satisfies VisualSignalType,
+        quality_score: qualityScore,
+        extracted_at: new Date().toISOString(),
+      },
+    };
+  }
+}
+
 // ── Helpers ──
 
 function computeAssetQuality(asset: AssetRecord): number {
@@ -457,6 +599,30 @@ function buildClassificationExplanation(asset: AssetRecord): string {
 
   if (asset.must_not_have.length > 0 && asset.status === "rejected") {
     parts.push(`Violates: ${asset.must_not_have.join(", ")}.`);
+  }
+
+  return parts.join(" ");
+}
+
+function buildBorderlineExplanation(asset: AssetRecord): string {
+  const parts: string[] = [];
+  parts.push("BORDERLINE. Near-miss quality, close to approval threshold.");
+
+  if (asset.canon_explanation) {
+    parts.push(asset.canon_explanation);
+  }
+
+  if (asset.must_have.length > 0) {
+    const met = asset.failure_modes.length === 0 ? "Partially satisfies" : "Attempts";
+    parts.push(`${met}: ${asset.must_have.join(", ")}.`);
+  }
+
+  if (asset.failure_modes.length > 0) {
+    parts.push(`Issues preventing approval: ${asset.failure_modes.join(", ")}.`);
+  }
+
+  if (asset.must_not_have.length > 0) {
+    parts.push(`Potential violations: ${asset.must_not_have.join(", ")}.`);
   }
 
   return parts.join(" ");
@@ -510,16 +676,6 @@ function buildGroundedCritique(asset: AssetRecord, canon: string | null, rubric:
   return parts.join("\n") || `${asset.status.toUpperCase()}. No specific rule citations available.`;
 }
 
-function buildAnchorText(asset: AssetRecord): string {
-  const parts: string[] = [];
-  if (asset.status === "approved") parts.push("on-style");
-  if (asset.faction) parts.push(asset.faction);
-  if (asset.lane) parts.push(asset.lane);
-  for (const [cat, vals] of Object.entries(asset.tags)) {
-    parts.push(`${cat}: ${(vals as string[]).join(", ")}`);
-  }
-  return parts.join(", ") || asset.id;
-}
 
 async function loadDocTexts(docs: FileEntry[]): Promise<string | null> {
   if (docs.length === 0) return null;

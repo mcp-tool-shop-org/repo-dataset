@@ -8,6 +8,8 @@ export interface RepoInfo {
   sourceFiles: FileEntry[];
   docFiles: FileEntry[];
   testFiles: FileEntry[];
+  /** Files skipped because they exceeded the 1 MB size limit */
+  skippedOversized: number;
 }
 
 export interface LanguageStats {
@@ -41,7 +43,8 @@ export type SignalType =
   | "test_generation"       // code → test pairs
   | "change_explanation"    // commit → description
   | "change_implementation" // description → commit
-  | "documentation";        // docs sections
+  | "documentation"         // docs sections
+  | "config";               // structured config files
 
 export type ExtractorSubType =
   | "code:function"
@@ -52,7 +55,13 @@ export type ExtractorSubType =
   | "commits:explain"
   | "commits:implement"
   | "tests:write"
-  | "tests:reverse";
+  | "tests:reverse"
+  | "config:build"
+  | "config:ci"
+  | "config:lint"
+  | "config:container"
+  | "config:package"
+  | "config:general";
 
 // ── Provenance metadata (18 fields) ──
 
@@ -107,6 +116,9 @@ export interface PipelineConfig {
   balance: BalanceConfig | null;
   fimRate: number;
   fimSpmRate: number;
+  includeMetadata?: boolean;
+  /** Global cap on pairs kept in memory — reservoir sampling when exceeded (default: 100_000) */
+  globalMaxPairs: number;
 }
 
 export interface BalanceConfig {
@@ -115,8 +127,10 @@ export interface BalanceConfig {
   minPairs: Partial<Record<ExtractorName, number>>;
 }
 
-export type OutputFormat = "alpaca" | "sharegpt" | "openai" | "raw" | "completion" | "fim";
-export type ExtractorName = "code" | "commits" | "docs" | "tests";
+/** Single source of truth for valid output formats — derive the type, don't duplicate it */
+export const OUTPUT_FORMATS = ['alpaca', 'sharegpt', 'openai', 'chatml', 'raw', 'completion', 'fim'] as const;
+export type OutputFormat = typeof OUTPUT_FORMATS[number];
+export type ExtractorName = "code" | "commits" | "docs" | "tests" | "config";
 
 // ── Pipeline results ──
 
@@ -158,6 +172,7 @@ export interface Extractor {
 
 export interface Formatter {
   name: string;
+  includeMetadata?: boolean;
   formatPair(pair: ExtractedPair): string;
 }
 
@@ -267,6 +282,10 @@ export interface VisualPipelineConfig {
   embed: boolean;
   allowIncomplete: boolean;
   copyImages: boolean;
+  minQuality?: number;
+  minResolution?: number;
+  maxResolution?: number;
+  maxPerTask?: number;
 }
 
 // ── Binding integrity (Phase 3) ──
@@ -291,6 +310,7 @@ export interface VisualPipelineResult {
   triangleCompletionRate: number;
   imagesEmbedded: boolean;
   invalidImages: number;
+  skippedUnits: number;
   outputPath: string;
   manifestPath: string | null;
   imageDir: string | null;

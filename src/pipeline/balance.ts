@@ -15,6 +15,7 @@ const AUTO_BALANCE_RATIOS: Record<ExtractorName, number> = {
   tests: 2,
   commits: 1,
   docs: 1,
+  config: 1,
 };
 
 export function getAutoBalanceConfig(): BalanceConfig {

@@ -22,6 +22,8 @@ function makeVisualConfig(repoPath: string, overrides?: Partial<VisualPipelineCo
     embed: false,
     allowIncomplete: true, // fixture stubs are tiny, won't validate as real images
     copyImages: false,
+    minResolution: 0, // disable resolution filter for tiny test fixtures
+    maxResolution: 99999,
     ...overrides,
   };
 }

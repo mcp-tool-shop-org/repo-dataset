@@ -3,18 +3,21 @@
 import type { StructuralResult } from "./structural.js";
 import type { DistributionResult } from "./distribution.js";
 import type { ContentResult } from "./content.js";
+import type { ContaminationResult } from "./contamination.js";
 
 export interface ValidationScore {
   score: number;
   grade: "A" | "B" | "C" | "D" | "F";
   trainability: "good" | "marginal" | "insufficient";
+  contaminationPenalty: number;
 }
 
 export function computeScore(
   structural: StructuralResult,
   distribution: DistributionResult,
   content: ContentResult,
-  totalPairs: number
+  totalPairs: number,
+  contamination?: ContaminationResult,
 ): ValidationScore {
   let score = 0;
 
@@ -53,6 +56,10 @@ export function computeScore(
   const pairScore = Math.min(15, Math.round(Math.log2(Math.max(totalPairs, 1)) / Math.log2(1000) * 15));
   score += pairScore;
 
+  // Contamination penalty: -10 per secret, -5 per PII, -15 per benchmark leak
+  const contaminationPenalty = contamination?.scorePenalty ?? 0;
+  score += contaminationPenalty;
+
   // Clamp
   score = Math.min(100, Math.max(0, score));
 
@@ -70,5 +77,5 @@ export function computeScore(
   else if (totalPairs < 200 || grade === "D" || grade === "F") trainability = "marginal";
   else trainability = "good";
 
-  return { score, grade, trainability };
+  return { score, grade, trainability, contaminationPenalty };
 }

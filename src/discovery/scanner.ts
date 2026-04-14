@@ -6,6 +6,9 @@ import { detectLanguage, isSourceFile, isDocFile } from "./languages.js";
 import { shouldInclude } from "./filters.js";
 import type { RepoInfo, FileEntry, LanguageStats } from "../types.js";
 
+/** VCS internals and OS junk — always skipped regardless of config */
+const ALWAYS_SKIP = new Set([".git", ".hg", ".svn", ".DS_Store"]);
+
 export async function scanRepo(
   repoPath: string,
   include: string[],
@@ -15,8 +18,15 @@ export async function scanRepo(
   const docFiles: FileEntry[] = [];
   const testFiles: FileEntry[] = [];
   const langCounts: Record<string, number> = {};
+  let skippedOversized = 0;
 
   await walkDir(repoPath, repoPath, include, exclude, (entry) => {
+    if (entry.size < 0) {
+      // Sentinel: file was skipped for exceeding size limit
+      skippedOversized++;
+      return;
+    }
+
     const ext = extname(entry.relativePath).toLowerCase();
     const lang = detectLanguage(ext);
     langCounts[lang] = (langCounts[lang] || 0) + 1;
@@ -48,6 +58,7 @@ export async function scanRepo(
     sourceFiles,
     docFiles,
     testFiles,
+    skippedOversized,
   };
 }
 
@@ -70,8 +81,9 @@ async function walkDir(
     const relativePath = relative(rootPath, fullPath).replace(/\\/g, "/");
 
     if (entry.isDirectory()) {
-      // Skip hidden dirs and common non-source dirs early
-      if (entry.name.startsWith(".") || entry.name === "node_modules") continue;
+      // Skip VCS internals and OS junk unconditionally; let shouldInclude handle the rest
+      if (ALWAYS_SKIP.has(entry.name) || entry.name === "node_modules") continue;
+      if (!shouldInclude(relativePath, include, exclude)) continue;
       await walkDir(rootPath, fullPath, include, exclude, onFile);
     } else if (entry.isFile()) {
       if (!shouldInclude(relativePath, include, exclude)) continue;
@@ -85,7 +97,11 @@ async function walkDir(
       }
 
       // Skip very large files (>1MB likely not useful training data)
-      if (fileSize > 1024 * 1024) continue;
+      if (fileSize > 1024 * 1024) {
+        // Emit sentinel (size = -1) so the caller can count skips
+        onFile({ path: fullPath, relativePath, language: "unknown", size: -1 });
+        continue;
+      }
 
       const ext = extname(entry.name).toLowerCase();
       const language = detectLanguage(ext);

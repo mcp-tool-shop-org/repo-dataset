@@ -5,6 +5,7 @@ import { createInterface } from "node:readline";
 import { validateStructural, type StructuralResult } from "./structural.js";
 import { validateDistribution, type DistributionResult, type ParsedPair } from "./distribution.js";
 import { validateContent, type ContentResult } from "./content.js";
+import { validateContamination, type ContaminationResult } from "./contamination.js";
 import { computeScore, type ValidationScore } from "./scoring.js";
 import { estimateTokens } from "../pipeline/tokens.js";
 
@@ -14,6 +15,7 @@ export interface ValidationReport {
   structural: StructuralResult;
   distribution: DistributionResult;
   content: ContentResult;
+  contamination: ContaminationResult;
   scoring: ValidationScore;
 }
 
@@ -50,9 +52,12 @@ export async function runValidation(jsonlPath: string): Promise<ValidationReport
   // Step 4: Content validation
   const content = validateContent(pairs, files);
 
-  // Step 5: Scoring
+  // Step 5: Contamination validation
+  const contamination = validateContamination(pairs);
+
+  // Step 6: Scoring (includes contamination penalty)
   const totalTokens = pairs.reduce((sum, p) => sum + p.tokens, 0);
-  const scoring = computeScore(structural, distribution, content, pairs.length);
+  const scoring = computeScore(structural, distribution, content, pairs.length, contamination);
 
   return {
     totalPairs: pairs.length,
@@ -60,6 +65,7 @@ export async function runValidation(jsonlPath: string): Promise<ValidationReport
     structural,
     distribution,
     content,
+    contamination,
     scoring,
   };
 }

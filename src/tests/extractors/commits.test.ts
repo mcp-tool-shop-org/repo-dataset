@@ -37,6 +37,7 @@ function makeConfig(repoPath: string, overrides?: Partial<PipelineConfig>): Pipe
     balance: null,
     fimRate: 0.5,
     fimSpmRate: 0.5,
+    globalMaxPairs: 100_000,
     ...overrides,
   };
 }

@@ -175,4 +175,60 @@ describe("scanVisualRepo — edge cases", () => {
     assert.equal(info.comparisons.length, 0);
     await rm(dir, { recursive: true, force: true });
   });
+
+  it("T-FT001: path traversal in record asset_path is sanitized", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "visual-traversal-"));
+    await mkdir(join(dir, "records"), { recursive: true });
+    await mkdir(join(dir, "assets", "approved"), { recursive: true });
+    // Real tiny PNG (1x1 pixel)
+    const pngHeader = Buffer.from([
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+    ]);
+    await writeFile(join(dir, "assets", "approved", "legit.png"), pngHeader);
+    // Record with path traversal attempt
+    await writeFile(
+      join(dir, "records", "evil.json"),
+      JSON.stringify({ id: "evil", asset_path: "../../etc/passwd", status: "approved" })
+    );
+    const info = await scanVisualRepo(dir);
+    const evil = info.assets.find((a) => a.id === "evil");
+    assert.ok(evil, "Record-only asset should still be created");
+    assert.ok(
+      !evil.asset_path.includes(".."),
+      `asset_path should not contain '..', got: ${evil.asset_path}`
+    );
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("T-FT002: symlinks inside repo are skipped", async () => {
+    const { symlink, lstat } = await import("node:fs/promises");
+    const dir = await mkdtemp(join(tmpdir(), "visual-symlink-"));
+    await mkdir(join(dir, "assets", "approved"), { recursive: true });
+    const pngHeader = Buffer.from([
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+    ]);
+    const realFile = join(dir, "assets", "approved", "real.png");
+    await writeFile(realFile, pngHeader);
+    const linkPath = join(dir, "assets", "approved", "linked.png");
+    try {
+      await symlink(realFile, linkPath);
+    } catch (err: unknown) {
+      const e = err as NodeJS.ErrnoException;
+      if (e.code === "EPERM") {
+        // Windows without admin — skip test gracefully
+        await rm(dir, { recursive: true, force: true });
+        return;
+      }
+      throw err;
+    }
+    // Verify the symlink exists
+    const linkStat = await lstat(linkPath);
+    assert.ok(linkStat.isSymbolicLink(), "Should have created a symlink");
+    const info = await scanVisualRepo(dir);
+    const linkedAsset = info.assets.find((a) => a.id === "linked");
+    assert.equal(linkedAsset, undefined, "Symlinked file should NOT appear in scanned assets");
+    const realAsset = info.assets.find((a) => a.id === "real");
+    assert.ok(realAsset, "Real file should still be scanned");
+    await rm(dir, { recursive: true, force: true });
+  });
 });

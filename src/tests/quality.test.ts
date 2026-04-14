@@ -19,6 +19,7 @@ const defaultConfig: PipelineConfig = {
   balance: null,
   fimRate: 0.5,
   fimSpmRate: 0.5,
+  globalMaxPairs: 100_000,
 };
 
 function makePair(instruction: string, input: string, output: string, tokens = 100): ExtractedPair {

@@ -29,8 +29,7 @@ export async function gitLog(
   repoPath: string,
   count: number
 ): Promise<CommitInfo[]> {
-  const separator = "---COMMIT-SEP---";
-  const format = `%H%n%s%n%an%n%aI%n${separator}`;
+  const format = `%H%n%s%n%an%n%aI%x00`;
 
   try {
     const { stdout } = await exec(
@@ -40,7 +39,7 @@ export async function gitLog(
     );
 
     const commits: CommitInfo[] = [];
-    const blocks = stdout.split(separator).filter((b) => b.trim());
+    const blocks = stdout.split("\0").filter((b) => b.trim());
 
     for (const block of blocks) {
       const lines = block.trim().split("\n");
@@ -50,11 +49,12 @@ export async function gitLog(
       const message = lines[1];
       const author = lines[2];
       const date = lines[3];
-      // Remaining lines (after empty line) are file names
-      const emptyIdx = lines.indexOf("", 4);
+      // After the 4 format fields, --name-only appends a blank line then filenames.
+      // Find the first empty line after the metadata to locate filenames.
+      const emptyIdx = lines.findIndex((l, idx) => idx >= 4 && l === "");
       const files = emptyIdx >= 0
         ? lines.slice(emptyIdx + 1).filter((f) => f.trim())
-        : lines.slice(4).filter((f) => f.trim());
+        : [];
 
       commits.push({ sha, message, author, date, files, diff: "" });
     }

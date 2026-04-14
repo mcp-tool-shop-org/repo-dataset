@@ -40,8 +40,13 @@ export function chunkText(
     }
 
     // Move forward, accounting for overlap
-    startLine = Math.max(startLine + 1, endLine - overlapLines);
-    if (startLine >= endLine) startLine = endLine;
+    // If only one line was taken (oversized line), skip overlap to avoid degenerate chunks
+    if (endLine === startLine + 1) {
+      startLine = endLine;
+    } else {
+      startLine = Math.max(startLine + 1, endLine - overlapLines);
+      if (startLine >= endLine) startLine = endLine;
+    }
   }
 
   return chunks;

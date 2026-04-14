@@ -2,12 +2,15 @@
 
 /** repo-dataset CLI — convert repos to LLM training data */
 
-import { readFileSync } from "node:fs";
+import { readFileSync, createReadStream, createWriteStream } from "node:fs";
 import { resolve, dirname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
-import { stat } from "node:fs/promises";
+import { stat, mkdtemp } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { createHash } from "node:crypto";
+import { createInterface } from "node:readline";
 import { runPipeline, inspectPipeline } from "./pipeline/runner.js";
 import { isGitRepo } from "./discovery/git.js";
 import { isValidFormat, getAllFormats } from "./formatters/registry.js";
@@ -22,7 +25,12 @@ import type { PipelineConfig, OutputFormat, ExtractorName, BalanceConfig, Visual
 const exec = promisify(execFile);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = resolve(__dirname, "..");
-const PKG = JSON.parse(readFileSync(join(PKG_ROOT, "package.json"), "utf8"));
+let PKG: { version: string; name: string; description: string };
+try {
+  PKG = JSON.parse(readFileSync(join(PKG_ROOT, "package.json"), "utf8"));
+} catch {
+  PKG = { version: "unknown", name: "@mcptoolshop/repo-dataset", description: "" };
+}
 
 // ── Colors ──
 const BOLD = "\x1b[1m";
@@ -79,6 +87,23 @@ function positionalArgs(args: string[]): string[] {
   return result;
 }
 
+/** Find the actual index of the Nth positional arg in the original args array */
+function findPositionalIndex(args: string[], n: number): number {
+  let count = 0;
+  for (let i = 0; i < args.length; i++) {
+    if (args[i].startsWith("--")) {
+      const hasEquals = args[i].includes("=");
+      if (!hasEquals && i + 1 < args.length && !args[i + 1].startsWith("--")) {
+        i++;
+      }
+    } else {
+      if (count === n) return i;
+      count++;
+    }
+  }
+  return -1;
+}
+
 // ── Repo name detection ──
 async function detectRepoName(repoPath: string): Promise<string> {
   try {
@@ -111,47 +136,99 @@ async function cmdGenerate(args: string[]): Promise<void> {
 
   const config = await buildConfig(resolved, args);
 
+  // --stdout / --output -: write JSONL to stdout instead of a file
+  const stdoutMode = hasFlag(args, "stdout") || getFlagValue(args, "output") === "-";
+  let tempDir: string | null = null;
+  if (stdoutMode) {
+    tempDir = await mkdtemp(join(tmpdir(), "repo-dataset-"));
+    config.outputDir = tempDir;
+  }
+
+  // In stdout mode, redirect all progress output to stderr
+  const logFn = stdoutMode ? (msg: string) => console.error(msg) : log;
+  const okFn = stdoutMode ? (msg: string) => console.error(`${GREEN}\u2713${RESET} ${msg}`) : ok;
+  const warnFn = stdoutMode ? (msg: string) => console.error(`${YELLOW}\u26A0${RESET} ${msg}`) : warn;
+
   if (!config.json) {
-    log(`${BOLD}repo-dataset${RESET} v${PKG.version} generating training data...`);
-    log(`${DIM}Repository: ${config.repoName}${RESET}`);
-    log(`${DIM}Format: ${config.format} | Extractors: ${config.extractors.join(", ")}${RESET}`);
-    if (config.balance) log(`${DIM}Balance: ${formatRatios(config.balance.ratios)}${RESET}`);
-    log("");
+    logFn(`${BOLD}repo-dataset${RESET} v${PKG.version} generating training data...`);
+    logFn(`${DIM}Repository: ${config.repoName}${RESET}`);
+    logFn(`${DIM}Format: ${config.format} | Extractors: ${config.extractors.join(", ")}${RESET}`);
+    if (config.balance) logFn(`${DIM}Balance: ${formatRatios(config.balance.ratios)}${RESET}`);
+    logFn("");
   }
 
   const result = await runPipeline(config);
 
-  if (config.json) {
-    console.log(JSON.stringify(result, null, 2));
-  } else {
-    ok(`Files scanned: ${result.totalFiles}`);
-    ok(`Pairs extracted: ${result.pairsExtracted}`);
-    ok(`After quality filter: ${result.pairsAfterFilter}`);
-    ok(`Duplicates removed: ${result.duplicatesRemoved}`);
-    if (config.balance) ok(`After balance: ${result.pairsAfterBalance}`);
-    ok(`Total tokens: ~${result.totalTokens.toLocaleString()}`);
-    ok(`Trainability: ${result.trainability}`);
-    log("");
+  // --validate: run validation on output file after generation
+  const wantValidate = hasFlag(args, "validate");
+  let validationReport: import("./validate/report.js").ValidationReport | null = null;
+  if (wantValidate && result.outputPath && result.outputPath !== "(dry run)") {
+    validationReport = await runValidation(result.outputPath);
+  }
 
-    log(`${CYAN}By extractor:${RESET}`);
+  if (config.json) {
+    const base = wantValidate && validationReport
+      ? { ...result, validation: validationReport }
+      : result;
+    // In stdout mode, JSON summary goes to stderr; stdout is reserved for JSONL
+    (stdoutMode ? console.error : console.log)(JSON.stringify(base, null, 2));
+  } else {
+    okFn(`Files scanned: ${result.totalFiles}`);
+    okFn(`Pairs extracted: ${result.pairsExtracted}`);
+    okFn(`After quality filter: ${result.pairsAfterFilter}`);
+    okFn(`Duplicates removed: ${result.duplicatesRemoved}`);
+    if (config.balance) okFn(`After balance: ${result.pairsAfterBalance}`);
+    okFn(`Total tokens: ~${result.totalTokens.toLocaleString()}`);
+    okFn(`Trainability: ${result.trainability}`);
+    logFn("");
+
+    logFn(`${CYAN}By extractor:${RESET}`);
     for (const [name, stats] of Object.entries(result.byExtractor)) {
-      log(`  ${name.padEnd(10)} ${String(stats.pairs).padStart(4)} pairs  ${String(stats.pct).padStart(3)}%  quality: ${stats.avgQuality}`);
+      logFn(`  ${name.padEnd(10)} ${String(stats.pairs).padStart(4)} pairs  ${String(stats.pct).padStart(3)}%  quality: ${stats.avgQuality}`);
     }
 
     if (result.warnings.length > 0) {
-      log("");
-      for (const w of result.warnings) warn(w);
+      logFn("");
+      for (const w of result.warnings) warnFn(w);
     }
 
-    log("");
-    ok(`Output: ${result.outputPath}`);
-    if (result.manifestPath) ok(`Manifest: ${result.manifestPath}`);
+    logFn("");
+    okFn(`Output: ${stdoutMode ? "(stdout)" : result.outputPath}`);
+    if (result.manifestPath) okFn(`Manifest: ${result.manifestPath}`);
 
     if (config.pipeToBackpropagate) {
-      log("");
-      log(`${YELLOW}Run fine-tuning:${RESET}`);
-      log(`  backprop train --data ${result.outputPath} --steps 100`);
+      logFn("");
+      const steps = Math.ceil(result.pairsAfterBalance * 3 / 4);
+      const manifestArg = result.manifestPath ? ` --manifest ${result.manifestPath}` : "";
+      logFn(`${YELLOW}Run fine-tuning:${RESET}`);
+      logFn(`  backprop train --data ${result.outputPath} --format ${config.format} --steps ${steps}${manifestArg}`);
+
+      // Detect if backpropagate is installed
+      try {
+        const which = process.platform === "win32" ? "where" : "which";
+        await exec(which, ["backprop"]);
+        logFn(`${GREEN}\u2713${RESET} backpropagate detected \u2014 run the above command to start training`);
+      } catch {
+        logFn(`${DIM}Install backpropagate: npm i -g @mcptoolshop/backpropagate${RESET}`);
+      }
     }
+
+    if (validationReport) {
+      logFn("");
+      const s = validationReport.scoring;
+      const vIcon = validationReport.structural.pass ? `${GREEN}PASS${RESET}` : `${RED}FAIL${RESET}`;
+      console.error(`${CYAN}Validation:${RESET} ${s.score}/100 (${s.grade}) | Structural: ${vIcon} | Trainability: ${s.trainability}`);
+    }
+  }
+
+  // In stdout mode, stream the JSONL file to stdout
+  if (stdoutMode && result.outputPath && result.outputPath !== "(dry run)") {
+    await new Promise<void>((resolve, reject) => {
+      const stream = createReadStream(result.outputPath, "utf-8");
+      stream.pipe(process.stdout);
+      stream.on("end", resolve);
+      stream.on("error", reject);
+    });
   }
 }
 
@@ -273,9 +350,33 @@ async function cmdValidate(args: string[]): Promise<void> {
   log(`  Unique source files ......... ${report.content.uniqueSourceFiles}`);
   log("");
 
+  // Contamination
+  const contIcon = report.contamination.pass ? `${GREEN}PASS${RESET}` : `${RED}FAIL${RESET}`;
+  log(`${CYAN}CONTAMINATION${RESET}                             ${contIcon}`);
+  log(`  Secrets found ............... ${report.contamination.secretCount}`);
+  log(`  PII found ................... ${report.contamination.piiCount}`);
+  log(`  Benchmark leaks ............. ${report.contamination.benchmarkCount}`);
+  if (report.contamination.scorePenalty < 0) {
+    log(`  Score penalty ............... ${report.contamination.scorePenalty}`);
+  }
+  if (report.contamination.findings.length > 0) {
+    log("");
+    log(`  ${YELLOW}Sample findings:${RESET}`);
+    for (const f of report.contamination.findings.slice(0, 5)) {
+      log(`  ${RED}[${f.type}]${RESET} ${f.name}: ${DIM}${f.line.slice(0, 80)}${RESET}`);
+    }
+    if (report.contamination.findings.length > 5) {
+      log(`  ${DIM}...and ${report.contamination.findings.length - 5} more${RESET}`);
+    }
+  }
+  log("");
+
   // Score
   log(`${CYAN}SCORE${RESET}  ${BOLD}${report.scoring.score}/100  Grade: ${report.scoring.grade}${RESET}`);
   log(`  Trainability: ${report.scoring.trainability}`);
+  if (report.scoring.contaminationPenalty < 0) {
+    log(`  ${RED}Contamination penalty: ${report.scoring.contaminationPenalty}${RESET}`);
+  }
 }
 
 async function cmdVisualGenerate(args: string[]): Promise<void> {
@@ -481,20 +582,85 @@ function buildVisualConfig(repoPath: string, args: string[]): VisualPipelineConf
   }
 
   const extractorStr = getFlagValue(args, "extractors") || "asset_record,comparison,constitution";
-  const extractors = extractorStr.split(",").map((s) => s.trim()) as VisualExtractorName[];
+  const VALID_VISUAL_EXTRACTORS: ReadonlySet<string> = new Set(["asset_record", "comparison", "constitution", "set_coherence"]);
+  const extractors = extractorStr.split(",").map((s) => s.trim());
+  for (const name of extractors) {
+    if (!VALID_VISUAL_EXTRACTORS.has(name)) {
+      fail(ErrorCodes.INVALID_EXTRACTOR, `Invalid visual extractor: ${name}`, `Valid: ${[...VALID_VISUAL_EXTRACTORS].join(", ")}`);
+    }
+  }
+
+  const minQualityStr = getFlagValue(args, "min-quality");
+  const minQuality = minQualityStr !== undefined
+    ? parseFloatRate(minQualityStr, "min-quality")
+    : undefined;
 
   return {
     repoPath,
     repoName: getFlagValue(args, "repo-name") || basename(repoPath),
     outputDir: getFlagValue(args, "output") || "./dataset-output",
     format: format as VisualOutputFormat,
-    extractors,
+    extractors: extractors as VisualExtractorName[],
     generateSyntheticPairs: !hasFlag(args, "no-synthetic"),
     json: hasFlag(args, "json"),
     embed: hasFlag(args, "embed"),
     allowIncomplete: hasFlag(args, "allow-incomplete"),
     copyImages: !hasFlag(args, "no-copy-images"),
+    ...(minQuality !== undefined && { minQuality }),
   };
+}
+
+async function cmdMerge(args: string[]): Promise<void> {
+  const positional = positionalArgs(args);
+  const outputPath = getFlagValue(args, "output");
+
+  if (positional.length < 2) {
+    fail("MISSING_ARGS", "At least 2 input files required", "Usage: repo-dataset merge file1.jsonl file2.jsonl --output merged.jsonl");
+  }
+  if (!outputPath) {
+    fail("MISSING_FLAG", "No --output flag provided", "Usage: repo-dataset merge file1.jsonl file2.jsonl --output merged.jsonl");
+  }
+
+  const inputs = positional.map((p) => resolve(p));
+  const resolvedOutput = resolve(outputPath);
+
+  // Verify all input files exist
+  for (const f of inputs) {
+    try { await stat(f); } catch {
+      fail("FILE_NOT_FOUND", `Input file not found: ${f}`, "Provide valid paths to .jsonl files");
+    }
+  }
+
+  const seen = new Set<string>();
+  let uniqueLines = 0;
+  let dupeCount = 0;
+
+  const out = createWriteStream(resolvedOutput, "utf-8");
+
+  for (const inputFile of inputs) {
+    const rl = createInterface({
+      input: createReadStream(inputFile, "utf-8"),
+      crlfDelay: Infinity,
+    });
+    for await (const line of rl) {
+      if (!line.trim()) continue;
+      const hash = createHash("sha256").update(line).digest("hex");
+      if (seen.has(hash)) {
+        dupeCount++;
+      } else {
+        seen.add(hash);
+        out.write(line + "\n");
+        uniqueLines++;
+      }
+    }
+  }
+
+  await new Promise<void>((resolve, reject) => {
+    out.end(() => resolve());
+    out.on("error", reject);
+  });
+
+  log(`Merged ${inputs.length} files → ${uniqueLines} unique pairs (${dupeCount} duplicates removed)`);
 }
 
 function cmdInfo(): void {
@@ -504,6 +670,7 @@ function cmdInfo(): void {
   log("  alpaca       Instruction/input/output (fine-tuning)");
   log("  sharegpt     Multi-turn conversations");
   log("  openai       OpenAI messages format");
+  log("  chatml       ChatML <|im_start|>/<|im_end|> delimited");
   log("  raw          Text + metadata (pre-training / RAG)");
   log("  completion   Raw code as text (language modeling)");
   log("  fim          Fill-in-the-middle (StarCoder tokens)");
@@ -544,6 +711,7 @@ function cmdInfo(): void {
   log("  --allow-incomplete         Keep units with incomplete triangle");
   log("  --no-copy-images           Don't copy images to output folder");
   log("  --no-synthetic             Skip synthetic pair generation");
+  log("  --min-quality <0-1>        Drop visual units below this quality threshold");
 }
 
 function printHelp(): void {
@@ -557,10 +725,11 @@ function printHelp(): void {
   log("  visual inspect <path>    Preview visual extraction (dry run)");
   log("  visual validate <jsonl>  Quality report on a visual dataset");
   log("  validate <jsonl>         Quality report on a generated code dataset");
+  log("  merge <f1> <f2> [...]    Deduplicate and merge multiple JSONL files");
   log("  info                     Show supported formats and extractors");
   log("");
   log(`${CYAN}Flags:${RESET}`);
-  log("  --format <fmt>              Output: alpaca, sharegpt, openai, raw, completion, fim");
+  log("  --format <fmt>              Output: alpaca, sharegpt, openai, chatml, raw, completion, fim");
   log("  --output <dir>              Output directory (default: ./dataset-output)");
   log("  --extractors <list>         Comma-separated extractors (default: all)");
   log("  --max-tokens <n>            Max tokens per example (default: 2048)");
@@ -571,8 +740,12 @@ function printHelp(): void {
   log("  --balance <ratios>          Signal balance (e.g., code:3,docs:1,tests:2)");
   log("  --auto-balance              Apply sensible balance defaults");
   log("  --max-pairs <src:n,...>      Hard cap per source");
+  log("  --global-max-pairs <n>      Memory cap on total pairs (default: 100000)");
   log("  --fim-rate <0-1>            FIM transform probability (default: 0.5)");
+  log("  --include-metadata          Append metadata field to each JSONL line");
   log("  --pipe-to-backpropagate     Print backprop command after generation");
+  log("  --validate                  Run validation on output after generation");
+  log("  --stdout                    Write JSONL to stdout (progress goes to stderr)");
   log("  --json                      JSON output for automation");
   log("  --help                      Show this help");
   log("  --version                   Show version");
@@ -620,24 +793,49 @@ async function buildConfig(repoPath: string, args: string[]): Promise<PipelineCo
     outputDir: getFlagValue(args, "output") || "./dataset-output",
     format: format as OutputFormat,
     extractors: extractorNames as ExtractorName[],
-    maxTokens: parseInt(getFlagValue(args, "max-tokens") || "2048", 10),
-    minTokens: parseInt(getFlagValue(args, "min-tokens") || "20", 10),
-    maxCommits: parseInt(getFlagValue(args, "commits") || "100", 10),
+    maxTokens: parseIntFlag(getFlagValue(args, "max-tokens") || "2048", "max-tokens"),
+    minTokens: parseIntFlag(getFlagValue(args, "min-tokens") || "20", "min-tokens"),
+    maxCommits: parseIntFlag(getFlagValue(args, "commits") || "100", "commits"),
     include: includeStr ? includeStr.split(",") : [],
     exclude: excludeStr ? excludeStr.split(",") : [],
     pipeToBackpropagate: hasFlag(args, "pipe-to-backpropagate"),
     json: hasFlag(args, "json"),
     balance,
-    fimRate: parseFloat(getFlagValue(args, "fim-rate") || "0.5"),
-    fimSpmRate: parseFloat(getFlagValue(args, "fim-spm-rate") || "0.5"),
+    fimRate: parseFloatRate(getFlagValue(args, "fim-rate") || "0.5", "fim-rate"),
+    fimSpmRate: parseFloatRate(getFlagValue(args, "fim-spm-rate") || "0.5", "fim-spm-rate"),
+    includeMetadata: hasFlag(args, "include-metadata"),
+    globalMaxPairs: parseIntFlag(getFlagValue(args, "global-max-pairs") || "100000", "global-max-pairs"),
   };
+}
+
+function parseIntFlag(raw: string, flag: string): number {
+  const value = parseInt(raw, 10);
+  if (!Number.isFinite(value) || value <= 0) {
+    fail("INVALID_FLAG", `Invalid value for --${flag}: "${raw}"`, `--${flag} must be a positive integer`);
+  }
+  return value;
+}
+
+function parseFloatRate(raw: string, flag: string): number {
+  const value = parseFloat(raw);
+  if (!Number.isFinite(value) || value < 0 || value > 1) {
+    fail("INVALID_FLAG", `Invalid value for --${flag}: "${raw}"`, `--${flag} must be a number between 0 and 1`);
+  }
+  return value;
 }
 
 function parseBalanceRatios(str: string): BalanceConfig {
   const ratios: Partial<Record<ExtractorName, number>> = {};
   for (const part of str.split(",")) {
-    const [name, val] = part.split(":");
-    if (name && val) ratios[name.trim() as ExtractorName] = parseInt(val, 10);
+    const raw = part.trim();
+    const [name, val] = raw.split(":");
+    if (name && val) {
+      const value = parseInt(val, 10);
+      if (!Number.isFinite(value) || value <= 0) {
+        fail("INVALID_FLAG", `Invalid ratio value in --balance: expected positive integer, got "${raw}"`, `Each ratio must be extractor:N where N is a positive integer`);
+      }
+      ratios[name.trim() as ExtractorName] = value;
+    }
   }
   return { ratios, maxPairs: {}, minPairs: {} };
 }
@@ -645,8 +843,15 @@ function parseBalanceRatios(str: string): BalanceConfig {
 function parsePairCounts(str: string): Partial<Record<ExtractorName, number>> {
   const counts: Partial<Record<ExtractorName, number>> = {};
   for (const part of str.split(",")) {
-    const [name, val] = part.split(":");
-    if (name && val) counts[name.trim() as ExtractorName] = parseInt(val, 10);
+    const raw = part.trim();
+    const [name, val] = raw.split(":");
+    if (name && val) {
+      const value = parseInt(val, 10);
+      if (!Number.isFinite(value) || value <= 0) {
+        fail("INVALID_FLAG", `Invalid pair count in --max-pairs: expected positive integer, got "${raw}"`, `Each count must be extractor:N where N is a positive integer`);
+      }
+      counts[name.trim() as ExtractorName] = value;
+    }
   }
   return counts;
 }
@@ -658,7 +863,8 @@ function formatRatios(ratios: Partial<Record<ExtractorName, number>>): string {
 // ── Main ──
 const args = process.argv.slice(2);
 const command = positionalArgs(args)[0] || "help";
-const commandArgs = args.slice(args.indexOf(command) + 1);
+const commandIndex = findPositionalIndex(args, 0);
+const commandArgs = commandIndex !== -1 ? args.slice(commandIndex + 1) : args;
 
 if (hasFlag(args, "version") || command === "--version" || command === "-V") {
   log(`repo-dataset ${PKG.version}`);
@@ -680,7 +886,8 @@ try {
       break;
     case "visual": {
       const subCommand = positionalArgs(commandArgs)[0];
-      const visualArgs = commandArgs.slice(commandArgs.indexOf(subCommand) + 1);
+      const subCommandIndex = findPositionalIndex(commandArgs, 0);
+      const visualArgs = subCommandIndex !== -1 ? commandArgs.slice(subCommandIndex + 1) : commandArgs;
       if (subCommand === "generate") {
         await cmdVisualGenerate(visualArgs);
       } else if (subCommand === "inspect") {
@@ -695,6 +902,9 @@ try {
     case "validate":
       await cmdValidate(commandArgs);
       break;
+    case "merge":
+      await cmdMerge(commandArgs);
+      break;
     case "info":
       cmdInfo();
       break;
@@ -705,5 +915,22 @@ try {
   if (err instanceof RepoDatasetError) {
     fail(err.code, err.message, err.hint);
   }
-  throw err;
+  const nodeErr = err as NodeJS.ErrnoException;
+  if (nodeErr && nodeErr.code) {
+    switch (nodeErr.code) {
+      case "ENOSPC":
+        fail(ErrorCodes.DISK_FULL, "Disk full: unable to write output", "Free disk space and try again");
+        break;
+      case "EACCES":
+      case "EPERM":
+        fail(ErrorCodes.PERMISSION_DENIED, nodeErr.message || "Permission denied", "Check write permissions on the output path");
+        break;
+      case "ENOENT":
+        fail(ErrorCodes.FILE_NOT_FOUND, nodeErr.message || "File or directory not found", "Check that the path exists");
+        break;
+      default:
+        fail(ErrorCodes.UNEXPECTED_ERROR, nodeErr.message || String(err), "An unexpected error occurred. If this persists, file an issue.");
+    }
+  }
+  fail(ErrorCodes.UNEXPECTED_ERROR, err instanceof Error ? err.message : String(err), "An unexpected error occurred. If this persists, file an issue.");
 }

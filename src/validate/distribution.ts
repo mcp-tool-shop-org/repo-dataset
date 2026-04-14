@@ -15,6 +15,20 @@ export interface DistributionResult {
 }
 
 export function validateDistribution(pairs: ParsedPair[]): DistributionResult {
+  if (pairs.length === 0) {
+    return {
+      pass: false,
+      tokenStats: { mean: 0, median: 0, stddev: 0, cv: 0, p10: 0, p25: 0, p50: 0, p75: 0, p90: 0 },
+      sourceBalance: {},
+      sourceEntropy: 0,
+      sourceEntropyMax: 0,
+      signalTypes: {},
+      signalEntropy: 0,
+      signalEntropyMax: 0,
+      dominantSource: null,
+    };
+  }
+
   // Token lengths
   const lengths = pairs.map((p) => p.tokens);
   lengths.sort((a, b) => a - b);

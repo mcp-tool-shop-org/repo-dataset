@@ -1,7 +1,7 @@
 /** Import graph parser — extracts project-internal imports from test files */
 
 import { readFile } from "node:fs/promises";
-import { dirname, join, resolve, basename, extname } from "node:path";
+import { dirname, join, resolve, relative, basename, extname } from "node:path";
 import type { FileEntry } from "../types.js";
 
 export interface ParsedImport {
@@ -154,7 +154,7 @@ function resolveImport(
         // Relative import
         const importerDir = dirname(importerPath);
         const abs = resolve(importerDir, raw);
-        resolved = abs.replace(projectRoot + "/", "").replace(projectRoot + "\\", "").replace(/\\/g, "/");
+        resolved = relative(projectRoot, abs).replace(/\\/g, "/");
         // Strip extension if present (.js, .ts — TypeScript often imports as .js)
         resolved = resolved.replace(/\.(js|ts|tsx|jsx|mjs)$/, "");
       }

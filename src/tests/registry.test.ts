@@ -18,11 +18,12 @@ describe("Extractor Registry", () => {
     assert.ok(names.includes("docs"));
   });
 
-  it("getAllExtractorNames returns all 4", () => {
+  it("getAllExtractorNames returns all 5", () => {
     const names = getAllExtractorNames();
-    assert.equal(names.length, 4);
+    assert.equal(names.length, 5);
     assert.ok(names.includes("code"));
     assert.ok(names.includes("commits"));
+    assert.ok(names.includes("config"));
     assert.ok(names.includes("docs"));
     assert.ok(names.includes("tests"));
   });
@@ -47,12 +48,13 @@ describe("Formatter Registry", () => {
     assert.equal(formatter.name, "sharegpt");
   });
 
-  it("getAllFormats returns all 6", () => {
+  it("getAllFormats returns all 7", () => {
     const formats = getAllFormats();
-    assert.equal(formats.length, 6);
+    assert.equal(formats.length, 7);
     assert.ok(formats.includes("alpaca"));
     assert.ok(formats.includes("sharegpt"));
     assert.ok(formats.includes("openai"));
+    assert.ok(formats.includes("chatml"));
     assert.ok(formats.includes("raw"));
     assert.ok(formats.includes("completion"));
     assert.ok(formats.includes("fim"));

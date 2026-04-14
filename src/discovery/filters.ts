@@ -105,12 +105,20 @@ export function shouldInclude(
 
 /** Simple glob matching — supports * and ** */
 function matchGlob(path: string, pattern: string): boolean {
-  // Convert glob to regex
-  const regex = pattern
-    .replace(/\./g, "\\.")
-    .replace(/\*\*/g, "{{DOUBLESTAR}}")
-    .replace(/\*/g, "[^/]*")
-    .replace(/\{\{DOUBLESTAR\}\}/g, ".*");
+  // Convert glob to regex safely:
+  // 1. Protect glob wildcards with placeholders
+  // 2. Escape all regex metacharacters
+  // 3. Restore wildcards as regex equivalents
+  let work = pattern
+    .replace(/\*\*/g, "__GLOBSTAR__")
+    .replace(/\*/g, "__STAR__");
+  // Escape regex metacharacters (. + ? ( ) [ ] { } ^ $ | \)
+  work = work.replace(/[.+?()[\]{}^$|\\]/g, "\\$&");
+  // Restore glob wildcards as regex
+  work = work
+    .replace(/__GLOBSTAR__/g, ".*")
+    .replace(/__STAR__/g, "[^/]*");
+  const regex = work;
   return new RegExp(`^${regex}$`).test(path) ||
     new RegExp(`(^|/)${regex}($|/)`).test(path);
 }

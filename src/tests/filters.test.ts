@@ -69,4 +69,39 @@ describe("shouldInclude", () => {
   it("respects exclude patterns", () => {
     assert.equal(shouldInclude("src/main.ts", [], ["src/**"]), false);
   });
+
+  it("T-FT006: adversarial glob pattern completes without hanging", () => {
+    // Deeply nested glob that could cause catastrophic backtracking in naive regex
+    const adversarialPattern = "**/**/**/**/**/**/*a";
+    const longPath = "a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z/deep.ts";
+    // The test timeout (default or suite-level) is the safety net.
+    // If matchGlob has ReDoS, this will hang and the test runner will timeout → fail.
+    const result = shouldInclude(longPath, [adversarialPattern], []);
+    assert.equal(typeof result, "boolean", "shouldInclude should return a boolean");
+  });
+
+  it("T-FT006: regex metacharacters in patterns do not break matching", () => {
+    // Patterns with characters that are regex metacharacters: . + ? ( ) [ ] { } ^ $ |
+    assert.equal(
+      shouldInclude("src/file.test.ts", ["src/file.test.ts"], []),
+      true,
+      "Literal dots in pattern should match"
+    );
+    assert.equal(
+      shouldInclude("src/file+plus.ts", ["src/file+plus.ts"], []),
+      true,
+      "Literal + in pattern should match"
+    );
+    assert.equal(
+      shouldInclude("src/file(1).ts", ["src/file(1).ts"], []),
+      true,
+      "Literal parens in pattern should match"
+    );
+    // A pattern with square brackets should not be treated as a character class
+    assert.equal(
+      shouldInclude("src/[config].ts", ["src/[config].ts"], []),
+      true,
+      "Literal brackets in pattern should match"
+    );
+  });
 });

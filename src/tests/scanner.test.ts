@@ -93,17 +93,21 @@ describe("scanRepo", () => {
       assert.ok(relPaths.some((p) => p.includes("small.ts")), "Should include small file");
     });
 
-    it("skips hidden directories", async () => {
-      const hiddenDir = join(tempDir, ".hidden");
-      await mkdir(hiddenDir, { recursive: true });
-      await writeFile(join(hiddenDir, "secret.ts"), "const s = 1;");
+    it("skips .git directory but allows other dot-prefix dirs", async () => {
+      const gitDir = join(tempDir, ".git");
+      const dotDir = join(tempDir, ".config");
+      await mkdir(gitDir, { recursive: true });
+      await mkdir(dotDir, { recursive: true });
+      await writeFile(join(gitDir, "HEAD"), "ref: refs/heads/main");
+      await writeFile(join(dotDir, "settings.ts"), "const s = 1;");
       const info = await scanRepo(tempDir, [], []);
       const allPaths = [
         ...info.sourceFiles,
         ...info.docFiles,
         ...info.testFiles,
       ].map((f) => f.relativePath);
-      assert.ok(!allPaths.some((p) => p.includes(".hidden")), "Should skip hidden directories");
+      assert.ok(!allPaths.some((p) => p.includes(".git")), "Should skip .git directory");
+      assert.ok(allPaths.some((p) => p.includes(".config")), "Should include other dot-prefix dirs");
     });
   });
 });

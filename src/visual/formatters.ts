@@ -27,12 +27,12 @@ function textOf(msg: Message | undefined): string {
 
 /** Build content-array style content with image placeholders for base64/path */
 function contentArrayMessages(unit: VisualTrainingUnit): unknown[] {
+  let imgIdx = 0;
   return unit.messages.map((msg) => {
     if (typeof msg.content === "string") {
       return { role: msg.role, content: [{ type: "text", text: msg.content }] };
     }
     // Replace { type: "image" } entries with proper refs
-    let imgIdx = 0;
     const content = msg.content.map((part) => {
       if ((part as { type: string }).type === "image") {
         const ref = unit.imageRefs[imgIdx++];
@@ -220,11 +220,11 @@ class AxolotlFormatter implements VisualFormatter {
   formatUnit(unit: VisualTrainingUnit): string | null {
     if (unit.task === "contrastive") return null; // axolotl doesn't support contrastive
 
+    let imgIdx = 0;
     const messages = unit.messages.map((msg) => {
       if (typeof msg.content === "string") {
         return { role: msg.role, content: [{ type: "text", text: msg.content }] };
       }
-      let imgIdx = 0;
       const content = msg.content.map((part) => {
         if ((part as { type: string }).type === "image") {
           const ref = unit.imageRefs[imgIdx++];

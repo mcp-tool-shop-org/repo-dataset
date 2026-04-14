@@ -1,7 +1,7 @@
-# Quality Proof — repo-dataset v1.0.0
+# Quality Proof — repo-dataset v1.1.0
 
 Benchmark run: 2026-04-12  
-Tool version: 0.2.0 (pre-release)  
+Tool version: 1.1.0  
 Command: `repo-dataset generate <repo> --format completion --auto-balance`  
 Validation: `repo-dataset validate <output>`
 
@@ -125,4 +125,4 @@ The balance system is proven. The tool no longer collapses into a markdown QA ge
 
 repo-dataset produces provenance-backed training datasets with controllable signal balance. It handles docs-heavy, code-heavy, and mixed repos without collapsing. All benchmarks score Grade B or higher.
 
-The tool is ready for v1.0.0.
+> **Note:** This proof covers the code pipeline (extractors, formats, balance, validation). Visual pipeline proof benchmarks (image embedding, binding integrity, visual output formats) are pending.

@@ -1,10 +1,22 @@
-# @mcptoolshop/repo-dataset
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/repo-dataset/readme.png" width="400" alt="Repo Dataset">
+</p>
+
+<p align="center">
+  <a href="https://github.com/mcp-tool-shop-org/repo-dataset/actions"><img src="https://github.com/mcp-tool-shop-org/repo-dataset/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/mcp-tool-shop-org/repo-dataset/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
+  <a href="https://www.npmjs.com/package/@mcptoolshop/repo-dataset"><img src="https://img.shields.io/npm/v/@mcptoolshop/repo-dataset" alt="npm"></a>
+</p>
 
 Convert any git repository or visual style repo into LLM training datasets.
 
 **Code pipeline:** Extracts training signals from code, commits, documentation, and tests. Outputs JSONL in 6 formats ready for fine-tuning or pre-training.
 
 **Visual pipeline:** Extracts multimodal training data from curated visual repos. Validates images, enforces asset+canon+judgment binding, outputs in 10 framework-native formats for vision-language model fine-tuning.
+
+## Security Model
+
+repo-dataset reads source files and git history from repos you point it at. It writes JSONL output to a directory you specify. It does **not** make network requests, collect telemetry, or access files outside the target repo and output directory. Path traversal and symlink attacks are guarded against. See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
 
 ## Install
 
@@ -107,9 +119,31 @@ Units without all three are dropped by default. Use `--allow-incomplete` to keep
 
 ## Backpropagate Integration
 
+repo-dataset outputs are compatible with [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate) for local fine-tuning.
+
+### Recommended Formats
+
+| Goal | Format | Why |
+|------|--------|-----|
+| Code fine-tuning | `chatml` or `alpaca` | Structured instruction pairs map directly to code tasks |
+| Chat fine-tuning | `sharegpt` or `openai` | Multi-turn conversation structure preserved |
+| Raw completion | `completion` | Unstructured text for continued pre-training |
+
+Backpropagate accepts: `alpaca`, `sharegpt`, `openai`, `chatml`, and `completion`.
+
+### End-to-End Workflow
+
 ```bash
-repo-dataset generate ./my-project --pipe-to-backpropagate
+# Generate training data from your repo
+repo-dataset generate ./my-project --format chatml --validate
+
+# Fine-tune with backpropagate
+backprop train --data ./my-project-dataset/dataset.jsonl --steps 300
 ```
+
+### Visual Datasets
+
+Visual pipeline outputs (TRL, Axolotl, LLaVA, etc.) target vision-language model fine-tuning. Backpropagate does not yet support VLM training -- use the framework-native formats directly with their respective trainers.
 
 ## Stats
 
@@ -121,3 +155,7 @@ repo-dataset generate ./my-project --pipe-to-backpropagate
 ## License
 
 MIT
+
+---
+
+Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
