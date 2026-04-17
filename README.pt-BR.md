@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/repo-dataset/readme.png" width="400" alt="Repo Dataset">
+  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/repo-dataset/readme.png" width="500" alt="Repo Dataset">
 </p>
 
 <p align="center">
@@ -12,15 +12,24 @@
   <a href="https://www.npmjs.com/package/@mcptoolshop/repo-dataset"><img src="https://img.shields.io/npm/v/@mcptoolshop/repo-dataset" alt="npm"></a>
 </p>
 
-Converta qualquer repositório Git ou repositório de estilos visuais em conjuntos de dados de treinamento para LLMs (Large Language Models).
+### Crie conjuntos de dados de treinamento a partir de repositórios antes de usar um sistema de treinamento
 
-**Pipeline de código:** Extrai sinais de treinamento de código, commits, documentação e testes. Produz arquivos JSONL em 6 formatos, prontos para ajuste fino ou pré-treinamento.
+O `repo-dataset` transforma código, commits, documentação, testes e recursos visuais selecionados em conjuntos de dados prontos para treinamento, e, em seguida, verifica a qualidade, a integridade das associações e o risco de contaminação, para que você não ajuste um modelo com dados de baixa qualidade.
 
-**Pipeline visual:** Extrai dados de treinamento multimodais de repositórios visuais selecionados. Valida imagens, aplica regras de vinculação de ativos e avaliações, e produz arquivos em 10 formatos nativos de frameworks para ajuste fino de modelos de linguagem e visão.
+O `repo-dataset` é a camada de construção e verificação de conjuntos de dados para fluxos de trabalho de aprendizado de máquina locais. Não é um sistema de treinamento. Não é uma coleção de formatos.
 
-## Modelo de Segurança
+## O que é / o que não é
 
-O `repo-dataset` lê arquivos de origem e histórico do Git dos repositórios que você especifica. Ele grava arquivos JSONL em um diretório que você define. Ele **não** faz solicitações de rede, coleta dados de telemetria ou acessa arquivos fora do repositório de destino e do diretório de saída. Ataques de percurso de diretório e links simbólicos são protegidos. Consulte [SECURITY.md](SECURITY.md) para relatar vulnerabilidades.
+- **Não é um sistema de treinamento.** Ele para na fase JSONL. Use-o em conjunto com [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate), Axolotl, TRL, LLaMA-Factory, LLaVA ou Qwen2-VL.
+- **Não é outro conversor de formatos.** A variedade de formatos é fundamental; a camada superior, que inclui verificações de contaminação, classificação de qualidade e integridade das associações, é o que realmente importa.
+- **É uma camada de construção e verificação de conjuntos de dados** para fluxos de trabalho de aprendizado de máquina locais. Ele é executado antes do treinamento e identifica o que poderia corromper um processo de ajuste fino.
+- **É um complemento, não um concorrente, do [style-dataset-lab](https://github.com/mcp-tool-shop-org/style-dataset-lab).** O `style-dataset-lab` é um sistema especializado para conjuntos de dados visuais e "bíblia de estilo" para conteúdo escrito; o `repo-dataset` é a camada mais ampla de construção e verificação que qualquer repositório, seja de código ou visual, pode utilizar.
+
+## Para quem é isso
+
+- Profissionais de aprendizado de máquina que treinam modelos pequenos com seu próprio código e querem saber se o conjunto de dados é adequado para treinamento.
+- Equipes que curam conjuntos de dados visuais privados para ajuste fino de modelos de linguagem visuais e precisam garantir a integridade dos recursos, a referência e a avaliação.
+- Pesquisadores que precisam de auditorias de contaminação (segredos vazados, informações de identificação pessoal, assinaturas de benchmarks) antes de publicar um conjunto de dados ou um artigo.
 
 ## Instalação
 
@@ -28,7 +37,33 @@ O `repo-dataset` lê arquivos de origem e histórico do Git dos repositórios qu
 npm install -g @mcptoolshop/repo-dataset
 ```
 
-## Pipeline de Código
+## A verificação de contaminação
+
+A razão pela qual isso existe. Depois de gerar um conjunto de dados, a função `validate` informa se é seguro usá-lo para treinar um modelo.
+
+```bash
+repo-dataset validate ./dataset-output/dataset.jsonl
+```
+
+A estrutura da saída é a seguinte (os valores reais dependem do seu conjunto de dados):
+
+```
+Dataset Quality Report
+  Records:          <count>
+  Duplicate rate:   <percent>   (MinHash LSH, 64 hashes / 8 bands / 0.8 threshold)
+  Token budget:     <p50 / p95 / max>
+
+Contamination
+  Leaked secrets:   <count>     (API keys, tokens, private key headers)
+  PII patterns:     <count>     (emails, phone numbers, SSN-shaped strings)
+  Benchmark leaks:  <count>     (HumanEval signature matches)
+
+Grade: <A | B | C | D | F>
+```
+
+A classificação é o resultado. Um registro que contém um segredo, informações de identificação pessoal ou uma assinatura de benchmark é sinalizado para cada registro, para que você possa removê-lo, anonimizá-lo ou regenerar a parte que o gerou, antes que o sistema de treinamento acesse o arquivo.
+
+## Pipeline de código
 
 ```bash
 # Generate training data from a code repo
@@ -37,34 +72,35 @@ repo-dataset generate ./my-project --format alpaca
 # Preview extraction (dry run)
 repo-dataset inspect ./my-project
 
-# Quality report on generated data
-repo-dataset validate ./dataset-output/dataset.jsonl
-
-# Control signal balance
+# Control signal balance across extractors
 repo-dataset generate ./my-project --format completion --auto-balance
 ```
 
-### Formatos de Saída de Código
+### Formatos de saída
 
-| Formato | Caso de Uso |
+| Formato | Caso de uso |
 |--------|----------|
 | `alpaca` | Ajuste fino supervisionado (instrução/entrada/saída) |
 | `sharegpt` | Ajuste fino de conversas com várias etapas |
 | `openai` | Formato de mensagens da OpenAI |
-| `raw` | Pré-treinamento contínuo / Ingestão para RAG (Retrieval-Augmented Generation) |
+| `chatml` | Tokens de função do ChatML (Mistral, Hermes, OpenHermes) |
+| `raw` | Pré-treinamento contínuo / ingestão para recuperação aumentada por geração (RAG) |
 | `completion` | Código bruto como texto (modelagem de linguagem) |
-| `fim` | Preenchimento do meio (tokens StarCoder) |
+| `fim` | Preenchimento de lacunas (tokens do StarCoder) |
 
-### Extratores de Código
+### Extratores
 
-| Extrator | Fonte | Sinal de Treinamento |
+| Extrator | Fonte | Sinal de treinamento |
 |-----------|--------|-----------------|
 | `code` | Arquivos de origem | Extração de funções/classes com contexto de importação |
 | `commits` | Histórico do Git | Pares de explicação de alterações |
 | `docs` | Arquivos Markdown | Explicações de conceitos baseadas em seções |
 | `tests` | Arquivos de teste | Pares de geração de código para teste |
+| `config` | Arquivos estruturados | Dockerfile, tsconfig, Cargo.toml, fluxos de trabalho de CI, etc. |
 
-## Pipeline Visual
+## Pipeline visual
+
+O pipeline visual não é apenas uma camada superficial sobre o pipeline de código. Ele impõe o **triângulo de treinamento** — imagem + referência + avaliação — porque essa associação é o que diferencia um conjunto de dados de linguagem visual utilizável de uma coleção de imagens rotuladas.
 
 ```bash
 # Generate training data from a visual style repo
@@ -80,29 +116,39 @@ repo-dataset visual inspect ./my-style-repo
 repo-dataset visual validate ./exports/dataset.jsonl
 ```
 
-### Formatos de Saída Visuais
+### Integridade das associações (o triângulo)
 
-**Nativos do framework (recomendado):**
+Cada unidade de treinamento visual é verificada em três aspectos:
 
-| Formato | Framework | Suporte DPO (Direct Preference Optimization) |
+1. **Imagem** — arquivo de imagem válido (PNG/JPEG/WebP, dimensões extraídas, detecção de truncamento).
+2. **Canônico** — explicação canônica baseada em regras de estilo.
+3. **Julgamento** — status de aprovação/rejeição com pontuações por dimensão.
+
+Unidades que não possuem nenhuma perna são descartadas por padrão. A opção `--allow-incomplete` mantém as unidades parciais quando você sabe por que deseja mantê-las.
+
+### Formatos de saída
+
+**Nativo do framework (recomendado):**
+
+| Formato | Framework | Suporte a DPO |
 |--------|-----------|-------------|
 | `trl` | HuggingFace TRL, Unsloth | Sim |
 | `axolotl` | Axolotl | Sim |
-| `llava` | LLaVA, LLaVA-NeXT | Apenas SFT (Supervised Fine-Tuning) |
+| `llava` | LLaVA, LLaVA-NeXT | Apenas SFT |
 | `llama_factory` | LLaMA-Factory | Sim |
 | `qwen2vl` | Qwen2-VL, MS-Swift | Sim |
 
-**Genéricos:**
+**Genérico:**
 
-| Formato | Caso de Uso |
+| Formato | Caso de uso |
 |--------|----------|
 | `visual_universal` | Inspeção, depuração, conversão |
 | `visual_dpo` | Pares de preferências DPO |
-| `visual_kto` | Rótulos binários KTO (Knowledge Transfer Optimization) |
+| `visual_kto` | Rótulos binários KTO |
 | `visual_contrastive` | Pares positivos/negativos no estilo CLIP |
 | `visual_pointwise` | Pontuações de qualidade por ativo |
 
-### Flags Visuais
+### Flags (marcadores)
 
 ```bash
 --embed              # Base64-encode images into JSONL
@@ -111,50 +157,43 @@ repo-dataset visual validate ./exports/dataset.jsonl
 --no-synthetic       # Skip synthetic pair generation
 ```
 
-### Integridade da Vinculação
+## Integração de retropropagação
 
-Cada unidade de treinamento visual é verificada quanto ao **triângulo de treinamento**:
+As saídas do repo-dataset são direcionadas para [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate) para ajuste fino local, sem a necessidade de uma etapa de conversão de formato.
 
-1. **Imagem** — arquivo de imagem válido (PNG/JPEG/WebP, dimensões extraídas, detecção de truncamento)
-2. **Canon** — explicação canônica baseada em regras de estilo
-3. **Julgamento** — status aprovado/rejeitado com pontuações por dimensão
-
-Unidades sem os três elementos são descartadas por padrão. Use `--allow-incomplete` para manter unidades parciais.
-
-## Integração de Backpropagation
-
-As saídas do `repo-dataset` são compatíveis com [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate) para ajuste fino local.
-
-### Formatos Recomendados
-
-| Objetivo | Formato | Por que |
+| Objetivo | Formato | Por quê |
 |------|--------|-----|
-| Ajuste fino de código | `chatml` ou `alpaca` | Pares de instruções estruturados mapeiam diretamente para tarefas de código |
+| Ajuste fino de código | `chatml` ou `alpaca` | Pares de instruções estruturadas mapeados diretamente para tarefas de código |
 | Ajuste fino de conversas | `sharegpt` ou `openai` | Estrutura de conversas com várias etapas preservada |
-| Preenchimento bruto | `completion` | Texto não estruturado para pré-treinamento contínuo |
+| Conclusão bruta | `completion` | Texto não estruturado para pré-treinamento contínuo |
 
-O `backpropagate` aceita: `alpaca`, `sharegpt`, `openai`, `chatml` e `completion`.
-
-### Fluxo de Trabalho de Ponta a Ponta
+Backpropagate aceita: `alpaca`, `sharegpt`, `openai`, `chatml`, `completion`.
 
 ```bash
-# Generate training data from your repo
+# Generate, validate, then fine-tune
 repo-dataset generate ./my-project --format chatml --validate
-
-# Fine-tune with backpropagate
 backprop train --data ./my-project-dataset/dataset.jsonl --steps 300
 ```
 
-### Conjuntos de dados visuais
+As saídas do pipeline visual (TRL, Axolotl, LLaVA, etc.) são direcionadas para o ajuste fino de modelos visão-linguagem. Backpropagate ainda não suporta o treinamento de VLMs (modelos de linguagem visual) — use os formatos nativos do framework com seus respectivos treinadores.
 
-As saídas visuais da pipeline (TRL, Axolotl, LLaVA, etc.) são voltadas para o ajuste fino de modelos de visão e linguagem. O Backpropagate ainda não suporta o treinamento de VLMs (Modelos de Visão e Linguagem) – utilize os formatos nativos da estrutura diretamente com seus respectivos treinadores.
+## Modelo de segurança
+
+repo-dataset lê arquivos de origem e histórico do Git dos repositórios que você especifica, e escreve JSONL em um diretório que você define. Ele **não** faz solicitações de rede, coleta telemetria ou acessa arquivos fora do repositório de origem e do diretório de saída. Ataques de percurso de diretório e symlink são protegidos. Consulte [SECURITY.md](SECURITY.md) para relatar vulnerabilidades. Os testes de segurança (shipcheck) passam em todas as etapas (A–D) (veja [SHIP_GATE.md](SHIP_GATE.md) e [SCORECARD.md](SCORECARD.md)).
+
+## Receitas
+
+Conjuntos de dados reais de repositórios reais, com resultados do M5 Max (aproximadamente 24 de abril de 2026). Esta seção será preenchida com detecções de contaminação, classificações de qualidade e curvas de ajuste fino de ponta a ponta de testes internos em nosso próprio código e corpora visuais.
+
+Enquanto isso, a prova está no conjunto de testes e na forma de saída do validador acima — não em alegações de marketing.
 
 ## Estatísticas
 
-- **Versão:** 1.1.0
-- **Testes:** 445
+- **Versão:** 1.2.0
+- **Testes:** 460 aprovados em 91 conjuntos
 - **Dependências de tempo de execução:** 0
 - **Node:** 20+
+- **Pacote:** 83 arquivos / 245 kB
 
 ## Licença
 
@@ -162,4 +201,4 @@ MIT
 
 ---
 
-Criado por <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
+Criado por <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a
