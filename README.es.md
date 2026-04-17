@@ -189,7 +189,7 @@ Por ahora, la prueba está en el conjunto de pruebas y la forma de salida del va
 
 ## Estadísticas
 
-- **Versión:** 1.2.0
+- **Versión:** 1.2.1
 - **Pruebas:** 460 superadas en 91 suites
 - **Dependencias de tiempo de ejecución:** 0
 - **Nodo:** 20+

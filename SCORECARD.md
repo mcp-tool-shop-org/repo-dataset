@@ -3,7 +3,7 @@
 **Repo:** @mcptoolshop/repo-dataset
 **Date:** 2026-04-17
 **Type tags:** `[npm]` `[cli]`
-**Version:** 1.2.0
+**Version:** 1.2.1
 
 ## Post-Dogfood-Swarm Assessment
 
@@ -13,7 +13,7 @@ The dogfood swarm on 2026-04-14 (Health A/B/C + Feature Pass + Full Treatment) i
 |----------|-------|-------|
 | A. Security | 10/10 | SECURITY.md present; threat model in README; no telemetry; path traversal + symlink + ReDoS guards in place; structured error codes for disk/permission failures. |
 | B. Error Handling | 10/10 | Structured `RepoDatasetError` shape (code/message/hint); CLI exit codes 0/1/2/3; no raw stacks without `--debug`; non-native exceptions wrapped (`DISK_FULL`, `PERMISSION_DENIED`, `OUTPUT_WRITE_FAILED`). |
-| C. Operator Docs | 10/10 | README current for v1.2.0; CHANGELOG Keep-a-Changelog; LICENSE MIT; `--help` accurate; handbook (5 pages) deployed; HANDOFF.md refreshed 2026-04-17. |
+| C. Operator Docs | 10/10 | README current for v1.2.1; CHANGELOG Keep-a-Changelog; LICENSE MIT; `--help` accurate; handbook (5 pages) deployed; HANDOFF.md refreshed 2026-04-17. |
 | D. Shipping Hygiene | 10/10 | `npm run verify` = build + 460 tests pass; `engines.node >=20`; lockfile committed; `npm pack --dry-run` = 83 files / 245 kB (71% smaller post-swarm); CI Node 20+22 matrix; Dependabot monthly grouped. |
 | E. Identity (soft) | 10/10 | Logo in README header; 7 translations (ja, zh, es, fr, hi, it, pt-BR); landing page live at `mcp-tool-shop-org.github.io/repo-dataset/`; GitHub description + homepage + topics set. |
 | **Overall** | **50/50** | All hard gates pass (A-D), soft gate (E) complete. |

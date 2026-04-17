@@ -4,7 +4,7 @@ Supersedes the 2026-04-12 handoff (v1.1.0 / 445 tests). Current spine is v1.2.0 
 
 ## Current state
 
-- **Version:** 1.2.0
+- **Version:** 1.2.1
 - **Tests:** 460 passing (`npm run verify`)
 - **Runtime deps:** 0
 - **Node:** 20+

@@ -10,7 +10,7 @@ export const config: SiteConfig = {
   footerText: 'MIT Licensed — built by <a href="https://github.com/mcp-tool-shop-org" style="color:var(--color-muted);text-decoration:underline">mcp-tool-shop-org</a>',
 
   hero: {
-    badge: 'v1.2.0',
+    badge: 'v1.2.1',
     headline: 'Build training data from repos',
     headlineAccent: 'before you touch the trainer.',
     description: 'repo-dataset turns code, commits, docs, tests, and curated visual assets into trainer-ready datasets — then checks quality, binding integrity, and contamination risk so you do not fine-tune on junk.',

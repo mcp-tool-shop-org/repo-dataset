@@ -189,7 +189,7 @@ backprop train --data ./my-project-dataset/dataset.jsonl --steps 300
 
 ## 統計
 
-- **バージョン:** 1.2.0
+- **バージョン:** 1.2.1
 - **テスト:** 91のスイートで460件が合格
 - **実行時依存関係:** 0
 - **Node:** 20+

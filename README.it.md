@@ -189,7 +189,7 @@ Nel frattempo, la prova è contenuta nella suite di test e nella forma di output
 
 ## Statistiche
 
-- **Versione:** 1.2.0
+- **Versione:** 1.2.1
 - **Test:** 460 superati su 91 suite
 - **Dipendenze runtime:** 0
 - **Node:** 20+

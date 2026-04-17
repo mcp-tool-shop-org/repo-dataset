@@ -189,7 +189,7 @@ Until then, the proof is in the test suite and the validator output shape above 
 
 ## Stats
 
-- **Version:** 1.2.0
+- **Version:** 1.2.1
 - **Tests:** 460 passing across 91 suites
 - **Runtime deps:** 0
 - **Node:** 20+

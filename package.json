@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/repo-dataset",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Turn code repos and curated visual repos into contamination-checked training datasets for local fine-tuning.",
   "type": "module",
   "bin": {

@@ -189,7 +189,7 @@ Enquanto isso, a prova está no conjunto de testes e na forma de saída do valid
 
 ## Estatísticas
 
-- **Versão:** 1.2.0
+- **Versão:** 1.2.1
 - **Testes:** 460 aprovados em 91 conjuntos
 - **Dependências de tempo de execução:** 0
 - **Node:** 20+

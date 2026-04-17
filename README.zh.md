@@ -189,7 +189,7 @@ backprop train --data ./my-project-dataset/dataset.jsonl --steps 300
 
 ## 统计信息
 
-- **版本：** 1.2.0
+- **版本：** 1.2.1
 - **测试：** 91 个套件中通过了 460 个测试
 - **运行时依赖：** 0
 - **Node：** 20+

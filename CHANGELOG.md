@@ -1,5 +1,34 @@
 # Changelog
 
+## 1.2.1 (2026-04-17)
+
+Docs and positioning release — no runtime behavior changes. Locks one spine across every public surface: **repo-dataset is the dataset construction and verification layer for local ML workflows. Not a trainer. Not a format zoo.**
+
+### Changed
+
+- README, landing page, and handbook rewritten around the construction-and-verification thesis. Contamination check surfaced as the flagship proof section, not a feature bullet.
+- Landing page (`site/src/site-config.ts`) sections reordered so verification leads, features and usage follow. Hero CTA now points at the contamination check.
+- Handbook index and getting-started reshaped around "Why this exists" and "When to reach for it" before install/usage.
+- GitHub repo description and topics realigned to the thesis (10 topics: training-data, fine-tuning, dataset-generation, multimodal-datasets, data-contamination, benchmark-leakage, vision-language, jsonl, axolotl, llava).
+- New repo-dataset logo pushed to `mcp-tool-shop-org/brand` (magnifying glass over dataset stack — verification motif). README logo width bumped 400 → 500.
+
+### Fixed
+
+- Corrected stale v1.1.0 / 445-test references in README Stats section.
+- Landing page feature list said "8 Output Formats" — corrected to "7 Code Formats + 10 Visual Formats" and enumerated.
+- Code format table in README was missing `chatml` (shipped in 1.2.0); now listed.
+- Code extractor table was missing `config` (shipped in 1.2.0); now listed.
+
+### Added
+
+- `docs/marketing-research.md` — positioning research, competitor scan, and wave briefs driving the rewrite.
+- `docs/research-inputs/competitors.md` — 5-tool positioning scan (Axolotl, LLaMA-Factory, Unsloth, HuggingFace datasets, LLaVA).
+- `docs/research-inputs/intern-seams-2026-04-17.md` — ollama-intern seam notes filed during the dogfood pass.
+- SHIP_GATE.md Section E checkmarks now reflect actual shipped state (logo, 7 translations, landing, GitHub metadata).
+- SCORECARD.md filled with evidence-backed post-ship assessment (50/50).
+- Translations refreshed across 7 languages (ja, zh, es, fr, hi, it, pt-BR) to track the new English spine.
+- HANDOFF.md rewritten for the v1.2.1 post-marketing-swarm, pre-M5-Max state.
+
 ## 1.2.0 (2026-04-14)
 
 ### Added

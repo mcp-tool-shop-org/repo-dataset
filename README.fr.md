@@ -189,7 +189,7 @@ En attendant, la preuve se trouve dans la suite de tests et la forme de sortie d
 
 ## Statistiques
 
-- **Version :** 1.2.0
+- **Version :** 1.2.1
 - **Tests :** 460 réussis sur 91 suites
 - **Dépendances d'exécution :** 0
 - **Node :** 20+
