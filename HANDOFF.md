@@ -1,109 +1,127 @@
-# Session Handoff — 2026-04-12
+# Session Handoff — 2026-04-17
 
-## What happened this session
+Supersedes the 2026-04-12 handoff (v1.1.0 / 445 tests). Current spine is v1.2.0 post-dogfood-swarm, published to npm, pre-M5-Max adoption.
 
-Built `@mcptoolshop/repo-dataset` from v1.0.0 to **v1.1.0** — Phase 3: Image Embedding + Binding Integrity.
+## Current state
 
-### Timeline
-
-1. **Phase 1-2C (prior session)** — MVP through Quality Proof. 240 tests, v1.0.0.
-2. **Visual test commit** — 409 tests (169 new visual pipeline tests)
-3. **Phase 3 research swarm** — 5 agents researched base64 embedding, training format specs, binding integrity, Node.js image processing, modality-agnostic architecture
-4. **Phase 3 implementation** — image.ts (zero-dep PNG/JPEG/WebP validation), updated types (ImageReference, BindingReport), scanner with image validation, extractors with binding reports, formatter rewrite (10 formats), runner with triangle enforcement
-5. **Phase 3 shipped** — v1.1.0, 445 tests
-
-### Current state
-
-- **Version:** 1.1.0
-- **Tests:** 445 passing (`npm run build && npm test`)
+- **Version:** 1.2.0
+- **Tests:** 460 passing (`npm run verify`)
+- **Runtime deps:** 0
+- **Node:** 20+
 - **Repo:** https://github.com/mcp-tool-shop-org/repo-dataset
-- **All code pushed.** Working tree is clean.
+- **npm:** https://www.npmjs.com/package/@mcptoolshop/repo-dataset
+- **Landing:** https://mcp-tool-shop-org.github.io/repo-dataset/
+- **Handbook:** https://mcp-tool-shop-org.github.io/repo-dataset/handbook/
+- **Shipcheck A-D:** PASS (see `SHIP_GATE.md`)
+- **Working tree:** clean, all code pushed
 
----
+## What this tool does (current shape)
 
-## What changed in Phase 3
+repo-dataset is the **dataset construction and verification layer** for local ML practice. It converts code repos and curated visual repos into trainer-ready JSONL, then checks quality, binding integrity, and contamination risk.
 
-### Zero-dep image processing (`src/visual/image.ts`)
-- Format detection from magic bytes (PNG/JPEG/WebP)
-- Dimension extraction from PNG IHDR, JPEG SOF0/SOF2, WebP VP8/VP8L/VP8X
-- Truncation detection (PNG IEND, JPEG EOI)
-- Base64 encoding + data URI generation
-- ~200 lines, zero dependencies
+It is not a trainer. It is not another format converter. It is the step you run *before* you touch backpropagate (or axolotl, TRL, LLaMA-Factory, etc.).
 
-### Binding integrity
-- Every `VisualTrainingUnit` now carries a `BindingReport`: `has_image`, `has_canon`, `has_judgment`, `triangle_complete`
-- Runner enforces triangle completeness by default — drops incomplete units unless `--allow-incomplete`
-- Scanner validates images during scan and optionally base64-encodes them (`--embed`)
+### Code pipeline
+- **7 output formats:** alpaca, sharegpt, openai, chatml, raw, completion, fim
+- **5 extractors:** code, commits, docs, tests, config
+- **MinHash LSH near-dedup** (64 hashes, 8 bands, threshold 0.8)
+- **Contamination validation:** leaked secrets, PII patterns, HumanEval benchmark signatures
+- **Quality scoring:** letter grades A-F with per-dimension breakdown
+- **18-field provenance:** file, commit, extractor, chunk offsets, etc.
+- **Reservoir sampling** for memory-bounded extraction at scale
+- **merge command** for cross-repo dedup
 
-### 10 output formats across two paradigms
+### Visual pipeline
+- **10 output formats** across 2 paradigms (content-array and inline-token)
+- **Zero-dep image validation** — PNG/JPEG/WebP, dimension extraction, truncation detection
+- **Triangle enforcement** — every unit binds image + canon + judgment or is dropped
+- **Quality/resolution filtering**, borderline asset handling, image dedup
+- **Base64 embedding** for self-contained JSONL (`--embed`)
 
-**Content-array** (TRL/Axolotl/Unsloth):
-- `trl` — HuggingFace TRL SFTTrainer + DPOTrainer
-- `axolotl` — Axolotl with path/base64 image refs
-- `visual_universal` — superset for inspection
-- `visual_dpo`, `visual_kto`, `visual_contrastive`, `visual_pointwise`
+### Backpropagate integration
+- Format-aware command generation
+- Steps estimation from dataset size
+- PATH detection for `--pipe-to-backpropagate`
+- Supported formats: alpaca, sharegpt, openai, chatml, completion
 
-**Inline-token** (LLaVA/LLaMA-Factory/Qwen2-VL):
-- `llava` — `<image>` tokens + conversations
-- `llama_factory` — ShareGPT + DPO
-- `qwen2vl` — query/response format
+## History
 
-### New CLI flags
-- `--embed` — base64-encode images into JSONL
-- `--allow-incomplete` — keep units without full triangle
-- `--no-copy-images` — skip image folder output
-- `repo-dataset visual validate <jsonl>` — corpus health report
-
----
+1. **v1.0.0** (2026-04-10-ish) — MVP: code pipeline, 240 tests
+2. **v1.0.x** — Quality proof, 409 tests (added visual test suite)
+3. **v1.1.0** (2026-04-12) — Phase 3: visual pipeline + binding integrity, 445 tests
+4. **v1.2.0** (2026-04-14) — Full 10-phase dogfood swarm
+   - Health Pass A/B/C: 46 fixes (13 CRITICAL/HIGH security + proactive + humanization)
+   - Feature Pass (3 waves): 24 features including ChatML, MinHash, contamination, config extractor, merge
+   - Full Treatment: shipcheck, translations (7), landing page, handbook (5 pages)
+   - 70 files changed, +10,761 lines
+   - npm tarball 71% smaller (245 kB, 83 files)
 
 ## What's next
 
-### Immediate
-1. **Shipcheck audit** — pass hard gates A-D
-2. **npm publish** — `@mcptoolshop/repo-dataset`
-3. **Canon binding pass** — populate `canon_assertions` in style-dataset-lab records so triangle completion > 0%
+### Imminent (pre-M5-Max)
+1. **Public-surface truth-alignment + marketing swarm** (2026-04-17 — this session)
+   - Truth-align README, HANDOFF, SHIP_GATE, SCORECARD with v1.2.0 reality
+   - Reshape public surfaces around the protected thesis:
+     *"repo-dataset is the dataset construction layer for serious local ML practice."*
+   - New GitHub description, topics, README hero, landing hero, handbook front page
+   - Lead with contamination-aware / quality-aware / triangle-enforced — not "supports many formats"
 
-### Future enhancements
-- MinHash near-dedup (reduces structural repetition)
-- CLIP score floor filter (automated image-text coherence check)
-- `repo-dataset generate` auto-detection (no modality subcommand needed)
-- Parquet/WebDataset output for datasets > 50K examples
+### M5 Max arrival (~2026-04-24)
+2. **Real adoption pass** — use repo-dataset on actual repos to produce training data for local fine-tuning runs on the M5 Max
+3. **Receipts backfill** — populate landing page with real contamination-caught-leak moments, real letter-grade scorecards, real backpropagate training curves
+4. **Canon binding enrichment** — populate `canon_assertions` in style-dataset-lab records so visual triangle completion > 0%
+
+### Future enhancements (not scheduled)
+- Parquet / WebDataset output for datasets > 50K examples
+- Perceptual hash (pHash) visual dedup
+- CLIP score floor filter for image-text coherence
+- `repo-dataset generate` auto-detection (no modality subcommand)
 - Audio and game-design modalities
-
----
 
 ## Key files
 
 | File | Purpose |
 |------|---------|
-| `src/visual/image.ts` | Zero-dep image validation + embedding |
-| `src/visual/extractors.ts` | 4 extractors with ImageRef + BindingReport |
-| `src/visual/formatters.ts` | 10 output formatters (2 paradigms) |
-| `src/visual/runner.ts` | Pipeline with triangle enforcement + image copy |
-| `src/visual/scanner.ts` | Repo scanner with image validation |
-| `src/types.ts` | All types including AssetImageInfo, BindingReport |
-| `src/cli.ts` | CLI with --embed, --allow-incomplete, visual validate |
-| `PHASE3_DESIGN.md` | Full design spec with research synthesis |
-
----
+| `src/types.ts` | `OUTPUT_FORMATS` single source of truth, `ExtractorName`, all types |
+| `src/formatters/registry.ts` | Format registry + `isValidFormat` / `getAllFormats` |
+| `src/extractors/*.ts` | 5 code extractors (code, commits, docs, tests, config) |
+| `src/validators/contamination.ts` | Secret / PII / benchmark leak detection |
+| `src/dedup/minhash.ts` | MinHash LSH near-dedup |
+| `src/visual/image.ts` | Zero-dep PNG/JPEG/WebP validation |
+| `src/visual/runner.ts` | Visual pipeline with triangle enforcement |
+| `src/cli.ts` | CLI surface |
+| `site/src/site-config.ts` | Landing page config |
+| `site/src/content/docs/handbook/*.md` | Handbook pages |
 
 ## Commands
 
 ```bash
-# Code pipeline (unchanged)
-repo-dataset generate <path> --format completion --auto-balance
+# Build + verify
+npm run verify
+
+# Code pipeline
+repo-dataset generate <path> --format chatml --validate
 repo-dataset inspect <path> --json
 repo-dataset validate <output.jsonl>
+repo-dataset merge a.jsonl b.jsonl --output combined.jsonl
 
-# Visual pipeline (Phase 3)
-repo-dataset visual generate <path> --format trl
+# Visual pipeline
 repo-dataset visual generate <path> --format trl --embed
-repo-dataset visual generate <path> --format llava
-repo-dataset visual generate <path> --format qwen2vl
 repo-dataset visual inspect <path>
 repo-dataset visual validate <output.jsonl>
 
-# Build & test
-npm run build
-npm test
+# End-to-end with backpropagate
+repo-dataset generate ./my-repo --format chatml --pipe-to-backpropagate
 ```
+
+## Protected thesis (do not soften)
+
+> **repo-dataset is the dataset construction layer for serious local ML practice.**
+
+Not a trainer. Not "JSONL exporter with many formats." Not a subset of style-dataset-lab (which owns visual canon/judgment; repo-dataset owns the extraction + verification + format layer that feeds local trainers).
+
+The sharp edges are:
+1. **Contamination-aware** — catches HumanEval leaks, PII, secrets *before* training, not after
+2. **Quality-scored** — letter grades, not "it shipped"
+3. **Triangle-enforced** for multimodal — image + canon + judgment or it's dropped
+4. **Clean bridge** to the local fine-tuning stack (backpropagate, axolotl, TRL, LLaVA, LLaMA-Factory, Qwen2-VL)

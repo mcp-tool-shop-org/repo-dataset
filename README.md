@@ -12,15 +12,24 @@
   <a href="https://www.npmjs.com/package/@mcptoolshop/repo-dataset"><img src="https://img.shields.io/npm/v/@mcptoolshop/repo-dataset" alt="npm"></a>
 </p>
 
-Convert any git repository or visual style repo into LLM training datasets.
+### Build training data from repos before you touch the trainer.
 
-**Code pipeline:** Extracts training signals from code, commits, documentation, and tests. Outputs JSONL in 6 formats ready for fine-tuning or pre-training.
+repo-dataset turns code, commits, docs, tests, and curated visual assets into trainer-ready datasets — then checks quality, binding integrity, and contamination risk so you do not fine-tune on junk.
 
-**Visual pipeline:** Extracts multimodal training data from curated visual repos. Validates images, enforces asset+canon+judgment binding, outputs in 10 framework-native formats for vision-language model fine-tuning.
+repo-dataset is the dataset construction and verification layer for local ML workflows. Not a trainer. Not a format zoo.
 
-## Security Model
+## What it is / what it isn't
 
-repo-dataset reads source files and git history from repos you point it at. It writes JSONL output to a directory you specify. It does **not** make network requests, collect telemetry, or access files outside the target repo and output directory. Path traversal and symlink attacks are guarded against. See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
+- **Not a trainer.** It stops at the JSONL. Pair with [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate), Axolotl, TRL, LLaMA-Factory, LLaVA, or Qwen2-VL.
+- **Not another format converter.** Format breadth is table stakes; the layer above it — contamination checks, quality grading, binding integrity — is the product.
+- **A dataset construction and verification layer** for local ML workflows. It runs before training, and it flags what would poison a fine-tune run.
+- **Complement, not competitor to [style-dataset-lab](https://github.com/mcp-tool-shop-org/style-dataset-lab).** style-dataset-lab is the specialized canon + visual dataset system for authored style bibles; repo-dataset is the broader construction and verification layer that any repo — code or visual — can flow through.
+
+## Who this is for
+
+- Solo ML practitioners training small models on their own code and want to know whether their dataset is actually fit to train on.
+- Teams curating private visual datasets for VLM fine-tuning who need asset + canon + judgment binding enforced instead of trusted.
+- Researchers who need contamination audits (leaked secrets, PII, benchmark signatures) before publishing a dataset or a paper.
 
 ## Install
 
@@ -28,7 +37,33 @@ repo-dataset reads source files and git history from repos you point it at. It w
 npm install -g @mcptoolshop/repo-dataset
 ```
 
-## Code Pipeline
+## The contamination check
+
+The reason this exists. After you generate a dataset, `validate` is what tells you whether it is safe to feed a trainer.
+
+```bash
+repo-dataset validate ./dataset-output/dataset.jsonl
+```
+
+The output is shaped like this (shape only — actual numbers depend on your corpus):
+
+```
+Dataset Quality Report
+  Records:          <count>
+  Duplicate rate:   <percent>   (MinHash LSH, 64 hashes / 8 bands / 0.8 threshold)
+  Token budget:     <p50 / p95 / max>
+
+Contamination
+  Leaked secrets:   <count>     (API keys, tokens, private key headers)
+  PII patterns:     <count>     (emails, phone numbers, SSN-shaped strings)
+  Benchmark leaks:  <count>     (HumanEval signature matches)
+
+Grade: <A | B | C | D | F>
+```
+
+The grade is the verdict. A record that trips a secret, PII, or benchmark signature is flagged per-record so you can drop it, redact it, or regenerate the slice that produced it — before the trainer ever sees the file.
+
+## Code pipeline
 
 ```bash
 # Generate training data from a code repo
@@ -37,34 +72,35 @@ repo-dataset generate ./my-project --format alpaca
 # Preview extraction (dry run)
 repo-dataset inspect ./my-project
 
-# Quality report on generated data
-repo-dataset validate ./dataset-output/dataset.jsonl
-
-# Control signal balance
+# Control signal balance across extractors
 repo-dataset generate ./my-project --format completion --auto-balance
 ```
 
-### Code Output Formats
+### Output formats
 
-| Format | Use Case |
+| Format | Use case |
 |--------|----------|
 | `alpaca` | Supervised fine-tuning (instruction/input/output) |
 | `sharegpt` | Multi-turn conversation fine-tuning |
 | `openai` | OpenAI messages format |
+| `chatml` | ChatML role tokens (Mistral, Hermes, OpenHermes) |
 | `raw` | Continued pre-training / RAG ingestion |
 | `completion` | Raw code as text (language modeling) |
 | `fim` | Fill-in-the-middle (StarCoder tokens) |
 
-### Code Extractors
+### Extractors
 
-| Extractor | Source | Training Signal |
+| Extractor | Source | Training signal |
 |-----------|--------|-----------------|
 | `code` | Source files | Function/class extraction with import context |
 | `commits` | Git history | Change explanation pairs |
 | `docs` | Markdown files | Section-based concept explanations |
 | `tests` | Test files | Code-to-test generation pairs |
+| `config` | Structured files | Dockerfile, tsconfig, Cargo.toml, CI workflows, etc. |
 
-## Visual Pipeline
+## Visual pipeline
+
+The visual pipeline is not a thin wrapper over the code pipeline. It enforces the **training triangle** — image + canon + judgment — because that binding is what separates a usable VLM dataset from a pile of labeled pictures.
 
 ```bash
 # Generate training data from a visual style repo
@@ -80,11 +116,21 @@ repo-dataset visual inspect ./my-style-repo
 repo-dataset visual validate ./exports/dataset.jsonl
 ```
 
-### Visual Output Formats
+### Binding integrity (the triangle)
+
+Every visual training unit is checked for three things:
+
+1. **Image** — valid image file (PNG/JPEG/WebP, dimensions extracted, truncation detected).
+2. **Canon** — canonical explanation grounded in style rules.
+3. **Judgment** — approved/rejected status with per-dimension scores.
+
+Units missing any leg are dropped by default. `--allow-incomplete` keeps partials when you know why you want them.
+
+### Output formats
 
 **Framework-native (recommended):**
 
-| Format | Framework | DPO Support |
+| Format | Framework | DPO support |
 |--------|-----------|-------------|
 | `trl` | HuggingFace TRL, Unsloth | Yes |
 | `axolotl` | Axolotl | Yes |
@@ -94,7 +140,7 @@ repo-dataset visual validate ./exports/dataset.jsonl
 
 **Generic:**
 
-| Format | Use Case |
+| Format | Use case |
 |--------|----------|
 | `visual_universal` | Inspection, debugging, conversion |
 | `visual_dpo` | DPO preference pairs |
@@ -102,7 +148,7 @@ repo-dataset visual validate ./exports/dataset.jsonl
 | `visual_contrastive` | CLIP-style positive/negative pairs |
 | `visual_pointwise` | Per-asset quality scores |
 
-### Visual Flags
+### Flags
 
 ```bash
 --embed              # Base64-encode images into JSONL
@@ -111,21 +157,9 @@ repo-dataset visual validate ./exports/dataset.jsonl
 --no-synthetic       # Skip synthetic pair generation
 ```
 
-### Binding Integrity
+## Backpropagate integration
 
-Every visual training unit is checked for the **training triangle**:
-
-1. **Image** — valid image file (PNG/JPEG/WebP, dimensions extracted, truncation detected)
-2. **Canon** — canonical explanation grounded in style rules
-3. **Judgment** — approved/rejected status with per-dimension scores
-
-Units without all three are dropped by default. Use `--allow-incomplete` to keep partial units.
-
-## Backpropagate Integration
-
-repo-dataset outputs are compatible with [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate) for local fine-tuning.
-
-### Recommended Formats
+repo-dataset outputs flow into [backpropagate](https://github.com/mcp-tool-shop-org/backpropagate) for local fine-tuning without a format conversion step.
 
 | Goal | Format | Why |
 |------|--------|-----|
@@ -133,28 +167,33 @@ repo-dataset outputs are compatible with [backpropagate](https://github.com/mcp-
 | Chat fine-tuning | `sharegpt` or `openai` | Multi-turn conversation structure preserved |
 | Raw completion | `completion` | Unstructured text for continued pre-training |
 
-Backpropagate accepts: `alpaca`, `sharegpt`, `openai`, `chatml`, and `completion`.
-
-### End-to-End Workflow
+Backpropagate accepts: `alpaca`, `sharegpt`, `openai`, `chatml`, `completion`.
 
 ```bash
-# Generate training data from your repo
+# Generate, validate, then fine-tune
 repo-dataset generate ./my-project --format chatml --validate
-
-# Fine-tune with backpropagate
 backprop train --data ./my-project-dataset/dataset.jsonl --steps 300
 ```
 
-### Visual Datasets
+Visual pipeline outputs (TRL, Axolotl, LLaVA, etc.) target vision-language model fine-tuning. Backpropagate does not yet support VLM training — use the framework-native formats with their respective trainers.
 
-Visual pipeline outputs (TRL, Axolotl, LLaVA, etc.) target vision-language model fine-tuning. Backpropagate does not yet support VLM training -- use the framework-native formats directly with their respective trainers.
+## Security model
+
+repo-dataset reads source files and git history from repos you point it at, and writes JSONL to a directory you specify. It does **not** make network requests, collect telemetry, or access files outside the target repo and output directory. Path traversal and symlink attacks are guarded against. See [SECURITY.md](SECURITY.md) for reporting vulnerabilities. Shipcheck hard gates A–D all pass (see [SHIP_GATE.md](SHIP_GATE.md) and [SCORECARD.md](SCORECARD.md)).
+
+## Receipts
+
+Real datasets from real repos, coming with M5 Max runs (~2026-04-24). This section will fill with contamination catches, quality grades, and end-to-end fine-tune curves from dogfood runs against our own code and visual corpora.
+
+Until then, the proof is in the test suite and the validator output shape above — not in marketing claims.
 
 ## Stats
 
-- **Version:** 1.1.0
-- **Tests:** 445
+- **Version:** 1.2.0
+- **Tests:** 460 passing across 91 suites
 - **Runtime deps:** 0
 - **Node:** 20+
+- **Package:** 83 files / 245 kB
 
 ## License
 

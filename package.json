@@ -1,7 +1,7 @@
 {
   "name": "@mcptoolshop/repo-dataset",
   "version": "1.2.0",
-  "description": "Convert any git repository into LLM training datasets — code, commits, docs, tests",
+  "description": "Turn code repos and curated visual repos into contamination-checked training datasets for local fine-tuning.",
   "type": "module",
   "bin": {
     "repo-dataset": "./dist/cli.js"
@@ -40,14 +40,22 @@
     "url": "https://github.com/mcp-tool-shop-org/repo-dataset.git"
   },
   "keywords": [
+    "training-data",
+    "fine-tuning",
+    "dataset-generation",
+    "multimodal-datasets",
+    "data-contamination",
+    "benchmark-leakage",
+    "vision-language",
+    "jsonl",
+    "axolotl",
+    "llava",
     "llm",
     "dataset",
-    "fine-tuning",
-    "training-data",
-    "repository",
-    "code",
-    "jsonl",
-    "machine-learning"
+    "machine-learning",
+    "minhash",
+    "deduplication",
+    "contamination-detection"
   ],
   "devDependencies": {
     "@types/node": "^22.0.0",
