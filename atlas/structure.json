@@ -1,0 +1,2291 @@
+{
+  "boundaries": [
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "c927fe76715d2af45b740ef640b13190c162efbb4c64ec43880d14f71b368feb",
+          "path": ".github/workflows/ci.yml"
+        },
+        {
+          "hash": "4eb81eeb113bdba84a09846e4b80ab63d20507cb41935566c110e37f99afe899",
+          "path": ".github/workflows/pages.yml"
+        },
+        {
+          "hash": "0da30cfc9d0583ef65cd7f25a07320e2ff412d506f02e35bc83f396c03aca93f",
+          "path": ".github/workflows/publish.yml"
+        }
+      ],
+      "globs": [
+        ".github/**"
+      ],
+      "importConfidence": "full",
+      "name": ".github",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "f9beab6ae09ce2c5a580c1c5ed91f086596a2d8b3550963f89446cb349d37ce6",
+          "path": "docs/marketing-research.md"
+        },
+        {
+          "hash": "f242bd33637eae6ed8b2b981d7741a98e2d200aeebed686530b8e2ffe12894d1",
+          "path": "docs/research-inputs/competitors.md"
+        },
+        {
+          "hash": "5de058fea99f171012a9349cad9b3bf84b92bf87935867c347ec97762af71e09",
+          "path": "docs/research-inputs/intern-seams-2026-04-17.md"
+        }
+      ],
+      "globs": [
+        "docs/**"
+      ],
+      "importConfidence": "full",
+      "name": "docs",
+      "origin": "authored",
+      "role": "docs",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "130d83dffc282d3a7e5d59fe2832860b46beb8906302336d1e2c6225e094f2dc",
+          "path": ".gitignore"
+        },
+        {
+          "hash": "97197a7b925a5b28164291fa075bcd4f4f4e509afc994219117a187c6c108ef9",
+          "path": "CHANGELOG.md"
+        },
+        {
+          "hash": "b4bee9e1b531f5b86e96bdda4c76fe3a26ab7138790c1100604b6a5314ee25fc",
+          "path": "HANDOFF.md"
+        },
+        {
+          "hash": "5ae6b3c8f446f0a7cb95176e4dadb91b68aaffb16b3be09f64f5de248b6a973a",
+          "path": "LICENSE"
+        },
+        {
+          "hash": "9a549f50de2e19c38c1719d78d941f0760c83958a9dad549f9cb577eb505aa04",
+          "path": "PHASE2A_DESIGN.md"
+        },
+        {
+          "hash": "3fd3a4c27ec58d4098df2f54ced318d17011504e895e51993318ab4dbff7c398",
+          "path": "PHASE2B_DESIGN.md"
+        },
+        {
+          "hash": "8f8cae5f3fe401f3e05bbee667c3ccef480a22467e145506b9fe8568686370eb",
+          "path": "PHASE2_VISUAL_DESIGN.md"
+        },
+        {
+          "hash": "3907d6a237a8705205f7dd03a929ffa6da371219413b174cd23654b7e113c804",
+          "path": "PHASE3_DESIGN.md"
+        },
+        {
+          "hash": "4bdc3ccef6f464a4987b304f6a5b7a926c855c8f96bca201e32c201b25bfab8a",
+          "path": "QUALITY_PROOF.md"
+        },
+        {
+          "hash": "a0fdc5890c501bcd129b41c13d8ee6913d651b9fe1c0f7b23e3cef2f3adb68a4",
+          "path": "README.es.md"
+        },
+        {
+          "hash": "edfdc1d7d05a26cf84aeb40a1ac948a5acff383ef852994982ba34168e9b5ecb",
+          "path": "README.fr.md"
+        },
+        {
+          "hash": "fa4cf3f3fcdf6e63f8447bf10ea0aef112282cb09e39118e7f89138f9386dee6",
+          "path": "README.hi.md"
+        },
+        {
+          "hash": "9c0de732310c3a280d35dad84209bb1a6737c2fa5cdae78c6eabafd7800b2f61",
+          "path": "README.it.md"
+        },
+        {
+          "hash": "c9cc3a2bc1de06591af77f4a9de33373063f3ca19dba3c4219b2e11f3f6e7256",
+          "path": "README.ja.md"
+        },
+        {
+          "hash": "faecf5bf00ea837878595a1865e5cd7e278f189c98f01f6d33427a17d3089edf",
+          "path": "README.md"
+        },
+        {
+          "hash": "157d2f3c53307975d8e85ecd406ecd2a0603082cddd9e6730ea128796a4e9c72",
+          "path": "README.pt-BR.md"
+        },
+        {
+          "hash": "9eeadcc4ab5a13055c24c3283eddadff25db145bdaca6a43069914402679f1aa",
+          "path": "README.zh.md"
+        },
+        {
+          "hash": "c70bd221682a3fc99c5c81a2c6006d2410c14204ddb8ffbc703881a6029cf396",
+          "path": "SCORECARD.md"
+        },
+        {
+          "hash": "762e17158f6b97b7799f4ae939193625ac7d47251fdef2058172c9e5102a7e13",
+          "path": "SECURITY.md"
+        },
+        {
+          "hash": "d54ce434adf130f9f6699f9cb1e4b68c835f7ee7ab4d7132f7ddeef166963e19",
+          "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "0656e8f36fdc868d21ca26dc7d90b2b0cb3362901a2629650cd70eda9275e479",
+          "path": "TEST_SPEC.md"
+        },
+        {
+          "hash": "b9f9538f334eb08738903abf9dc090a85b25e127c82d8f9b67dba033bf238ce4",
+          "path": "TEST_SPEC_VISUAL.md"
+        },
+        {
+          "hash": "c2efdeedadaf944178b586f85fcbe3a407843b43d2b7551411477bb07715cb2c",
+          "path": "package-lock.json"
+        },
+        {
+          "hash": "e548cb45fd8b0895b56712417a5632c0b598986033628c8cff7312d93e24fa73",
+          "path": "package.json"
+        },
+        {
+          "hash": "5b22d67c36b83bbc64c43c0ada78438c2c3c6d61fdaa47366c43d4f809499709",
+          "path": "tsconfig.json"
+        }
+      ],
+      "globs": [
+        "*"
+      ],
+      "importConfidence": "full",
+      "name": "root",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "0b16fca72af4f9cf2d6a8ba0668638d9eba5dfc2af1fd844e71cd35359fa8495",
+          "path": "site/astro.config.mjs"
+        },
+        {
+          "hash": "b5578baf42cab82e5e7b451b6992cb929aeb6ff8d02d8e11ab690e6f67fea144",
+          "path": "site/package-lock.json"
+        },
+        {
+          "hash": "0fe0343f8ddb0628d954129b02a72b3b2c8f8f884b1380c5567403c4f55942f8",
+          "path": "site/package.json"
+        },
+        {
+          "hash": "ec030f2e4bf6dc57eaca075d390c228b3212cf29db267e32ef92e110de1acdcc",
+          "path": "site/src/content.config.ts"
+        },
+        {
+          "hash": "a51200bf07f2914b9092e498e77f38303c02b998b03a27710c176d7579a7a9e6",
+          "path": "site/src/content/docs/handbook/architecture.md"
+        },
+        {
+          "hash": "26aa1765e181f6e852839e4bacb4d40ce177cf4a8943fa18064f7e3cb7239608",
+          "path": "site/src/content/docs/handbook/getting-started.md"
+        },
+        {
+          "hash": "9260d1e66ece575681d18257f10a5ada23d55457182854fc553bbba38f943146",
+          "path": "site/src/content/docs/handbook/index.md"
+        },
+        {
+          "hash": "ce429933580e62b6ffbe1ee25bd6720002b56624c7824c82c135e401df392bd1",
+          "path": "site/src/content/docs/handbook/reference.md"
+        },
+        {
+          "hash": "3bfd0aa5ac911da95215832dedf0576038b1b6c6f1a0cfdbe459d1b43d386321",
+          "path": "site/src/content/docs/handbook/security.md"
+        },
+        {
+          "hash": "a699ad78a6d27d6864ccfe4c3a4a01993aca28ecb4a3d20893f37db9f9b1a522",
+          "path": "site/src/pages/index.astro"
+        },
+        {
+          "hash": "8511f2196c8c70e1bd5f07f5c9c35424aeec379c81c32a0e74034503bfcd3648",
+          "path": "site/src/site-config.ts"
+        },
+        {
+          "hash": "5995279a40a9a63426a93feec129006b261cc7200426a398914d0317722ef19b",
+          "path": "site/src/styles/global.css"
+        },
+        {
+          "hash": "8442ff84a1bb12ba4d7d0aa268c1316c3fc61ebf822facdcdffd6033ecef491e",
+          "path": "site/src/styles/starlight-custom.css"
+        },
+        {
+          "hash": "61fc24492db9aef7ec38eb91cfeebaef96155014bb5f22648fd8ed2327c6cae2",
+          "path": "site/tsconfig.json"
+        }
+      ],
+      "globs": [
+        "site/**"
+      ],
+      "importConfidence": "full",
+      "name": "site",
+      "origin": "authored",
+      "role": "site",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 8,
+      "dynamicSpawns": 2,
+      "dynamicSpawnsInTests": 1,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "src/cli.ts",
+        "src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "entry": "cmdGenerate",
+          "entryRule": 1,
+          "hash": "78ad3e76b29e4a565ceb0212d1786ed7807bda537dc8eae5d39516b3d7dd4ef2",
+          "importsFiles": [
+            "src/discovery/git.ts",
+            "src/errors.ts",
+            "src/extractors/registry.ts",
+            "src/formatters/registry.ts",
+            "src/pipeline/balance.ts",
+            "src/pipeline/runner.ts",
+            "src/types.ts",
+            "src/validate/report.ts",
+            "src/visual/formatters.ts",
+            "src/visual/runner.ts"
+          ],
+          "path": "src/cli.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 133,
+                  "name": "isGitRepo",
+                  "target": {
+                    "file": "src/discovery/git.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 41,
+                      "name": "includes",
+                      "target": {
+                        "file": "src/types.ts"
+                      }
+                    }
+                  ],
+                  "line": 757,
+                  "name": "isValidFormat",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 758,
+                  "name": "getAllFormats",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 764,
+                  "name": "isValidExtractor",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 765,
+                  "name": "getAllExtractorNames",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 772,
+                  "name": "getAutoBalanceConfig",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 38,
+                      "name": "scanRepo",
+                      "target": {
+                        "file": "src/discovery/scanner.ts"
+                      }
+                    },
+                    {
+                      "line": 39,
+                      "name": "getHeadSha",
+                      "target": {
+                        "file": "src/discovery/git.ts"
+                      }
+                    },
+                    {
+                      "line": 45,
+                      "name": "getExtractors",
+                      "target": {
+                        "file": "src/extractors/registry.ts"
+                      }
+                    },
+                    {
+                      "line": 46,
+                      "name": "getFormatter",
+                      "target": {
+                        "file": "src/formatters/registry.ts"
+                      }
+                    },
+                    {
+                      "line": 72,
+                      "name": "passesQuality",
+                      "target": {
+                        "file": "src/pipeline/quality.ts"
+                      }
+                    },
+                    {
+                      "line": 73,
+                      "name": "isDuplicate",
+                      "receiver": "Deduplicator",
+                      "target": {
+                        "file": "src/pipeline/dedup.ts"
+                      }
+                    },
+                    {
+                      "line": 104,
+                      "name": "getStats",
+                      "receiver": "Deduplicator",
+                      "target": {
+                        "file": "src/pipeline/dedup.ts"
+                      }
+                    },
+                    {
+                      "line": 116,
+                      "name": "applyBalance",
+                      "target": {
+                        "file": "src/pipeline/balance.ts"
+                      }
+                    },
+                    {
+                      "line": 123,
+                      "name": "assessTrainability",
+                      "target": {
+                        "file": "src/pipeline/balance.ts"
+                      }
+                    }
+                  ],
+                  "line": 160,
+                  "name": "runPipeline",
+                  "target": {
+                    "file": "src/pipeline/runner.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 24,
+                      "name": "validateStructural",
+                      "target": {
+                        "file": "src/validate/structural.ts"
+                      }
+                    },
+                    {
+                      "line": 37,
+                      "name": "estimateTokens",
+                      "target": {
+                        "file": "src/pipeline/tokens.ts"
+                      }
+                    },
+                    {
+                      "line": 50,
+                      "name": "validateDistribution",
+                      "target": {
+                        "file": "src/validate/distribution.ts"
+                      }
+                    },
+                    {
+                      "line": 53,
+                      "name": "validateContent",
+                      "target": {
+                        "file": "src/validate/content.ts"
+                      }
+                    },
+                    {
+                      "line": 56,
+                      "name": "validateContamination",
+                      "target": {
+                        "file": "src/validate/contamination.ts"
+                      }
+                    },
+                    {
+                      "line": 60,
+                      "name": "computeScore",
+                      "target": {
+                        "file": "src/validate/scoring.ts"
+                      }
+                    }
+                  ],
+                  "line": 166,
+                  "name": "runValidation",
+                  "target": {
+                    "file": "src/validate/report.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "cmdGenerate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 248,
+                  "name": "isGitRepo",
+                  "target": {
+                    "file": "src/discovery/git.ts"
+                  }
+                },
+                {
+                  "line": 757,
+                  "name": "isValidFormat",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 758,
+                  "name": "getAllFormats",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 764,
+                  "name": "isValidExtractor",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 765,
+                  "name": "getAllExtractorNames",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 772,
+                  "name": "getAutoBalanceConfig",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  },
+                  "via": "buildConfig"
+                },
+                {
+                  "line": 259,
+                  "name": "inspectPipeline",
+                  "target": {
+                    "file": "src/pipeline/runner.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "cmdInspect"
+            },
+            {
+              "calls": [
+                {
+                  "line": 308,
+                  "name": "runValidation",
+                  "target": {
+                    "file": "src/validate/report.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "cmdValidate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 580,
+                  "name": "isValidVisualFormat",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  },
+                  "via": "buildVisualConfig"
+                },
+                {
+                  "line": 581,
+                  "name": "getAllVisualFormats",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  },
+                  "via": "buildVisualConfig"
+                },
+                {
+                  "line": 403,
+                  "name": "runVisualPipeline",
+                  "target": {
+                    "file": "src/visual/runner.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "cmdVisualGenerate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 580,
+                  "name": "isValidVisualFormat",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  },
+                  "via": "buildVisualConfig"
+                },
+                {
+                  "line": 581,
+                  "name": "getAllVisualFormats",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  },
+                  "via": "buildVisualConfig"
+                },
+                {
+                  "line": 451,
+                  "name": "inspectVisualPipeline",
+                  "target": {
+                    "file": "src/visual/runner.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "cmdVisualInspect"
+            },
+            {
+              "calls": [
+                {
+                  "line": 580,
+                  "name": "isValidVisualFormat",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  }
+                },
+                {
+                  "line": 581,
+                  "name": "getAllVisualFormats",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "buildVisualConfig"
+            },
+            {
+              "calls": [
+                {
+                  "line": 757,
+                  "name": "isValidFormat",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  }
+                },
+                {
+                  "line": 758,
+                  "name": "getAllFormats",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  }
+                },
+                {
+                  "line": 764,
+                  "name": "isValidExtractor",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  }
+                },
+                {
+                  "line": 765,
+                  "name": "getAllExtractorNames",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  }
+                },
+                {
+                  "line": 772,
+                  "name": "getAutoBalanceConfig",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "buildConfig"
+            }
+          ]
+        },
+        {
+          "exports": [
+            "isBinary",
+            "isGenerated",
+            "isVendored",
+            "shouldInclude"
+          ],
+          "hash": "74b4fa4d6b3bd54dffac08b7ccf64d86e34bb5efce8ce5b356737d13f5736308",
+          "path": "src/discovery/filters.ts"
+        },
+        {
+          "exports": [
+            "getHeadSha",
+            "gitClone",
+            "gitDiff",
+            "gitLog",
+            "isGitRepo"
+          ],
+          "hash": "f37d5ebff7ce65d4f4bbfae173d396c13786bd76e1c0826b6e4b0688da71289f",
+          "importsFiles": [
+            "src/errors.ts",
+            "src/types.ts"
+          ],
+          "path": "src/discovery/git.ts"
+        },
+        {
+          "exports": [
+            "detectLanguage",
+            "isDocFile",
+            "isSourceFile"
+          ],
+          "hash": "5adb1c30dc73c0d987b0da2a4d3493a1f39c4d8f80cb8ff1d980db8516946931",
+          "path": "src/discovery/languages.ts"
+        },
+        {
+          "exports": [
+            "scanRepo"
+          ],
+          "hash": "8ccaa2f33e2af000bca64abbf63b5f376c483ae874d9fcfcb901edd9253d235b",
+          "importsFiles": [
+            "src/discovery/filters.ts",
+            "src/discovery/languages.ts",
+            "src/types.ts"
+          ],
+          "path": "src/discovery/scanner.ts"
+        },
+        {
+          "hash": "1bc9046db2930ea8535f138c4601a85087727b8e88e3bb5d555b14e747dc9215",
+          "path": "src/errors.ts"
+        },
+        {
+          "hash": "904cc2e2dc9763774905e21be6842d910a62343a83ec438270420cde329d4b87",
+          "importsFiles": [
+            "src/pipeline/tokens.ts",
+            "src/types.ts"
+          ],
+          "path": "src/extractors/code.ts"
+        },
+        {
+          "hash": "39a9fa8b578873fe983653f6944daaf43d2d6a88c2c3f69ed68ee18350eab32c",
+          "importsFiles": [
+            "src/discovery/git.ts",
+            "src/pipeline/tokens.ts",
+            "src/types.ts"
+          ],
+          "path": "src/extractors/commits.ts"
+        },
+        {
+          "hash": "cf38d6dc162efd9deafd4ca5cd0a920c8d3a56120b1e9c8854e094960421c9fc",
+          "importsFiles": [
+            "src/pipeline/tokens.ts",
+            "src/types.ts"
+          ],
+          "path": "src/extractors/config.ts"
+        },
+        {
+          "hash": "c9b4f02d1d8e2ac109c88c38853f3fba46a1367a8c24d600757122356da52cd1",
+          "importsFiles": [
+            "src/pipeline/tokens.ts",
+            "src/types.ts"
+          ],
+          "path": "src/extractors/docs.ts"
+        },
+        {
+          "exports": [
+            "matchImportsToSources",
+            "parseFileImports"
+          ],
+          "hash": "b884b769900188dfca259779837666bf46cb6f5686de6f83b6e7b34f474a5bcc",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/extractors/imports.ts"
+        },
+        {
+          "exports": [
+            "getAllExtractorNames",
+            "getExtractors",
+            "isValidExtractor"
+          ],
+          "hash": "9890fa78682a179357b329ff6bb79e0f3f1108ba243915bdd2fa97e3a56d1dd8",
+          "importsFiles": [
+            "src/extractors/code.ts",
+            "src/extractors/commits.ts",
+            "src/extractors/config.ts",
+            "src/extractors/docs.ts",
+            "src/extractors/tests.ts",
+            "src/types.ts"
+          ],
+          "path": "src/extractors/registry.ts"
+        },
+        {
+          "exports": [
+            "buildBraceScopeMap",
+            "buildPythonScopeMap",
+            "classifyScope",
+            "stripStringsAndComments"
+          ],
+          "hash": "2a0bda1af7acfbcb03637b49c10d2589df6c8282c419f16ab29ff9e82a696e1d",
+          "path": "src/extractors/scope.ts"
+        },
+        {
+          "hash": "dde75d9d5bb4b6f02ff0ea654a989b89fc91f8dc0dc1cb3368a0bef6553a2722",
+          "importsFiles": [
+            "src/extractors/imports.ts",
+            "src/pipeline/tokens.ts",
+            "src/types.ts"
+          ],
+          "path": "src/extractors/tests.ts"
+        },
+        {
+          "hash": "02b67b509f4587e835ad3467e2b6e1c7dcd7dd6d2bcbf71a0f170648ded74784",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/alpaca.ts"
+        },
+        {
+          "hash": "cd1e3ebd8e7c35e807c741490074359271b6020732b8349e44aa53144b0b61b3",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/chatml.ts"
+        },
+        {
+          "hash": "b322345b4059ada9d8301d3f25326c1eeaf8d5eb28850a5d45b262d853a69c4d",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/completion.ts"
+        },
+        {
+          "hash": "e598c90ab81edd27307baef4aa271bf52251e997382747dfff8440e199e3ac67",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/fim.ts"
+        },
+        {
+          "hash": "994a683e015bb759a3bd347f672f2cd604ca8646a40576ad2581ce1fe01a0d46",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/openai.ts"
+        },
+        {
+          "hash": "5abc167890b708f5fdc2f1545b4103339995e47e3654d9546830d2e1d591ac90",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/raw.ts"
+        },
+        {
+          "entry": "isValidFormat",
+          "entryRule": 4,
+          "exports": [
+            "getAllFormats",
+            "getFormatter",
+            "isValidFormat"
+          ],
+          "hash": "2f3cdd78535a9c1d0ac3af172e14eb4d52d0eeca848994c34a7962a6d6773662",
+          "importsFiles": [
+            "src/formatters/alpaca.ts",
+            "src/formatters/chatml.ts",
+            "src/formatters/completion.ts",
+            "src/formatters/fim.ts",
+            "src/formatters/openai.ts",
+            "src/formatters/raw.ts",
+            "src/formatters/sharegpt.ts",
+            "src/types.ts"
+          ],
+          "path": "src/formatters/registry.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 41,
+                  "name": "includes",
+                  "target": {
+                    "file": "src/types.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "isValidFormat"
+            }
+          ]
+        },
+        {
+          "hash": "dadeae2fb4da2fae02d81036daee37cca0f4ad5c717ce8cad842a670f093a29e",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/formatters/sharegpt.ts"
+        },
+        {
+          "hash": "a69febc58351e03e7db113f03f642edc472dfaedecf7151deb74e38f9b3b2c77",
+          "importsFiles": [
+            "src/discovery/scanner.ts",
+            "src/errors.ts",
+            "src/extractors/registry.ts",
+            "src/formatters/registry.ts",
+            "src/pipeline/balance.ts",
+            "src/pipeline/runner.ts",
+            "src/pipeline/tokens.ts",
+            "src/types.ts",
+            "src/validate/report.ts",
+            "src/visual/formatters.ts",
+            "src/visual/runner.ts",
+            "src/visual/scanner.ts"
+          ],
+          "path": "src/index.ts"
+        },
+        {
+          "exports": [
+            "applyBalance",
+            "assessTrainability",
+            "getAutoBalanceConfig"
+          ],
+          "hash": "8a65a4ed34d47ec2d558fd3ca42916877933b802fa32748e16e26d0b966ed490",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/pipeline/balance.ts"
+        },
+        {
+          "exports": [
+            "chunkText"
+          ],
+          "hash": "8033e40935ff8e57f55abaf1cb0c2da976b0555d64a9efc7c4652a6b1bc83bd4",
+          "importsFiles": [
+            "src/pipeline/tokens.ts"
+          ],
+          "path": "src/pipeline/chunker.ts"
+        },
+        {
+          "hash": "b9f3eeccc03fae2ca0be0403781b5555abd05dd2575d8f26cff4a86aec945428",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/pipeline/dedup.ts"
+        },
+        {
+          "exports": [
+            "passesQuality"
+          ],
+          "hash": "f9671dc0ef5f5ab107b95b2dbc0160f6b1daa5c759e6df48c3adfdee5f1b8399",
+          "importsFiles": [
+            "src/pipeline/tokens.ts",
+            "src/types.ts"
+          ],
+          "path": "src/pipeline/quality.ts"
+        },
+        {
+          "entry": "runPipeline",
+          "entryRule": 4,
+          "exports": [
+            "inspectPipeline",
+            "runPipeline"
+          ],
+          "hash": "c1e99ef705b95b5e296a262db317ab8e7dee56f8ab6f1abb30f12887e592d675",
+          "importsFiles": [
+            "src/discovery/git.ts",
+            "src/discovery/scanner.ts",
+            "src/errors.ts",
+            "src/extractors/registry.ts",
+            "src/formatters/registry.ts",
+            "src/pipeline/balance.ts",
+            "src/pipeline/dedup.ts",
+            "src/pipeline/quality.ts",
+            "src/types.ts"
+          ],
+          "path": "src/pipeline/runner.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 38,
+                  "name": "scanRepo",
+                  "target": {
+                    "file": "src/discovery/scanner.ts"
+                  }
+                },
+                {
+                  "line": 39,
+                  "name": "getHeadSha",
+                  "target": {
+                    "file": "src/discovery/git.ts"
+                  }
+                },
+                {
+                  "line": 45,
+                  "name": "getExtractors",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  }
+                },
+                {
+                  "line": 46,
+                  "name": "getFormatter",
+                  "target": {
+                    "file": "src/formatters/registry.ts"
+                  }
+                },
+                {
+                  "line": 72,
+                  "name": "passesQuality",
+                  "target": {
+                    "file": "src/pipeline/quality.ts"
+                  }
+                },
+                {
+                  "line": 73,
+                  "name": "isDuplicate",
+                  "receiver": "Deduplicator",
+                  "target": {
+                    "file": "src/pipeline/dedup.ts"
+                  }
+                },
+                {
+                  "line": 104,
+                  "name": "getStats",
+                  "receiver": "Deduplicator",
+                  "target": {
+                    "file": "src/pipeline/dedup.ts"
+                  }
+                },
+                {
+                  "line": 116,
+                  "name": "applyBalance",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  }
+                },
+                {
+                  "line": 123,
+                  "name": "assessTrainability",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runPipeline"
+            },
+            {
+              "calls": [
+                {
+                  "line": 239,
+                  "name": "scanRepo",
+                  "target": {
+                    "file": "src/discovery/scanner.ts"
+                  }
+                },
+                {
+                  "line": 240,
+                  "name": "getHeadSha",
+                  "target": {
+                    "file": "src/discovery/git.ts"
+                  }
+                },
+                {
+                  "line": 241,
+                  "name": "getExtractors",
+                  "target": {
+                    "file": "src/extractors/registry.ts"
+                  }
+                },
+                {
+                  "line": 262,
+                  "name": "passesQuality",
+                  "target": {
+                    "file": "src/pipeline/quality.ts"
+                  }
+                },
+                {
+                  "line": 263,
+                  "name": "isDuplicate",
+                  "receiver": "Deduplicator",
+                  "target": {
+                    "file": "src/pipeline/dedup.ts"
+                  }
+                },
+                {
+                  "line": 290,
+                  "name": "getStats",
+                  "receiver": "Deduplicator",
+                  "target": {
+                    "file": "src/pipeline/dedup.ts"
+                  }
+                },
+                {
+                  "line": 300,
+                  "name": "applyBalance",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  }
+                },
+                {
+                  "line": 307,
+                  "name": "assessTrainability",
+                  "target": {
+                    "file": "src/pipeline/balance.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "inspectPipeline"
+            }
+          ]
+        },
+        {
+          "exports": [
+            "estimateTokens"
+          ],
+          "hash": "0b66fc3b6cdc3fb306a0ab243758287d3285ae2a901a0620866d5c67a30765ed",
+          "path": "src/pipeline/tokens.ts"
+        },
+        {
+          "hash": "8098abfea084dc7f0eaa4098379fc4318c8441747975efd5bac1d5e86d435899",
+          "importsFiles": [
+            "src/pipeline/balance.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/balance.test.ts"
+        },
+        {
+          "hash": "faa370da2dbe6b9969dcf3dea12fdf7e0b392b8a3c11524d5598c6a936451d18",
+          "importsFiles": [
+            "src/pipeline/chunker.ts"
+          ],
+          "path": "src/tests/chunker.test.ts"
+        },
+        {
+          "hash": "3332330fcaf2d63373cce1cc12c5f8da1ed62bef8e621d628e5a01a4092a4039",
+          "path": "src/tests/cli.test.ts"
+        },
+        {
+          "hash": "745a276f11d034e0111598ee0846881c7fe7b141c3e4e7960ef28288b25610ba",
+          "importsFiles": [
+            "src/formatters/completion.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/completion.test.ts"
+        },
+        {
+          "hash": "2e685547ebe4d10e80cfe3c7d3a0bac9df83b018a50416f670341b13145a6fd6",
+          "importsFiles": [
+            "src/pipeline/dedup.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/dedup.test.ts"
+        },
+        {
+          "hash": "9d36f4a2fbfb865b1ef4db3a98ac236eefd0494cfa26a9fd62a67e991f7fee10",
+          "importsFiles": [
+            "src/errors.ts"
+          ],
+          "path": "src/tests/errors.test.ts"
+        },
+        {
+          "hash": "986d093216077b834ca454c99e094b9d2034b0d844322a075d88bffef9dcaca7",
+          "importsFiles": [
+            "src/discovery/scanner.ts",
+            "src/extractors/code.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/extractors/code.test.ts"
+        },
+        {
+          "hash": "e4525e0a7a3b29e22e9eac1c37f9440dd24f5b306fb634b4d53bfc9b1b5f9e12",
+          "importsFiles": [
+            "src/discovery/scanner.ts",
+            "src/extractors/commits.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/extractors/commits.test.ts"
+        },
+        {
+          "hash": "5d8c37ba890dbfd064d196938e7eb108664c49454fdf8bcad3345cf886289da9",
+          "importsFiles": [
+            "src/discovery/scanner.ts",
+            "src/extractors/docs.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/extractors/docs.test.ts"
+        },
+        {
+          "hash": "0eb1bdae4f8c4d90384cc1048375ada2113889ab92388b8dbb6d6e5c6430db6d",
+          "importsFiles": [
+            "src/discovery/scanner.ts",
+            "src/extractors/tests.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/extractors/tests.test.ts"
+        },
+        {
+          "hash": "6740c80f427c56d881f8c0cb2b0a818917afad5e850a80e9cb297058592a7a56",
+          "importsFiles": [
+            "src/discovery/filters.ts"
+          ],
+          "path": "src/tests/filters.test.ts"
+        },
+        {
+          "hash": "0078bc130edcbab7593d66d0062fca68886345d090edb8095d147077a45fa3a9",
+          "importsFiles": [
+            "src/formatters/fim.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/fim.test.ts"
+        },
+        {
+          "hash": "dc66370e9c1a0f58795ca28c1237a007383238fe0d26b78b453fe50dfb2090f8",
+          "path": "src/tests/fixtures/sample-repo/README.md"
+        },
+        {
+          "hash": "12299b9e58c2c22d8164c51d0846ff60c1343c0a43659c2d34b6d4aa3cec0405",
+          "path": "src/tests/fixtures/sample-repo/docs/api.md"
+        },
+        {
+          "hash": "aa89211b96d739a1fb942a744b7907dd3365ed1dd4697b59facb144b4c447cdd",
+          "path": "src/tests/fixtures/sample-repo/package.json"
+        },
+        {
+          "hash": "265f75a3c323a6a462e26e399a322f8c8110a88dc7cb4a70a3257719369c3900",
+          "importsFiles": [
+            "src/tests/fixtures/sample-repo/src/utils.ts"
+          ],
+          "path": "src/tests/fixtures/sample-repo/src/index.ts"
+        },
+        {
+          "exports": [
+            "add",
+            "factorial",
+            "isPalindrome",
+            "multiply"
+          ],
+          "hash": "185080cbe40b87af199bd105e62074a5d72aaee54cb9af7651febbf3f3633a27",
+          "path": "src/tests/fixtures/sample-repo/src/utils.ts"
+        },
+        {
+          "hash": "c9750bd61c6d5251723849f320043c3c52108a224ea3aeb62f5a300c9a58cc28",
+          "importsFiles": [
+            "src/tests/fixtures/sample-repo/src/utils.ts"
+          ],
+          "path": "src/tests/fixtures/sample-repo/tests/utils.test.ts"
+        },
+        {
+          "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
+          "path": "src/tests/fixtures/visual-corpus/assets/approved/keth_priest_front_01.png"
+        },
+        {
+          "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
+          "path": "src/tests/fixtures/visual-corpus/assets/approved/keth_soldier_front_01.png"
+        },
+        {
+          "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
+          "path": "src/tests/fixtures/visual-corpus/assets/approved/keth_soldier_side_01.png"
+        },
+        {
+          "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
+          "path": "src/tests/fixtures/visual-corpus/assets/borderline/keth_scout_side_02.png"
+        },
+        {
+          "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
+          "path": "src/tests/fixtures/visual-corpus/assets/rejected/keth_scout_back_01.png"
+        },
+        {
+          "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
+          "path": "src/tests/fixtures/visual-corpus/assets/rejected/keth_soldier_front_02.png"
+        },
+        {
+          "hash": "cfb1b8c2490d3385fc60ce820c989bd53bef7b12eb87f2289941bfdf9bc8f5d6",
+          "path": "src/tests/fixtures/visual-corpus/comparisons/cmp_001.json"
+        },
+        {
+          "hash": "0c5b786501e0744befd2d44fcd1ea36c564d114aadf1fb78e47c54be19dda968",
+          "path": "src/tests/fixtures/visual-corpus/docs/constitution.md"
+        },
+        {
+          "hash": "bc61af67be5ba930b0df4bafdf381bfb4c032fc5862440912a5e57c951cb57a9",
+          "path": "src/tests/fixtures/visual-corpus/docs/review-rubric.md"
+        },
+        {
+          "hash": "da2839920e0552acc9f1d623834a732f03613d674ac489640fb362f15be00899",
+          "path": "src/tests/fixtures/visual-corpus/records/keth_soldier_front_01.json"
+        },
+        {
+          "hash": "40ec5e6ffbe76f514252f841d78939858460a24eea2b85e9e051a98c83505fba",
+          "path": "src/tests/fixtures/visual-corpus/records/keth_soldier_front_02.json"
+        },
+        {
+          "hash": "f59eedef204526e74d7670b667e05b7aff1ed01e65f6b2f228337442cb271117",
+          "importsFiles": [
+            "src/formatters/alpaca.ts",
+            "src/formatters/openai.ts",
+            "src/formatters/raw.ts",
+            "src/formatters/sharegpt.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/formatters.test.ts"
+        },
+        {
+          "hash": "49d3476ef2bc89b0980242078112a201c1f1393b18f365df529ec820d7747567",
+          "importsFiles": [
+            "src/discovery/git.ts",
+            "src/errors.ts"
+          ],
+          "path": "src/tests/git.test.ts"
+        },
+        {
+          "hash": "ecdb98766ee53defc78b4d0367cf03addad79f6e736fbf74594fcfcfb9bef119",
+          "importsFiles": [
+            "src/extractors/imports.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/imports.test.ts"
+        },
+        {
+          "hash": "b9d091bdf67f989468502ce1a03986030a1cc53e9b73c0d42dc55f5c16fc6e3f",
+          "importsFiles": [
+            "src/discovery/languages.ts"
+          ],
+          "path": "src/tests/languages.test.ts"
+        },
+        {
+          "hash": "8b4cc5bc44bf6a3f6a64cf5156db0cbf62300866e3b9e3142040696c7151ab63",
+          "importsFiles": [
+            "src/pipeline/runner.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/pipeline.test.ts"
+        },
+        {
+          "hash": "647256220be0eeffe1c0de61882742b8d5b58f4ffc289f9a136602b15feea1e2",
+          "importsFiles": [
+            "src/pipeline/quality.ts",
+            "src/types.ts"
+          ],
+          "path": "src/tests/quality.test.ts"
+        },
+        {
+          "hash": "778192cb155bad597486467791cdd7484ae31c8ca71913b5035eb4fe170153b2",
+          "importsFiles": [
+            "src/extractors/registry.ts",
+            "src/formatters/registry.ts"
+          ],
+          "path": "src/tests/registry.test.ts"
+        },
+        {
+          "hash": "7e57371545aaa98e8f030fc4684e268566df2c5daf24c2441391486f9d817be1",
+          "importsFiles": [
+            "src/discovery/scanner.ts"
+          ],
+          "path": "src/tests/scanner.test.ts"
+        },
+        {
+          "hash": "282e2a5b7e53b9da97f1589be3d1261ac05d5b24657d1542c21930bec63d7df8",
+          "importsFiles": [
+            "src/extractors/scope.ts"
+          ],
+          "path": "src/tests/scope.test.ts"
+        },
+        {
+          "hash": "4b6582211cdcb9c4bf57344741337761de147d86c5016b333c1b1dae9c43719d",
+          "importsFiles": [
+            "src/pipeline/tokens.ts"
+          ],
+          "path": "src/tests/tokens.test.ts"
+        },
+        {
+          "hash": "b3cc02cb343de97b7db79cf079f5e84a42a3b8b6a3995e109e5fc9d9b3292df3",
+          "importsFiles": [
+            "src/validate/content.ts",
+            "src/validate/distribution.ts"
+          ],
+          "path": "src/tests/validate/content.test.ts"
+        },
+        {
+          "hash": "ed2710222a6e52e28af00e3559cd6cd38fdadf5f6c7e5e4d41c62d72c43e81b7",
+          "importsFiles": [
+            "src/validate/distribution.ts"
+          ],
+          "path": "src/tests/validate/distribution.test.ts"
+        },
+        {
+          "hash": "bb72735d123f0382773a21405cbc88b87fa8384e761320e7f1be86ffed8979d1",
+          "importsFiles": [
+            "src/validate/report.ts"
+          ],
+          "path": "src/tests/validate/report.test.ts"
+        },
+        {
+          "hash": "d0903e1c3597c4597d03b62185e7a73dfa698d11fb826d4cfa7f83c3a8c2fedd",
+          "importsFiles": [
+            "src/validate/content.ts",
+            "src/validate/distribution.ts",
+            "src/validate/scoring.ts",
+            "src/validate/structural.ts"
+          ],
+          "path": "src/tests/validate/scoring.test.ts"
+        },
+        {
+          "hash": "8281a796c943e6d31543460d7d91adcf14ef62a34fdfd99515ad4ecaa17265f8",
+          "importsFiles": [
+            "src/validate/structural.ts"
+          ],
+          "path": "src/tests/validate/structural.test.ts"
+        },
+        {
+          "hash": "3baa09e498af261fc901895ad77d4d06319d793410d800f03d6ce96aadae8956",
+          "importsFiles": [
+            "src/types.ts",
+            "src/visual/extractors.ts",
+            "src/visual/scanner.ts"
+          ],
+          "path": "src/tests/visual/extractors.test.ts"
+        },
+        {
+          "hash": "fc1cce0e92d1d213dd15e163775db1cb96b81b212c677c76bd7695d4c4cd70d8",
+          "importsFiles": [
+            "src/visual/extractors.ts",
+            "src/visual/formatters.ts"
+          ],
+          "path": "src/tests/visual/formatters.test.ts"
+        },
+        {
+          "hash": "77291ff74195850353a88ce1a2177898eb99d70187bb9bff8ad55ae2760ec018",
+          "importsFiles": [
+            "src/visual/image.ts"
+          ],
+          "path": "src/tests/visual/image.test.ts"
+        },
+        {
+          "hash": "cae2a402cdfa54c1744c147e1d92053e694c0a1d15e65143ac0c6c346d236b6d",
+          "importsFiles": [
+            "src/types.ts",
+            "src/visual/runner.ts"
+          ],
+          "path": "src/tests/visual/runner.test.ts"
+        },
+        {
+          "hash": "c7212446480dfb67e2f45df8cc1df89814003df538c5f435556af10808bc971e",
+          "importsFiles": [
+            "src/visual/scanner.ts"
+          ],
+          "path": "src/tests/visual/scanner.test.ts"
+        },
+        {
+          "hash": "fe9c0533a124ebdeda4081552684b1e5f227606e2110097f0fd5892ce6907502",
+          "path": "src/types.ts"
+        },
+        {
+          "exports": [
+            "benchmarkSignatures",
+            "piiScan",
+            "secretScan",
+            "validateContamination"
+          ],
+          "hash": "58045e129f696310ef721b7da7b28f67af0a154ff797e60ea1882060cf06c39a",
+          "importsFiles": [
+            "src/validate/distribution.ts"
+          ],
+          "path": "src/validate/contamination.ts"
+        },
+        {
+          "exports": [
+            "validateContent"
+          ],
+          "hash": "67ef7ec798c58875e51b9e3b8234385c973d96614d5ee3d0af840917e196b331",
+          "importsFiles": [
+            "src/validate/distribution.ts"
+          ],
+          "path": "src/validate/content.ts"
+        },
+        {
+          "exports": [
+            "validateDistribution"
+          ],
+          "hash": "64654e35d5d2eaf32ae73ebe8bed4a7e4f9678a644b5842307cd51f9abc42b90",
+          "importsFiles": [
+            "src/pipeline/tokens.ts"
+          ],
+          "path": "src/validate/distribution.ts"
+        },
+        {
+          "entry": "runValidation",
+          "entryRule": 4,
+          "exports": [
+            "runValidation"
+          ],
+          "hash": "5a2a431d6fdc77283605fb87b4d758c2c02d9d6db75bfc450c856efb32aa2da3",
+          "importsFiles": [
+            "src/pipeline/tokens.ts",
+            "src/validate/contamination.ts",
+            "src/validate/content.ts",
+            "src/validate/distribution.ts",
+            "src/validate/scoring.ts",
+            "src/validate/structural.ts"
+          ],
+          "path": "src/validate/report.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 24,
+                  "name": "validateStructural",
+                  "target": {
+                    "file": "src/validate/structural.ts"
+                  }
+                },
+                {
+                  "line": 37,
+                  "name": "estimateTokens",
+                  "target": {
+                    "file": "src/pipeline/tokens.ts"
+                  }
+                },
+                {
+                  "line": 50,
+                  "name": "validateDistribution",
+                  "target": {
+                    "file": "src/validate/distribution.ts"
+                  }
+                },
+                {
+                  "line": 53,
+                  "name": "validateContent",
+                  "target": {
+                    "file": "src/validate/content.ts"
+                  }
+                },
+                {
+                  "line": 56,
+                  "name": "validateContamination",
+                  "target": {
+                    "file": "src/validate/contamination.ts"
+                  }
+                },
+                {
+                  "line": 60,
+                  "name": "computeScore",
+                  "target": {
+                    "file": "src/validate/scoring.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runValidation"
+            }
+          ]
+        },
+        {
+          "exports": [
+            "computeScore"
+          ],
+          "hash": "0d44434bd3ff3425c5a775168bcec78875fc7d5594c4b49f1589ef41f66de968",
+          "importsFiles": [
+            "src/validate/contamination.ts",
+            "src/validate/content.ts",
+            "src/validate/distribution.ts",
+            "src/validate/structural.ts"
+          ],
+          "path": "src/validate/scoring.ts"
+        },
+        {
+          "exports": [
+            "validateStructural"
+          ],
+          "hash": "286829af5e79e115fee5d283f7e9b9f741e61848e7b7323dd018d7c28a4f6204",
+          "path": "src/validate/structural.ts"
+        },
+        {
+          "exports": [
+            "extractAssetRecords",
+            "extractComparisons",
+            "extractConstitutionLinked",
+            "extractSetCoherence",
+            "generateSyntheticPairs"
+          ],
+          "hash": "07bd9368f1bee110d668aa0b49d0f4e0fee06f3d85ba5097a0d7beba281a74a5",
+          "importsFiles": [
+            "src/types.ts"
+          ],
+          "path": "src/visual/extractors.ts"
+        },
+        {
+          "exports": [
+            "getAllVisualFormats",
+            "getVisualFormatter",
+            "isValidVisualFormat"
+          ],
+          "hash": "98bbf3f245634459d8dfcc6bf13606c8b269b9b78b6ec04b123949a81cfaad99",
+          "importsFiles": [
+            "src/types.ts",
+            "src/visual/extractors.ts"
+          ],
+          "path": "src/visual/formatters.ts"
+        },
+        {
+          "exports": [
+            "detectFormat",
+            "encodeBase64",
+            "loadImage",
+            "parseImageInfo",
+            "resolveImageRef",
+            "toDataUri",
+            "validateImage"
+          ],
+          "hash": "e76a9a87243c33006ecabe69e575c1000fbc6ef0381e5d4aeac6451f18f75d9c",
+          "path": "src/visual/image.ts"
+        },
+        {
+          "entry": "runVisualPipeline",
+          "entryRule": 4,
+          "exports": [
+            "inspectVisualPipeline",
+            "runVisualPipeline"
+          ],
+          "hash": "f40f4ce294e3aa08f25451a2c2a99216a2039814d5bbd9977c58e9d04794baa3",
+          "importsFiles": [
+            "src/types.ts",
+            "src/visual/extractors.ts",
+            "src/visual/formatters.ts",
+            "src/visual/scanner.ts"
+          ],
+          "path": "src/visual/runner.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 33,
+                  "name": "scanVisualRepo",
+                  "target": {
+                    "file": "src/visual/scanner.ts"
+                  }
+                },
+                {
+                  "line": 48,
+                  "name": "extractAssetRecords",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 54,
+                  "name": "extractComparisons",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 61,
+                  "name": "generateSyntheticPairs",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 69,
+                  "name": "extractConstitutionLinked",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 75,
+                  "name": "extractSetCoherence",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 193,
+                  "name": "getVisualFormatter",
+                  "target": {
+                    "file": "src/visual/formatters.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runVisualPipeline"
+            },
+            {
+              "calls": [
+                {
+                  "line": 354,
+                  "name": "scanVisualRepo",
+                  "target": {
+                    "file": "src/visual/scanner.ts"
+                  }
+                },
+                {
+                  "line": 371,
+                  "name": "extractAssetRecords",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 380,
+                  "name": "extractComparisons",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 388,
+                  "name": "generateSyntheticPairs",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 400,
+                  "name": "extractConstitutionLinked",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                },
+                {
+                  "line": 408,
+                  "name": "extractSetCoherence",
+                  "target": {
+                    "file": "src/visual/extractors.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "inspectVisualPipeline"
+            }
+          ]
+        },
+        {
+          "exports": [
+            "scanVisualRepo"
+          ],
+          "hash": "fd5eaa45d58269bf9d18daa9cf1cd47a9fb7fa221132df6b690745541685b4e3",
+          "importsFiles": [
+            "src/types.ts",
+            "src/visual/image.ts"
+          ],
+          "path": "src/visual/scanner.ts"
+        }
+      ],
+      "globs": [
+        "src/**"
+      ],
+      "importConfidence": "full",
+      "name": "src",
+      "origin": "authored",
+      "outsideReads": 17,
+      "outsideWrites": 9,
+      "role": "code",
+      "testedBy": 32,
+      "unresolvedSites": 0
+    }
+  ],
+  "doors": [
+    {
+      "checksCount": 1,
+      "commands": [
+        {
+          "job": "test",
+          "step": "Atlas check",
+          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+        },
+        {
+          "job": "test",
+          "step": "3",
+          "text": "npm ci"
+        },
+        {
+          "job": "test",
+          "step": "4",
+          "text": "npm run verify"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/ci.yml",
+      "landings": [],
+      "mentions": [],
+      "name": "CI",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 76
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "directory": true,
+          "job": "test",
+          "matched": true,
+          "path": "src/",
+          "runKind": "checks",
+          "via": "tsc tsconfig.json"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "pull_request",
+          "paths": [
+            ".github/workflows/**",
+            "atlas/**",
+            "package.json",
+            "site/astro.config.mjs",
+            "site/package-lock.json",
+            "site/package.json",
+            "src/**",
+            "tsconfig.json"
+          ]
+        },
+        {
+          "event": "push",
+          "paths": [
+            ".github/workflows/**",
+            "atlas/**",
+            "package.json",
+            "site/astro.config.mjs",
+            "site/package-lock.json",
+            "site/package.json",
+            "src/**",
+            "tsconfig.json"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "job": "build",
+          "step": "Install site dependencies",
+          "text": "npm ci"
+        },
+        {
+          "job": "build",
+          "step": "Build site",
+          "text": "npm run build"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/pages.yml",
+      "landings": [],
+      "mentions": [],
+      "name": "Deploy site to GitHub Pages",
+      "permissions": [
+        "contents:read",
+        "id-token:write",
+        "pages:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": true,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/pages.yml",
+            "site/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/deploy-pages",
+        "actions/setup-node",
+        "actions/upload-pages-artifact"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 1,
+      "commands": [
+        {
+          "job": "publish",
+          "step": "2",
+          "text": "npm ci"
+        },
+        {
+          "job": "publish",
+          "step": "3",
+          "text": "npm run verify"
+        },
+        {
+          "job": "publish",
+          "step": "4",
+          "text": "npm audit --audit-level=moderate"
+        },
+        {
+          "job": "publish",
+          "step": "5",
+          "text": "npm publish --access public --provenance"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/publish.yml",
+      "landings": [],
+      "mentions": [],
+      "name": "Publish",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 76
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "directory": true,
+          "job": "publish",
+          "matched": true,
+          "path": "src/",
+          "runKind": "checks",
+          "via": "tsc tsconfig.json"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [
+        "NPM_TOKEN"
+      ],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/repo-dataset",
+            "registry": "npm"
+          }
+        ],
+        "publishes": true,
+        "publishesTo": [
+          "npm"
+        ],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "release",
+          "types": [
+            "published"
+          ]
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "entry": "src/index.ts",
+      "file": "package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@mcptoolshop/repo-dataset",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 38
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "src/index.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "repo-dataset",
+      "permissions": [],
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 38
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "src/cli.ts",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    }
+  ],
+  "edges": [],
+  "generatedFrom": {
+    "commit": "3665fc1f2e6bab2d267c1b054480ee5f844467f2",
+    "tracked": 135
+  },
+  "landings": [
+    {
+      "readers": [
+        {
+          "by": "src/tests/scanner.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/tests/scanner.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/tests/filters.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "package-lock.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/cli.ts",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/pipeline/runner.ts",
+          "call": "readFile",
+          "confidence": "ast"
+        },
+        {
+          "by": "src/tests/cli.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/tests/scanner.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/tests/extractors/code.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/tests/extractors/docs.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/tests/extractors/tests.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/tests/scanner.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/tests/fixtures/sample-repo",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/tests/visual/extractors.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/tests/visual/runner.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/tests/visual/scanner.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/tests/fixtures/visual-corpus",
+      "writers": []
+    }
+  ],
+  "overlaps": [],
+  "submodules": [],
+  "symlinks": [],
+  "testFiles": 49,
+  "unassigned": []
+}
