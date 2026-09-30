@@ -9,15 +9,15 @@
       "externals": 0,
       "files": [
         {
-          "hash": "c927fe76715d2af45b740ef640b13190c162efbb4c64ec43880d14f71b368feb",
+          "hash": "dd4c6eeb6ea5bfbd48e60c0f45817f88c764f72eea3dcb43b7b13f8a2f4894ba",
           "path": ".github/workflows/ci.yml"
         },
         {
-          "hash": "4eb81eeb113bdba84a09846e4b80ab63d20507cb41935566c110e37f99afe899",
+          "hash": "93dc62c74dfddae3a1dc3291b236a3e266cc0f9963100f2967357b3f3833b310",
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "0da30cfc9d0583ef65cd7f25a07320e2ff412d506f02e35bc83f396c03aca93f",
+          "hash": "2bc11a8c6f3f96631a65463136d82d363efe8a777cf2d0b67cdf285028f003f0",
           "path": ".github/workflows/publish.yml"
         }
       ],
@@ -40,15 +40,15 @@
       "externals": 0,
       "files": [
         {
-          "hash": "f9beab6ae09ce2c5a580c1c5ed91f086596a2d8b3550963f89446cb349d37ce6",
+          "hash": "3d8941b173412c5e1f760b366aab926ee9ec0808d4e8f2ae346dc0ef4093558d",
           "path": "docs/marketing-research.md"
         },
         {
-          "hash": "f242bd33637eae6ed8b2b981d7741a98e2d200aeebed686530b8e2ffe12894d1",
+          "hash": "e448ee4d2bba714be67f708ac075d190def1c8d2151d99c375f890b21e912cc5",
           "path": "docs/research-inputs/competitors.md"
         },
         {
-          "hash": "5de058fea99f171012a9349cad9b3bf84b92bf87935867c347ec97762af71e09",
+          "hash": "320b0b75f7a19923ff1ce59b3913c5e2ecfd1320be8eba47de9644f8dd428fef",
           "path": "docs/research-inputs/intern-seams-2026-04-17.md"
         }
       ],
@@ -71,103 +71,107 @@
       "externals": 0,
       "files": [
         {
-          "hash": "130d83dffc282d3a7e5d59fe2832860b46beb8906302336d1e2c6225e094f2dc",
+          "hash": "193c3266ca71355340f721c9e36565bd0d95167b271b72a2f10ca266c48a37f8",
           "path": ".gitignore"
         },
         {
-          "hash": "97197a7b925a5b28164291fa075bcd4f4f4e509afc994219117a187c6c108ef9",
+          "hash": "94665ef63b1c9d4a6f382c74099cea721d43c66bd800c12a96128b7e6dd34f24",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "b4bee9e1b531f5b86e96bdda4c76fe3a26ab7138790c1100604b6a5314ee25fc",
+          "hash": "4ae0b5494a09da66c78b02c6b0a57c9c0f9448e1d33303818d5d1f41eded049a",
           "path": "HANDOFF.md"
         },
         {
-          "hash": "5ae6b3c8f446f0a7cb95176e4dadb91b68aaffb16b3be09f64f5de248b6a973a",
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
           "path": "LICENSE"
         },
         {
-          "hash": "9a549f50de2e19c38c1719d78d941f0760c83958a9dad549f9cb577eb505aa04",
+          "hash": "8eec5a1769fcc581f0a2844166be9733e0107e6ab5def8b41a69dfafd4eba1af",
           "path": "PHASE2A_DESIGN.md"
         },
         {
-          "hash": "3fd3a4c27ec58d4098df2f54ced318d17011504e895e51993318ab4dbff7c398",
+          "hash": "94133f6682fd86d77bbe6d93b6e474fae3bd61c54e7390da5c5f29cc3824c049",
           "path": "PHASE2B_DESIGN.md"
         },
         {
-          "hash": "8f8cae5f3fe401f3e05bbee667c3ccef480a22467e145506b9fe8568686370eb",
+          "hash": "78387db44aeb6d85c0a8d4370e6ce5607304279fba727f0a63a689656cc07213",
           "path": "PHASE2_VISUAL_DESIGN.md"
         },
         {
-          "hash": "3907d6a237a8705205f7dd03a929ffa6da371219413b174cd23654b7e113c804",
+          "hash": "82e0756c99f78e8c81d0111fe38f2e7da5e1f496e327f563699edfd9f332b288",
           "path": "PHASE3_DESIGN.md"
         },
         {
-          "hash": "4bdc3ccef6f464a4987b304f6a5b7a926c855c8f96bca201e32c201b25bfab8a",
+          "hash": "0c85857945d41f037b6b298c3ab97475c49181bd3dffeebe99d986c51b1089fa",
           "path": "QUALITY_PROOF.md"
         },
         {
-          "hash": "a0fdc5890c501bcd129b41c13d8ee6913d651b9fe1c0f7b23e3cef2f3adb68a4",
+          "hash": "48e1e0fc92c344e2aa4b74d3ac7c864be0e231f43da509bf87fe19d98f571a3b",
           "path": "README.es.md"
         },
         {
-          "hash": "edfdc1d7d05a26cf84aeb40a1ac948a5acff383ef852994982ba34168e9b5ecb",
+          "hash": "8d6512d695142cb4b5d3fc5b3bd866d5a39cf03bebf449d5dae39f6847ed92ee",
           "path": "README.fr.md"
         },
         {
-          "hash": "fa4cf3f3fcdf6e63f8447bf10ea0aef112282cb09e39118e7f89138f9386dee6",
+          "hash": "0b9089fd49ed2c37de12a24a7a2119e1e40fa5b5dccfa11cc3f8d8a8323725d2",
           "path": "README.hi.md"
         },
         {
-          "hash": "9c0de732310c3a280d35dad84209bb1a6737c2fa5cdae78c6eabafd7800b2f61",
+          "hash": "b3cdd79e862de9a78c5eccb9da532cb10e12537aadd91e7cca520bdab23a9163",
           "path": "README.it.md"
         },
         {
-          "hash": "c9cc3a2bc1de06591af77f4a9de33373063f3ca19dba3c4219b2e11f3f6e7256",
+          "hash": "7680b94d2fa4fa8bc4a5a36d697c1fdf5a10eb9db0b889850e72a6c549df4db2",
           "path": "README.ja.md"
         },
         {
-          "hash": "faecf5bf00ea837878595a1865e5cd7e278f189c98f01f6d33427a17d3089edf",
+          "hash": "edc8dcbba5a4d241a3fcfd2957bfe8c51fe2731db2de39ebaf5aeb0473055bc9",
           "path": "README.md"
         },
         {
-          "hash": "157d2f3c53307975d8e85ecd406ecd2a0603082cddd9e6730ea128796a4e9c72",
+          "hash": "c4ae69828669a8de3ea743777a56769f4b96c9b748964019c8f07595c0543164",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "9eeadcc4ab5a13055c24c3283eddadff25db145bdaca6a43069914402679f1aa",
+          "hash": "db93ea25b7806921c9e4573171d769ff9a0142904c16b058508b88969eb8b197",
           "path": "README.zh.md"
         },
         {
-          "hash": "c70bd221682a3fc99c5c81a2c6006d2410c14204ddb8ffbc703881a6029cf396",
+          "hash": "fdb232ef811207ca047a692c99598f42c1500c7cd60ba1b671ede5f1af3d7432",
           "path": "SCORECARD.md"
         },
         {
-          "hash": "762e17158f6b97b7799f4ae939193625ac7d47251fdef2058172c9e5102a7e13",
+          "hash": "263a1c6d5bc8dd2abdbc90ece2b98fd93a6f5d645877b305d0ab18c6c6b0e3a1",
           "path": "SECURITY.md"
         },
         {
-          "hash": "d54ce434adf130f9f6699f9cb1e4b68c835f7ee7ab4d7132f7ddeef166963e19",
+          "hash": "df87fedd51e86251ea3b8c41a16488522eef9977e5f6d2f7229b8cf6adde1c43",
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "0656e8f36fdc868d21ca26dc7d90b2b0cb3362901a2629650cd70eda9275e479",
+          "hash": "311ee35a734c94c1ed7a3795685845318d557587fb64a7c7d6aea0dc9efd2f80",
           "path": "TEST_SPEC.md"
         },
         {
-          "hash": "b9f9538f334eb08738903abf9dc090a85b25e127c82d8f9b67dba033bf238ce4",
+          "hash": "ae65a4a896b00c779cce5076f0eef0dc024aae3b946c2be0e0f7200b83cda5ce",
           "path": "TEST_SPEC_VISUAL.md"
         },
         {
-          "hash": "c2efdeedadaf944178b586f85fcbe3a407843b43d2b7551411477bb07715cb2c",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "6990b9335c44d28813fd0ffd380fb828e85dc51dfb655ae608ca027eb38d7411",
           "path": "package-lock.json"
         },
         {
-          "hash": "e548cb45fd8b0895b56712417a5632c0b598986033628c8cff7312d93e24fa73",
+          "hash": "18c1b02a6a1023e97e89d1918e248008f2c0c1b3b4db12a073e46473bfce7ef1",
           "path": "package.json"
         },
         {
-          "hash": "5b22d67c36b83bbc64c43c0ada78438c2c3c6d61fdaa47366c43d4f809499709",
+          "hash": "6873892acbc909c5cecd0411af375bf271de90c2b50b075e5ae5776c45fe21bf",
           "path": "tsconfig.json"
         }
       ],
@@ -178,7 +182,8 @@
       "name": "root",
       "origin": "authored",
       "role": "config",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -190,59 +195,69 @@
       "externals": 0,
       "files": [
         {
-          "hash": "0b16fca72af4f9cf2d6a8ba0668638d9eba5dfc2af1fd844e71cd35359fa8495",
+          "hash": "4a53de1d8d4dba8ef471441901d6ea647f4d363a487564c796e6df26a4d83ac9",
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "b5578baf42cab82e5e7b451b6992cb929aeb6ff8d02d8e11ab690e6f67fea144",
+          "hash": "af5d4f54dca60686724d306eb58759fb25b6f5ba4d66559ab84a968112a184e5",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "0fe0343f8ddb0628d954129b02a72b3b2c8f8f884b1380c5567403c4f55942f8",
+          "hash": "ede5fe47605b55555e8d3ed7b2eb904e0c9b03a975348882ae0a870ef5b98bb7",
           "path": "site/package.json"
         },
         {
-          "hash": "ec030f2e4bf6dc57eaca075d390c228b3212cf29db267e32ef92e110de1acdcc",
+          "constantOnly": true,
+          "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
           "path": "site/src/content.config.ts"
         },
         {
-          "hash": "a51200bf07f2914b9092e498e77f38303c02b998b03a27710c176d7579a7a9e6",
+          "hash": "64efc8dc9d5ea560ac52b2b3afaa4664e7caca1f007eb2d70099db0f488710ca",
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "26aa1765e181f6e852839e4bacb4d40ce177cf4a8943fa18064f7e3cb7239608",
+          "hash": "4ba8ac1c4feebd68a0f403dae302e909aa4833dcc998096136bb58f34ef184bf",
           "path": "site/src/content/docs/handbook/getting-started.md"
         },
         {
-          "hash": "9260d1e66ece575681d18257f10a5ada23d55457182854fc553bbba38f943146",
+          "hash": "08fd17db3b5b59eb12aa128d2f794176aad2649432efa1ef3e749e240b5b4cb3",
           "path": "site/src/content/docs/handbook/index.md"
         },
         {
-          "hash": "ce429933580e62b6ffbe1ee25bd6720002b56624c7824c82c135e401df392bd1",
+          "hash": "639b04fd66ee48f6b9e8afd26c364c85115be5bbb90a5b1791db034a1e33fbd1",
           "path": "site/src/content/docs/handbook/reference.md"
         },
         {
-          "hash": "3bfd0aa5ac911da95215832dedf0576038b1b6c6f1a0cfdbe459d1b43d386321",
+          "hash": "18c96ee49f6d88957909fb324ced0924071a1132d437b9a901ba0d253c351434",
           "path": "site/src/content/docs/handbook/security.md"
         },
         {
-          "hash": "a699ad78a6d27d6864ccfe4c3a4a01993aca28ecb4a3d20893f37db9f9b1a522",
+          "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
-          "hash": "8511f2196c8c70e1bd5f07f5c9c35424aeec379c81c32a0e74034503bfcd3648",
+          "constantOnly": true,
+          "hash": "2d3b85aa55b0605fcf4ac2eb3b554b4cc14f2108957eb2e4ae4e32255c70d3f2",
           "path": "site/src/site-config.ts"
         },
         {
-          "hash": "5995279a40a9a63426a93feec129006b261cc7200426a398914d0317722ef19b",
+          "hash": "29ee8df91833e694bdba973126b34a6177de4cf01dab6d9ef7d3126e8e2b67fb",
           "path": "site/src/styles/global.css"
         },
         {
-          "hash": "8442ff84a1bb12ba4d7d0aa268c1316c3fc61ebf822facdcdffd6033ecef491e",
+          "hash": "caf3bea3424477e9528b80490e442ff4fad4ccc7562df9457497382c5bd62339",
           "path": "site/src/styles/starlight-custom.css"
         },
         {
-          "hash": "61fc24492db9aef7ec38eb91cfeebaef96155014bb5f22648fd8ed2327c6cae2",
+          "hash": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
           "path": "site/tsconfig.json"
         }
       ],
@@ -258,8 +273,8 @@
     },
     {
       "dynamicReads": 8,
-      "dynamicSpawns": 2,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 1,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
         "src/cli.ts",
@@ -270,7 +285,67 @@
         {
           "entry": "cmdGenerate",
           "entryRule": 1,
-          "hash": "78ad3e76b29e4a565ceb0212d1786ed7807bda537dc8eae5d39516b3d7dd4ef2",
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 31
+            },
+            {
+              "in": "detectRepoName",
+              "kind": "catch",
+              "line": 115
+            },
+            {
+              "in": "cmdGenerate",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "cmdGenerate",
+              "kind": "catch",
+              "line": 211
+            },
+            {
+              "in": "cmdInspect",
+              "kind": "catch",
+              "line": 244
+            },
+            {
+              "in": "cmdValidate",
+              "kind": "catch",
+              "line": 300
+            },
+            {
+              "in": "cmdVisualGenerate",
+              "kind": "catch",
+              "line": 391
+            },
+            {
+              "in": "cmdVisualInspect",
+              "kind": "catch",
+              "line": 440
+            },
+            {
+              "in": "cmdVisualValidate",
+              "kind": "catch",
+              "line": 494
+            },
+            {
+              "in": "cmdVisualValidate",
+              "kind": "catch",
+              "line": 527
+            },
+            {
+              "in": "cmdMerge",
+              "kind": "catch",
+              "line": 629
+            },
+            {
+              "kind": "catch",
+              "line": 914
+            }
+          ],
+          "hash": "199fadcdff4c16b14fe92cf2d4b3addd39e0d53911062b528d1ceae2fa38ba1f",
           "importsFiles": [
             "src/discovery/git.ts",
             "src/errors.ts",
@@ -687,7 +762,7 @@
             "isVendored",
             "shouldInclude"
           ],
-          "hash": "74b4fa4d6b3bd54dffac08b7ccf64d86e34bb5efce8ce5b356737d13f5736308",
+          "hash": "fbd7f285eb8695dec82792fe6d3b6c5e0da530f00cd8f6a9e90ce10bedbc1098",
           "path": "src/discovery/filters.ts"
         },
         {
@@ -698,7 +773,39 @@
             "gitLog",
             "isGitRepo"
           ],
-          "hash": "f37d5ebff7ce65d4f4bbfae173d396c13786bd76e1c0826b6e4b0688da71289f",
+          "failurePaths": [
+            {
+              "in": "getHeadSha",
+              "kind": "catch",
+              "line": 14
+            },
+            {
+              "in": "isGitRepo",
+              "kind": "catch",
+              "line": 23
+            },
+            {
+              "in": "gitLog",
+              "kind": "catch",
+              "line": 63
+            },
+            {
+              "in": "gitDiff",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "gitClone",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "gitClone",
+              "kind": "throw",
+              "line": 94
+            }
+          ],
+          "hash": "245d2df7089575c73865eec549851894b1796c4b93fa366379a0cc3f6cc3ade7",
           "importsFiles": [
             "src/errors.ts",
             "src/types.ts"
@@ -711,14 +818,31 @@
             "isDocFile",
             "isSourceFile"
           ],
-          "hash": "5adb1c30dc73c0d987b0da2a4d3493a1f39c4d8f80cb8ff1d980db8516946931",
+          "hash": "d834a4368e3c4dfc3b2f21716de345917bd8e3bc1357783cce215b3325cca1f3",
           "path": "src/discovery/languages.ts"
         },
         {
           "exports": [
             "scanRepo"
           ],
-          "hash": "8ccaa2f33e2af000bca64abbf63b5f376c483ae874d9fcfcb901edd9253d235b",
+          "failurePaths": [
+            {
+              "in": "walkDir",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "in": "walkDir",
+              "kind": "catch",
+              "line": 95
+            }
+          ],
+          "hash": "fc6e00577f53f824c74083dfef7027c40bfae5e62ece7b06c7ac06cc813e1ec8",
+          "importOrder": [
+            "src/discovery/languages.ts",
+            "src/discovery/filters.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/filters.ts",
             "src/discovery/languages.ts",
@@ -727,11 +851,18 @@
           "path": "src/discovery/scanner.ts"
         },
         {
-          "hash": "1bc9046db2930ea8535f138c4601a85087727b8e88e3bb5d555b14e747dc9215",
+          "hash": "4a46a096b963494c6242f177d3e7b3b3117308a59cf96f83b1b72ea0f9658395",
           "path": "src/errors.ts"
         },
         {
-          "hash": "904cc2e2dc9763774905e21be6842d910a62343a83ec438270420cde329d4b87",
+          "failurePaths": [
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 21
+            }
+          ],
+          "hash": "e66b4762a844e3863ba246eb83277b705c498792b09438937271becf41b20b31",
           "importsFiles": [
             "src/pipeline/tokens.ts",
             "src/types.ts"
@@ -739,7 +870,7 @@
           "path": "src/extractors/code.ts"
         },
         {
-          "hash": "39a9fa8b578873fe983653f6944daaf43d2d6a88c2c3f69ed68ee18350eab32c",
+          "hash": "eae12f1ddac7c583982c2455fcf94da432c24d1a80a9c519701a734511989e35",
           "importsFiles": [
             "src/discovery/git.ts",
             "src/pipeline/tokens.ts",
@@ -748,7 +879,24 @@
           "path": "src/extractors/commits.ts"
         },
         {
-          "hash": "cf38d6dc162efd9deafd4ca5cd0a920c8d3a56120b1e9c8854e094960421c9fc",
+          "failurePaths": [
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 176
+            },
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 194
+            },
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 222
+            }
+          ],
+          "hash": "753eda5ca540d80b11e2abb291360638937367542e261e475ef248711d497c44",
           "importsFiles": [
             "src/pipeline/tokens.ts",
             "src/types.ts"
@@ -756,7 +904,14 @@
           "path": "src/extractors/config.ts"
         },
         {
-          "hash": "c9b4f02d1d8e2ac109c88c38853f3fba46a1367a8c24d600757122356da52cd1",
+          "failurePaths": [
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 20
+            }
+          ],
+          "hash": "f79e2395b88aed9883551f95584c5390ed0c7783241ff02a45d0881447eaab8e",
           "importsFiles": [
             "src/pipeline/tokens.ts",
             "src/types.ts"
@@ -768,7 +923,14 @@
             "matchImportsToSources",
             "parseFileImports"
           ],
-          "hash": "b884b769900188dfca259779837666bf46cb6f5686de6f83b6e7b34f474a5bcc",
+          "failurePaths": [
+            {
+              "in": "parseFileImports",
+              "kind": "catch",
+              "line": 24
+            }
+          ],
+          "hash": "b2d6e623006f47209d1bdee26f5d2c5f4bcca5ea419f08caa94b90dda1efafb2",
           "importsFiles": [
             "src/types.ts"
           ],
@@ -780,7 +942,15 @@
             "getExtractors",
             "isValidExtractor"
           ],
-          "hash": "9890fa78682a179357b329ff6bb79e0f3f1108ba243915bdd2fa97e3a56d1dd8",
+          "hash": "333b6a648510328032483670f13a35ec8987e2345ac1a8fd9aaa086a8fca8991",
+          "importOrder": [
+            "src/extractors/code.ts",
+            "src/extractors/commits.ts",
+            "src/extractors/docs.ts",
+            "src/extractors/tests.ts",
+            "src/extractors/config.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/extractors/code.ts",
             "src/extractors/commits.ts",
@@ -798,11 +968,23 @@
             "classifyScope",
             "stripStringsAndComments"
           ],
-          "hash": "2a0bda1af7acfbcb03637b49c10d2589df6c8282c419f16ab29ff9e82a696e1d",
+          "hash": "be26e73a5f03b3e6996d8c820cfde3c88aa8c0810ee5d90470deda4f4bd11c1f",
           "path": "src/extractors/scope.ts"
         },
         {
-          "hash": "dde75d9d5bb4b6f02ff0ea654a989b89fc91f8dc0dc1cb3368a0bef6553a2722",
+          "failurePaths": [
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 39
+            }
+          ],
+          "hash": "f17e8d192cf005e35cb491c75c51219ef7d6de0e2dd384810d4e89a2de48775f",
+          "importOrder": [
+            "src/pipeline/tokens.ts",
+            "src/extractors/imports.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/extractors/imports.ts",
             "src/pipeline/tokens.ts",
@@ -811,42 +993,42 @@
           "path": "src/extractors/tests.ts"
         },
         {
-          "hash": "02b67b509f4587e835ad3467e2b6e1c7dcd7dd6d2bcbf71a0f170648ded74784",
+          "hash": "e867a2e93ed8506927913113a06254d253ea778966ed4d25a73fce2ec9d382cb",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/formatters/alpaca.ts"
         },
         {
-          "hash": "cd1e3ebd8e7c35e807c741490074359271b6020732b8349e44aa53144b0b61b3",
+          "hash": "be86dd2456631fa21299ba0dfecdc5a12bf119fb0605e09d318db8c1002f14d6",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/formatters/chatml.ts"
         },
         {
-          "hash": "b322345b4059ada9d8301d3f25326c1eeaf8d5eb28850a5d45b262d853a69c4d",
+          "hash": "8dbfe8738d45d47cb099849d817d8e1583c7a56515efd1323f2e1260812d9fcc",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/formatters/completion.ts"
         },
         {
-          "hash": "e598c90ab81edd27307baef4aa271bf52251e997382747dfff8440e199e3ac67",
+          "hash": "8722c8a02a790e6e79a3b0d5da801307fc74008e52e83f7e15c342386e365682",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/formatters/fim.ts"
         },
         {
-          "hash": "994a683e015bb759a3bd347f672f2cd604ca8646a40576ad2581ce1fe01a0d46",
+          "hash": "ee983f6f450e9021b070c659ce2c67c08dc916b8865fe07635f84bc10b292a64",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/formatters/openai.ts"
         },
         {
-          "hash": "5abc167890b708f5fdc2f1545b4103339995e47e3654d9546830d2e1d591ac90",
+          "hash": "7d8b23997c3962488be0135e81fa010913c14465b2debe30f9068cb1a5fbf4c4",
           "importsFiles": [
             "src/types.ts"
           ],
@@ -860,7 +1042,7 @@
             "getFormatter",
             "isValidFormat"
           ],
-          "hash": "2f3cdd78535a9c1d0ac3af172e14eb4d52d0eeca848994c34a7962a6d6773662",
+          "hash": "54695060a9826cffcee9e1c77a07af1075c974d615111ad2b6ad891dca6747ea",
           "importsFiles": [
             "src/formatters/alpaca.ts",
             "src/formatters/chatml.ts",
@@ -891,14 +1073,28 @@
           ]
         },
         {
-          "hash": "dadeae2fb4da2fae02d81036daee37cca0f4ad5c717ce8cad842a670f093a29e",
+          "hash": "74322b9ca0115f43ac357bcc6f05778009b4d16f574e445d26429602eb69015c",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/formatters/sharegpt.ts"
         },
         {
-          "hash": "a69febc58351e03e7db113f03f642edc472dfaedecf7151deb74e38f9b3b2c77",
+          "hash": "7c4ad5a775955e9e34e37396ea737ca0c629ee7b72ec6bff6c14f142785c3b39",
+          "importOrder": [
+            "src/types.ts",
+            "src/pipeline/runner.ts",
+            "src/discovery/scanner.ts",
+            "src/extractors/registry.ts",
+            "src/formatters/registry.ts",
+            "src/pipeline/balance.ts",
+            "src/pipeline/tokens.ts",
+            "src/errors.ts",
+            "src/validate/report.ts",
+            "src/visual/scanner.ts",
+            "src/visual/runner.ts",
+            "src/visual/formatters.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/errors.ts",
@@ -913,7 +1109,8 @@
             "src/visual/runner.ts",
             "src/visual/scanner.ts"
           ],
-          "path": "src/index.ts"
+          "path": "src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -921,7 +1118,7 @@
             "assessTrainability",
             "getAutoBalanceConfig"
           ],
-          "hash": "8a65a4ed34d47ec2d558fd3ca42916877933b802fa32748e16e26d0b966ed490",
+          "hash": "c899b73ee97b89e361f6ca67e3b7dace563ef5e9b2016f65338a3eb71bf891a9",
           "importsFiles": [
             "src/types.ts"
           ],
@@ -931,14 +1128,14 @@
           "exports": [
             "chunkText"
           ],
-          "hash": "8033e40935ff8e57f55abaf1cb0c2da976b0555d64a9efc7c4652a6b1bc83bd4",
+          "hash": "fec1b3df1cfffd9c84ca7b7878deda45f4270ca001625e5badd4fbf327bffa66",
           "importsFiles": [
             "src/pipeline/tokens.ts"
           ],
           "path": "src/pipeline/chunker.ts"
         },
         {
-          "hash": "b9f3eeccc03fae2ca0be0403781b5555abd05dd2575d8f26cff4a86aec945428",
+          "hash": "6569e0686043d6e768bc86835531510c0e1aeb20d5603a0f70af6146e65594e3",
           "importsFiles": [
             "src/types.ts"
           ],
@@ -948,7 +1145,7 @@
           "exports": [
             "passesQuality"
           ],
-          "hash": "f9671dc0ef5f5ab107b95b2dbc0160f6b1daa5c759e6df48c3adfdee5f1b8399",
+          "hash": "47540bcb2446cf0c3a7a0253cafdad7b3e06f67479e542b2efbe7d552686d60b",
           "importsFiles": [
             "src/pipeline/tokens.ts",
             "src/types.ts"
@@ -962,7 +1159,28 @@
             "inspectPipeline",
             "runPipeline"
           ],
-          "hash": "c1e99ef705b95b5e296a262db317ab8e7dee56f8ab6f1abb30f12887e592d675",
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 25
+            },
+            {
+              "in": "runPipeline",
+              "kind": "catch",
+              "line": 90
+            },
+            {
+              "in": "runPipeline",
+              "kind": "throw",
+              "line": 198
+            },
+            {
+              "in": "inspectPipeline",
+              "kind": "catch",
+              "line": 278
+            }
+          ],
+          "hash": "16712e56837d8d77153c2cea3a6a54d345e4c79494c4a1cf072b38b91733e9aa",
           "importsFiles": [
             "src/discovery/git.ts",
             "src/discovery/scanner.ts",
@@ -1121,120 +1339,227 @@
           "exports": [
             "estimateTokens"
           ],
-          "hash": "0b66fc3b6cdc3fb306a0ab243758287d3285ae2a901a0620866d5c67a30765ed",
+          "hash": "1b5068d7f0396aaf1422360e9599feee3670f0935364b7de6e7c49997af1b593",
           "path": "src/pipeline/tokens.ts"
         },
         {
-          "hash": "8098abfea084dc7f0eaa4098379fc4318c8441747975efd5bac1d5e86d435899",
+          "hash": "bb54c0b19ae29e44d784875cc839d530513b5cf8df8acaa88b2c8214ea178e2d",
           "importsFiles": [
             "src/pipeline/balance.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/balance.test.ts"
+          "path": "src/tests/balance.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "faa370da2dbe6b9969dcf3dea12fdf7e0b392b8a3c11524d5598c6a936451d18",
+          "hash": "b034f9da8edb1d8278e9e38d94d5a4421869feaac5437ec9db2fa5b12843e1a1",
           "importsFiles": [
             "src/pipeline/chunker.ts"
           ],
-          "path": "src/tests/chunker.test.ts"
+          "path": "src/tests/chunker.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "3332330fcaf2d63373cce1cc12c5f8da1ed62bef8e621d628e5a01a4092a4039",
-          "path": "src/tests/cli.test.ts"
+          "hash": "619b863c8e7a2c41266a34515fc77a6f94e3cbbde2d92c0a8ef3081a304c84e6",
+          "path": "src/tests/cli.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "node --test"
         },
         {
-          "hash": "745a276f11d034e0111598ee0846881c7fe7b141c3e4e7960ef28288b25610ba",
+          "hash": "df61577e55bedbfe9073059f786c3f271855409e6278efa7a901638a1b8982a3",
           "importsFiles": [
             "src/formatters/completion.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/completion.test.ts"
+          "path": "src/tests/completion.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "2e685547ebe4d10e80cfe3c7d3a0bac9df83b018a50416f670341b13145a6fd6",
+          "hash": "cdf45babce7273f3e23a2741afc8f8d5befecd8ade16fd303c32a54226b29c53",
           "importsFiles": [
             "src/pipeline/dedup.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/dedup.test.ts"
+          "path": "src/tests/dedup.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "9d36f4a2fbfb865b1ef4db3a98ac236eefd0494cfa26a9fd62a67e991f7fee10",
+          "hash": "5f03bd6d417ce5cd2e226158707628d514c480d49d265deeba35f1d403cbe903",
           "importsFiles": [
             "src/errors.ts"
           ],
-          "path": "src/tests/errors.test.ts"
+          "path": "src/tests/errors.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "986d093216077b834ca454c99e094b9d2034b0d844322a075d88bffef9dcaca7",
+          "entry": "collectPairs",
+          "entryRule": 1,
+          "hash": "d09f9a82ca2caa04d87ddd6b947f937fcb1be2073e0dbe39b244b913305a9949",
+          "importOrder": [
+            "src/extractors/code.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/code.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/extractors/code.test.ts"
+          "path": "src/tests/extractors/code.test.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 17,
+                  "name": "extract",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "collectPairs"
+            }
+          ],
+          "testFramework": "node --test"
         },
         {
-          "hash": "e4525e0a7a3b29e22e9eac1c37f9440dd24f5b306fb634b4d53bfc9b1b5f9e12",
+          "entry": "collectPairs",
+          "entryRule": 1,
+          "hash": "5b06bc2aee7ff517e6ac5cc25d180743d512437c666fbb4097597172277c76f2",
+          "importOrder": [
+            "src/extractors/commits.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/commits.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/extractors/commits.test.ts"
+          "names": [
+            "src/extractors/config.ts"
+          ],
+          "path": "src/tests/extractors/commits.test.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 17,
+                  "name": "extract",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "collectPairs"
+            }
+          ],
+          "testFramework": "node --test"
         },
         {
-          "hash": "5d8c37ba890dbfd064d196938e7eb108664c49454fdf8bcad3345cf886289da9",
+          "entry": "collectPairs",
+          "entryRule": 1,
+          "hash": "c7e29cd166e2e1da0511eef1e4326d95aa750cdc7071cafb7ef025fc00b214bd",
+          "importOrder": [
+            "src/extractors/docs.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/docs.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/extractors/docs.test.ts"
+          "path": "src/tests/extractors/docs.test.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 17,
+                  "name": "extract",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "collectPairs"
+            }
+          ],
+          "testFramework": "node --test"
         },
         {
-          "hash": "0eb1bdae4f8c4d90384cc1048375ada2113889ab92388b8dbb6d6e5c6430db6d",
+          "entry": "collectPairs",
+          "entryRule": 1,
+          "hash": "b6c4a390d64e4072732369d8be23c37e69df6d714545a6c099a80e6208a1044e",
+          "importOrder": [
+            "src/extractors/tests.ts",
+            "src/discovery/scanner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/discovery/scanner.ts",
             "src/extractors/tests.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/extractors/tests.test.ts"
+          "path": "src/tests/extractors/tests.test.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 17,
+                  "name": "extract",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "collectPairs"
+            }
+          ],
+          "testFramework": "node --test"
         },
         {
-          "hash": "6740c80f427c56d881f8c0cb2b0a818917afad5e850a80e9cb297058592a7a56",
+          "hash": "b398c6b5d9e5d52958907f299e78dfa9c4034be15891da56628ef9691e1cec20",
           "importsFiles": [
             "src/discovery/filters.ts"
           ],
-          "path": "src/tests/filters.test.ts"
+          "path": "src/tests/filters.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "0078bc130edcbab7593d66d0062fca68886345d090edb8095d147077a45fa3a9",
+          "hash": "e0720baad6db7e3f61bf03daefefaa88b0d6448fbf2d935c24e9f92c6fce6000",
           "importsFiles": [
             "src/formatters/fim.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/fim.test.ts"
+          "path": "src/tests/fim.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "dc66370e9c1a0f58795ca28c1237a007383238fe0d26b78b453fe50dfb2090f8",
+          "hash": "56e338db7e09e615d3ee72d8bb72331908f3ab39be0f03b50a4c1d806c2a43f3",
           "path": "src/tests/fixtures/sample-repo/README.md"
         },
         {
-          "hash": "12299b9e58c2c22d8164c51d0846ff60c1343c0a43659c2d34b6d4aa3cec0405",
+          "hash": "7e7c9f3f9284c8772713b0da4640d93b4f47391c047e65b76ab7eece08702a37",
           "path": "src/tests/fixtures/sample-repo/docs/api.md"
         },
         {
-          "hash": "aa89211b96d739a1fb942a744b7907dd3365ed1dd4697b59facb144b4c447cdd",
+          "hash": "b72359ad7d984120c9473e8922bbd8dc788e14a1096738e9771edf346bde4360",
           "path": "src/tests/fixtures/sample-repo/package.json"
         },
         {
-          "hash": "265f75a3c323a6a462e26e399a322f8c8110a88dc7cb4a70a3257719369c3900",
+          "hash": "204aed9e5969111a30be884ac8fcf29b85db644bb52c266e5abe44a103865fe1",
           "importsFiles": [
             "src/tests/fixtures/sample-repo/src/utils.ts"
           ],
-          "path": "src/tests/fixtures/sample-repo/src/index.ts"
+          "path": "src/tests/fixtures/sample-repo/src/index.ts",
+          "reexportsOnly": true
         },
         {
           "exports": [
@@ -1243,15 +1568,16 @@
             "isPalindrome",
             "multiply"
           ],
-          "hash": "185080cbe40b87af199bd105e62074a5d72aaee54cb9af7651febbf3f3633a27",
+          "hash": "6f331be91a6e9b21cda9e06ba0098afd97164f04e70d3b50985ef2568136e891",
           "path": "src/tests/fixtures/sample-repo/src/utils.ts"
         },
         {
-          "hash": "c9750bd61c6d5251723849f320043c3c52108a224ea3aeb62f5a300c9a58cc28",
+          "hash": "1582dab50090a31c4f13159d6274e10fc44b355ac644d8667369a94dbb9cb7de",
           "importsFiles": [
             "src/tests/fixtures/sample-repo/src/utils.ts"
           ],
-          "path": "src/tests/fixtures/sample-repo/tests/utils.test.ts"
+          "path": "src/tests/fixtures/sample-repo/tests/utils.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
@@ -1278,27 +1604,34 @@
           "path": "src/tests/fixtures/visual-corpus/assets/rejected/keth_soldier_front_02.png"
         },
         {
-          "hash": "cfb1b8c2490d3385fc60ce820c989bd53bef7b12eb87f2289941bfdf9bc8f5d6",
+          "hash": "eab26b73ee3b4319640313c3874292cb5bf694f248aa97002c34bf77cd4c06c2",
           "path": "src/tests/fixtures/visual-corpus/comparisons/cmp_001.json"
         },
         {
-          "hash": "0c5b786501e0744befd2d44fcd1ea36c564d114aadf1fb78e47c54be19dda968",
+          "hash": "1995558c2439011431f73d97a1b4b678bfb8de028216eb473c1997ab2b36380a",
           "path": "src/tests/fixtures/visual-corpus/docs/constitution.md"
         },
         {
-          "hash": "bc61af67be5ba930b0df4bafdf381bfb4c032fc5862440912a5e57c951cb57a9",
+          "hash": "0665522c38582dcb9435c840f318d60e37a76fc8ea4d00012bd7029aeb5f180b",
           "path": "src/tests/fixtures/visual-corpus/docs/review-rubric.md"
         },
         {
-          "hash": "da2839920e0552acc9f1d623834a732f03613d674ac489640fb362f15be00899",
+          "hash": "dedd79e97965c84275978ee017eb7058ddaf2d3320ea4e2282742281c6057a42",
           "path": "src/tests/fixtures/visual-corpus/records/keth_soldier_front_01.json"
         },
         {
-          "hash": "40ec5e6ffbe76f514252f841d78939858460a24eea2b85e9e051a98c83505fba",
+          "hash": "d7e571dc668cc7505fef14aaf8f3c0e9865878cad98e8c27f11f003876637d43",
           "path": "src/tests/fixtures/visual-corpus/records/keth_soldier_front_02.json"
         },
         {
-          "hash": "f59eedef204526e74d7670b667e05b7aff1ed01e65f6b2f228337442cb271117",
+          "hash": "ef28a3b5d11324f05c70d67a3f6091acc7ec73501c6549067e6489a53423da12",
+          "importOrder": [
+            "src/formatters/alpaca.ts",
+            "src/formatters/sharegpt.ts",
+            "src/formatters/openai.ts",
+            "src/formatters/raw.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/formatters/alpaca.ts",
             "src/formatters/openai.ts",
@@ -1306,156 +1639,219 @@
             "src/formatters/sharegpt.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/formatters.test.ts"
+          "path": "src/tests/formatters.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "49d3476ef2bc89b0980242078112a201c1f1393b18f365df529ec820d7747567",
+          "hash": "7dc35308da76eeefd632274a524547c0beb8172cbeee65728caa3222a03f5fd5",
           "importsFiles": [
             "src/discovery/git.ts",
             "src/errors.ts"
           ],
-          "path": "src/tests/git.test.ts"
+          "path": "src/tests/git.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "ecdb98766ee53defc78b4d0367cf03addad79f6e736fbf74594fcfcfb9bef119",
+          "hash": "f6d0a843de716a67624f381699998d805dd6d9e1c0cee81b0c5d2d7c6c938e37",
           "importsFiles": [
             "src/extractors/imports.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/imports.test.ts"
+          "path": "src/tests/imports.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "b9d091bdf67f989468502ce1a03986030a1cc53e9b73c0d42dc55f5c16fc6e3f",
+          "hash": "489d775a78aa072f14a290f83d42101630e21e798442a8e4f9b4188486b1b54a",
           "importsFiles": [
             "src/discovery/languages.ts"
           ],
-          "path": "src/tests/languages.test.ts"
+          "path": "src/tests/languages.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "8b4cc5bc44bf6a3f6a64cf5156db0cbf62300866e3b9e3142040696c7151ab63",
+          "hash": "e5d491085d27ef37292b9e7df33105e247cf3f33bb7390176bab93cd8c2f3744",
           "importsFiles": [
             "src/pipeline/runner.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/pipeline.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "src/tests/pipeline.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "647256220be0eeffe1c0de61882742b8d5b58f4ffc289f9a136602b15feea1e2",
+          "hash": "de8194a828bf7a813c705270d0d25aeb0df34ba7be3e763e5e1e037771e748d9",
           "importsFiles": [
             "src/pipeline/quality.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/quality.test.ts"
+          "path": "src/tests/quality.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "778192cb155bad597486467791cdd7484ae31c8ca71913b5035eb4fe170153b2",
+          "hash": "493a657d784c03884c3e51bd8b94cca4addd49005d387043b26d6f5142dc567b",
           "importsFiles": [
             "src/extractors/registry.ts",
             "src/formatters/registry.ts"
           ],
-          "path": "src/tests/registry.test.ts"
+          "path": "src/tests/registry.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "7e57371545aaa98e8f030fc4684e268566df2c5daf24c2441391486f9d817be1",
+          "hash": "567d2c771cff47631564a75fc35fcf5789d3cd283343fb2a69692b6418d4a322",
           "importsFiles": [
             "src/discovery/scanner.ts"
           ],
-          "path": "src/tests/scanner.test.ts"
+          "path": "src/tests/scanner.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "282e2a5b7e53b9da97f1589be3d1261ac05d5b24657d1542c21930bec63d7df8",
+          "hash": "8fc1fba2bb7545df372fab09b67d1535fb92c1eaf01030d399d1c1be34826e65",
           "importsFiles": [
             "src/extractors/scope.ts"
           ],
-          "path": "src/tests/scope.test.ts"
+          "path": "src/tests/scope.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "4b6582211cdcb9c4bf57344741337761de147d86c5016b333c1b1dae9c43719d",
+          "hash": "24e8c950b8c88863aeb3c9fabe19645a4ae559030160bb1e9f6f5c224908c864",
           "importsFiles": [
             "src/pipeline/tokens.ts"
           ],
-          "path": "src/tests/tokens.test.ts"
+          "path": "src/tests/tokens.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "b3cc02cb343de97b7db79cf079f5e84a42a3b8b6a3995e109e5fc9d9b3292df3",
+          "entry": "makePair",
+          "entryRule": 1,
+          "hash": "4fdc9b59af8b9dd0bf80ca97be7be6c7b54db98318fda4b46d38cb47107f71e1",
           "importsFiles": [
             "src/validate/content.ts",
             "src/validate/distribution.ts"
           ],
-          "path": "src/tests/validate/content.test.ts"
+          "path": "src/tests/validate/content.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "ed2710222a6e52e28af00e3559cd6cd38fdadf5f6c7e5e4d41c62d72c43e81b7",
+          "entry": "makePairs",
+          "entryRule": 1,
+          "hash": "efe48639408b2c347b71f55577801a735e6a94fd4127358492f37d36817ca7b9",
           "importsFiles": [
             "src/validate/distribution.ts"
           ],
-          "path": "src/tests/validate/distribution.test.ts"
+          "path": "src/tests/validate/distribution.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "bb72735d123f0382773a21405cbc88b87fa8384e761320e7f1be86ffed8979d1",
+          "hash": "e97850de82a315a1f88ff2775dcda16155f960be64cc832e440eb8cc6cd779e4",
           "importsFiles": [
             "src/validate/report.ts"
           ],
-          "path": "src/tests/validate/report.test.ts"
+          "path": "src/tests/validate/report.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "d0903e1c3597c4597d03b62185e7a73dfa698d11fb826d4cfa7f83c3a8c2fedd",
+          "entry": "makeStructural",
+          "entryRule": 1,
+          "hash": "890de4789c64c668d78af3933a164520e18589f840cdb9a2b8852d96cfc69337",
+          "importOrder": [
+            "src/validate/scoring.ts",
+            "src/validate/structural.ts",
+            "src/validate/distribution.ts",
+            "src/validate/content.ts"
+          ],
           "importsFiles": [
             "src/validate/content.ts",
             "src/validate/distribution.ts",
             "src/validate/scoring.ts",
             "src/validate/structural.ts"
           ],
-          "path": "src/tests/validate/scoring.test.ts"
+          "path": "src/tests/validate/scoring.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "8281a796c943e6d31543460d7d91adcf14ef62a34fdfd99515ad4ecaa17265f8",
+          "hash": "f7e7b889236a4bbc87a656e6a761f92e90468768e44ab9188738b5afef1507f0",
           "importsFiles": [
             "src/validate/structural.ts"
           ],
-          "path": "src/tests/validate/structural.test.ts"
+          "path": "src/tests/validate/structural.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "3baa09e498af261fc901895ad77d4d06319d793410d800f03d6ce96aadae8956",
+          "entry": "collect",
+          "entryRule": 1,
+          "hash": "da2083b4fa80e08f3b30aca831b52132cc409a040ae6c681fadec5e5b3d49f89",
+          "importOrder": [
+            "src/visual/scanner.ts",
+            "src/visual/extractors.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/types.ts",
             "src/visual/extractors.ts",
             "src/visual/scanner.ts"
           ],
-          "path": "src/tests/visual/extractors.test.ts"
+          "path": "src/tests/visual/extractors.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "fc1cce0e92d1d213dd15e163775db1cb96b81b212c677c76bd7695d4c4cd70d8",
+          "entry": "makeClassifyUnit",
+          "entryRule": 1,
+          "hash": "44e472cfb05efc70f1c9d59131736a43d689075de712d9422dd82cf4612888a1",
+          "importOrder": [
+            "src/visual/formatters.ts",
+            "src/visual/extractors.ts"
+          ],
           "importsFiles": [
             "src/visual/extractors.ts",
             "src/visual/formatters.ts"
           ],
-          "path": "src/tests/visual/formatters.test.ts"
+          "path": "src/tests/visual/formatters.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "77291ff74195850353a88ce1a2177898eb99d70187bb9bff8ad55ae2760ec018",
+          "entry": "makePng",
+          "entryRule": 1,
+          "hash": "ccb129846eb10d28419e56a68b62618c7e1253594f40013ba1958e1e6a57fa77",
           "importsFiles": [
             "src/visual/image.ts"
           ],
-          "path": "src/tests/visual/image.test.ts"
+          "path": "src/tests/visual/image.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "cae2a402cdfa54c1744c147e1d92053e694c0a1d15e65143ac0c6c346d236b6d",
+          "entry": "makeVisualConfig",
+          "entryRule": 1,
+          "hash": "5257b596ce0675d88e99286eeed8c79ad73a3a6a4abda384639a1d8c0db11fc0",
+          "importOrder": [
+            "src/visual/runner.ts",
+            "src/types.ts"
+          ],
           "importsFiles": [
             "src/types.ts",
             "src/visual/runner.ts"
           ],
-          "path": "src/tests/visual/runner.test.ts"
+          "path": "src/tests/visual/runner.test.ts",
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
-          "hash": "c7212446480dfb67e2f45df8cc1df89814003df538c5f435556af10808bc971e",
+          "hash": "31ca8a8b32ffd113a1ea4f26d3cf43e71ed2fe6969c75d5f9fac6a60ee5c8473",
           "importsFiles": [
             "src/visual/scanner.ts"
           ],
-          "path": "src/tests/visual/scanner.test.ts"
+          "path": "src/tests/visual/scanner.test.ts",
+          "testFramework": "node --test"
         },
         {
-          "hash": "fe9c0533a124ebdeda4081552684b1e5f227606e2110097f0fd5892ce6907502",
+          "hash": "c8eca31d66592ab879eb5cada3a6e179f5e61a2dca6baf30e509fdd74c0461d2",
           "path": "src/types.ts"
         },
         {
@@ -1465,7 +1861,7 @@
             "secretScan",
             "validateContamination"
           ],
-          "hash": "58045e129f696310ef721b7da7b28f67af0a154ff797e60ea1882060cf06c39a",
+          "hash": "279855c98c243e22d6fc916cc5962ad594cf6c1548a03353299883fa77e1e9cd",
           "importsFiles": [
             "src/validate/distribution.ts"
           ],
@@ -1475,7 +1871,7 @@
           "exports": [
             "validateContent"
           ],
-          "hash": "67ef7ec798c58875e51b9e3b8234385c973d96614d5ee3d0af840917e196b331",
+          "hash": "91fee3f04adc143c6226414eeda5b9b56a886e2eb96f1f159a508e3e72541cfa",
           "importsFiles": [
             "src/validate/distribution.ts"
           ],
@@ -1485,7 +1881,7 @@
           "exports": [
             "validateDistribution"
           ],
-          "hash": "64654e35d5d2eaf32ae73ebe8bed4a7e4f9678a644b5842307cd51f9abc42b90",
+          "hash": "072f04e032d0dba2146c5a59465f435fd62f86b0f289be4a5907aa498011428b",
           "importsFiles": [
             "src/pipeline/tokens.ts"
           ],
@@ -1497,7 +1893,14 @@
           "exports": [
             "runValidation"
           ],
-          "hash": "5a2a431d6fdc77283605fb87b4d758c2c02d9d6db75bfc450c856efb32aa2da3",
+          "failurePaths": [
+            {
+              "in": "runValidation",
+              "kind": "catch",
+              "line": 44
+            }
+          ],
+          "hash": "0249df8a06a921e98b4a6ce1fdae2755983fcf790fded1107cb8656d32a7d66b",
           "importsFiles": [
             "src/pipeline/tokens.ts",
             "src/validate/contamination.ts",
@@ -1564,7 +1967,13 @@
           "exports": [
             "computeScore"
           ],
-          "hash": "0d44434bd3ff3425c5a775168bcec78875fc7d5594c4b49f1589ef41f66de968",
+          "hash": "bb7622f8803dc418db64f264a547ac0fa4abb6b8795e787d0dac0f8eb5b53b28",
+          "importOrder": [
+            "src/validate/structural.ts",
+            "src/validate/distribution.ts",
+            "src/validate/content.ts",
+            "src/validate/contamination.ts"
+          ],
           "importsFiles": [
             "src/validate/contamination.ts",
             "src/validate/content.ts",
@@ -1577,7 +1986,14 @@
           "exports": [
             "validateStructural"
           ],
-          "hash": "286829af5e79e115fee5d283f7e9b9f741e61848e7b7323dd018d7c28a4f6204",
+          "failurePaths": [
+            {
+              "in": "validateStructural",
+              "kind": "catch",
+              "line": 47
+            }
+          ],
+          "hash": "aff9ee15d374fca63d51ea31d764d84bb1065ce9679a6c76af5a34aa396e3b53",
           "path": "src/validate/structural.ts"
         },
         {
@@ -1588,7 +2004,14 @@
             "extractSetCoherence",
             "generateSyntheticPairs"
           ],
-          "hash": "07bd9368f1bee110d668aa0b49d0f4e0fee06f3d85ba5097a0d7beba281a74a5",
+          "failurePaths": [
+            {
+              "in": "loadDocTexts",
+              "kind": "catch",
+              "line": 687
+            }
+          ],
+          "hash": "9067f6300b70d699302c6e837f7171d147815e64a23c7204f553229e29cfb6c9",
           "importsFiles": [
             "src/types.ts"
           ],
@@ -1600,7 +2023,7 @@
             "getVisualFormatter",
             "isValidVisualFormat"
           ],
-          "hash": "98bbf3f245634459d8dfcc6bf13606c8b269b9b78b6ec04b123949a81cfaad99",
+          "hash": "bd897b110986781ab5208a518455d9f782a8f528980c32f11b301defbc2af534",
           "importsFiles": [
             "src/types.ts",
             "src/visual/extractors.ts"
@@ -1617,7 +2040,14 @@
             "toDataUri",
             "validateImage"
           ],
-          "hash": "e76a9a87243c33006ecabe69e575c1000fbc6ef0381e5d4aeac6451f18f75d9c",
+          "failurePaths": [
+            {
+              "in": "loadImage",
+              "kind": "catch",
+              "line": 206
+            }
+          ],
+          "hash": "393a196b9c3a413046841e6406960835473fd80f92ae75dd3956cba8b5c3ae44",
           "path": "src/visual/image.ts"
         },
         {
@@ -1627,7 +2057,19 @@
             "inspectVisualPipeline",
             "runVisualPipeline"
           ],
-          "hash": "f40f4ce294e3aa08f25451a2c2a99216a2039814d5bbd9977c58e9d04794baa3",
+          "failurePaths": [
+            {
+              "in": "runVisualPipeline",
+              "kind": "catch",
+              "line": 225
+            },
+            {
+              "in": "runVisualPipeline",
+              "kind": "catch",
+              "line": 245
+            }
+          ],
+          "hash": "a5b14febdca45a945e0b5be00b29f329d2971e854b59f0dc7444776b490138c3",
           "importsFiles": [
             "src/types.ts",
             "src/visual/extractors.ts",
@@ -1749,7 +2191,44 @@
           "exports": [
             "scanVisualRepo"
           ],
-          "hash": "fd5eaa45d58269bf9d18daa9cf1cd47a9fb7fa221132df6b690745541685b4e3",
+          "failurePaths": [
+            {
+              "in": "scanAssets",
+              "kind": "catch",
+              "line": 82
+            },
+            {
+              "in": "loadRecords",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "loadRecords",
+              "kind": "catch",
+              "line": 158
+            },
+            {
+              "in": "loadComparisons",
+              "kind": "catch",
+              "line": 227
+            },
+            {
+              "in": "loadComparisons",
+              "kind": "catch",
+              "line": 269
+            },
+            {
+              "in": "scanCanonDocs",
+              "kind": "catch",
+              "line": 282
+            },
+            {
+              "in": "scanCanonDocs",
+              "kind": "catch",
+              "line": 296
+            }
+          ],
+          "hash": "dcf284e921c4a5d1cc890fcbca915bd3d7c08b83a021dd255be7361ef6990e43",
           "importsFiles": [
             "src/types.ts",
             "src/visual/image.ts"
@@ -1763,39 +2242,157 @@
       "importConfidence": "full",
       "name": "src",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 12,
+          "where": [
+            "caller"
+          ],
+          "writes": 9
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:.github/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:package-lock.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:package.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:src"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:tsconfig.json"
+          ],
+          "writes": 0
+        }
+      ],
       "outsideReads": 17,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 32,
       "unresolvedSites": 0
     }
   ],
   "doors": [
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "test",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.17.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
-          "step": "3",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
+          "dir": "",
           "job": "test",
-          "step": "4",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
+        },
+        {
+          "dir": "",
+          "job": "test",
+          "programs": [
+            "npx"
+          ],
+          "step": "Coverage report for Codecov"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1807,15 +2404,86 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "test",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/extractors/code.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/extractors/commits.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/extractors/docs.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/extractors/tests.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/validate/content.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/validate/distribution.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/validate/report.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/validate/scoring.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/validate/structural.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/visual/extractors.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/visual/formatters.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/visual/image.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/visual/runner.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "src/tests/visual/scanner.test.ts",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 15,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1827,13 +2495,37 @@
         "publishesTo": [],
         "releases": false
       },
+      "shellMissed": [
+        {
+          "base": "src/tests/",
+          "files": 19,
+          "platform": "linux",
+          "tests": true,
+          "twoStars": true
+        }
+      ],
       "stages": [],
+      "tests": [
+        {
+          "coverage": true,
+          "files": 14,
+          "job": "test",
+          "junit": true,
+          "runner": "node --test",
+          "step": "4",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -1847,6 +2539,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -1861,7 +2554,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -1869,18 +2565,74 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -1894,7 +2646,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -1952,31 +2704,74 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 1,
+      "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
-          "step": "2",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "2"
         },
         {
+          "dir": "",
           "job": "publish",
-          "step": "3",
-          "text": "npm run verify"
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
         },
         {
+          "dir": "",
           "job": "publish",
-          "step": "4",
-          "text": "npm audit --audit-level=moderate"
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
         },
         {
+          "dir": "",
           "job": "publish",
-          "step": "5",
-          "text": "npm publish --access public --provenance"
+          "programs": [
+            "npm"
+          ],
+          "step": "5"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Publish",
@@ -1995,15 +2790,86 @@
       "readers": [],
       "runs": [
         {
+          "built": true,
           "directory": true,
           "job": "publish",
           "matched": true,
           "path": "src/",
-          "runKind": "checks",
+          "runKind": "executes",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/extractors/code.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/extractors/commits.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/extractors/docs.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/extractors/tests.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/validate/content.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/validate/distribution.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/validate/report.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/validate/scoring.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/validate/structural.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/visual/extractors.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/visual/formatters.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/visual/image.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/visual/runner.test.ts",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "path": "src/tests/visual/scanner.test.ts",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 1,
+      "runsCount": 15,
       "secrets": [
         "NPM_TOKEN"
       ],
@@ -2026,7 +2892,28 @@
         ],
         "releases": false
       },
+      "shellMissed": [
+        {
+          "base": "src/tests/",
+          "files": 19,
+          "platform": "linux",
+          "tests": true,
+          "twoStars": true
+        }
+      ],
       "stages": [],
+      "tests": [
+        {
+          "files": 14,
+          "job": "publish",
+          "runner": "node --test",
+          "step": "3",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -2131,9 +3018,10 @@
     }
   ],
   "edges": [],
+  "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "3665fc1f2e6bab2d267c1b054480ee5f844467f2",
-    "tracked": 135
+    "commit": "b3caf9f83d8b53ce8b02e43e1dacc8e1b0b6cca5",
+    "tracked": 136
   },
   "landings": [
     {
@@ -2287,5 +3175,25 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 49,
+  "testsNotRun": [
+    "src/tests/balance.test.ts",
+    "src/tests/chunker.test.ts",
+    "src/tests/cli.test.ts",
+    "src/tests/completion.test.ts",
+    "src/tests/dedup.test.ts",
+    "src/tests/errors.test.ts",
+    "src/tests/filters.test.ts",
+    "src/tests/fim.test.ts",
+    "src/tests/formatters.test.ts",
+    "src/tests/git.test.ts",
+    "src/tests/imports.test.ts",
+    "src/tests/languages.test.ts",
+    "src/tests/pipeline.test.ts",
+    "src/tests/quality.test.ts",
+    "src/tests/registry.test.ts",
+    "src/tests/scanner.test.ts",
+    "src/tests/scope.test.ts",
+    "src/tests/tokens.test.ts"
+  ],
   "unassigned": []
 }
