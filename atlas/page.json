@@ -17,62 +17,29 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 129,
+      "added": 0,
+      "changed": 1,
       "moved": 0,
-      "parts": 5,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "sentence": "CI's pull request trigger no longer names `.github/workflows/**`, `atlas/**`, `codecov.yml`, `package.json`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `src/**` and `tsconfig.json`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI's push trigger now also names `codecov.yml`.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "src/tests/extractors/code.test.ts",
-          "src/tests/extractors/commits.test.ts",
-          "src/tests/extractors/docs.test.ts",
-          "src/tests/extractors/tests.test.ts",
-          "src/tests/validate/content.test.ts",
-          "src/tests/validate/distribution.test.ts",
-          "src/tests/validate/report.test.ts",
-          "src/tests/validate/scoring.test.ts",
-          "src/tests/validate/structural.test.ts",
-          "src/tests/visual/extractors.test.ts",
-          "src/tests/visual/formatters.test.ts",
-          "src/tests/visual/image.test.ts",
-          "src/tests/visual/runner.test.ts",
-          "src/tests/visual/scanner.test.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 1 more change to a door.",
-        "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "1 file added and 129 changed content, across 5 parts.",
+        "sentence": "1 file changed content, across 1 part.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "3665fc1f2e6bab2d267c1b054480ee5f844467f2",
-      "generatedAt": "2026-09-24T08:44:55.228Z"
+      "commit": "b3caf9f83d8b53ce8b02e43e1dacc8e1b0b6cca5",
+      "generatedAt": "2026-09-30T20:11:59.242Z"
     },
     "unchanged": false
   },
@@ -81,7 +48,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "b3caf9f83d8b53ce8b02e43e1dacc8e1b0b6cca5",
+  "commit": "fdf8c0656b44ec4138df8d7e9e712b78e6844343",
   "defaultBranch": "main",
   "derived": "5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
   "doors": [
@@ -127,7 +94,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
+        "on a pull request",
         "on a push touching 9 paths",
         "or by hand"
       ]
@@ -270,7 +237,7 @@
   "edges": [],
   "engine": "1.24.0",
   "generated": [],
-  "generatedAt": "2026-09-30T20:11:59.242Z",
+  "generatedAt": "2026-10-01T02:12:30.633Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
     "9 writes and 12 reads go to a path their caller passes, not to this repository.",
