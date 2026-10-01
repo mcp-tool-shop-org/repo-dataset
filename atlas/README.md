@@ -1,22 +1,19 @@
 # repo-dataset: how it works
 
-Mapped at 2026-09-30 from commit b3caf9f by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit fdf8c06 by Atlas 1.24.0.
 
 ## What this is
 
 5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.
 
-## What changed since 2026-09-24 (3665fc1)
+## What changed since 2026-09-30 (b3caf9f)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.
-- And 1 more change to a door.
-- 1 file added and 129 changed content, across 5 parts.
+- CI's pull request trigger no longer names `.github/workflows/**`, `atlas/**`, `codecov.yml`, `package.json`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `src/**` and `tsconfig.json`.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
+1. **CI.** On a pull request; on a push touching 9 paths; or by hand. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Publish.** When a release is published. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
 4. **@mcptoolshop/repo-dataset** (the package people import). Loads src/index.ts.

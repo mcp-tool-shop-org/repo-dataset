@@ -89,8 +89,8 @@
     "definition": "commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.",
     "files": [
       {
-        "commits": 9,
-        "lines": 287,
+        "commits": 11,
+        "lines": 291,
         "path": ".github/workflows/ci.yml"
       },
       {
@@ -214,8 +214,8 @@
         "path": "TEST_SPEC_VISUAL.md"
       },
       {
-        "commits": 2,
-        "lines": 164,
+        "commits": 4,
+        "lines": 246,
         "path": "atlas/README.md"
       },
       {
@@ -224,18 +224,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 2,
-        "lines": 412,
+        "commits": 4,
+        "lines": 820,
         "path": "atlas/page.json"
       },
       {
-        "commits": 2,
-        "lines": 1640,
+        "commits": 4,
+        "lines": 1752,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 2,
-        "lines": 4582,
+        "commits": 4,
+        "lines": 7182,
         "path": "atlas/structure.json"
       },
       {
@@ -804,9 +804,9 @@
     "level": "low",
     "reason": "fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions"
   },
-  "generatedAt": "2026-09-30T20:11:59.242Z",
+  "generatedAt": "2026-10-01T02:12:30.633Z",
   "generatedFrom": {
-    "commit": "b3caf9f83d8b53ce8b02e43e1dacc8e1b0b6cca5"
+    "commit": "fdf8c0656b44ec4138df8d7e9e712b78e6844343"
   },
   "pairs": [],
   "parameters": {
@@ -819,16 +819,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "both",
-    "headDate": "2026-09-29T16:47:07-07:00",
+    "headDate": "2026-09-30T13:46:36-07:00",
     "inScopeFiles": 141,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 23,
+    "qualifyingCommits": 24,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-02T23:47:07.000Z",
+    "since": "2026-04-03T20:46:36.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
