@@ -1,15 +1,14 @@
 # repo-dataset: how it works
 
-Mapped at 2026-10-01 from commit fdf8c06 by Atlas 1.24.0.
+Mapped at 2026-11-11 from commit 84e1689 by Atlas 1.26.0.
 
 ## What this is
 
 5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.
 
-## What changed since 2026-09-30 (b3caf9f)
+## What changed since 2026-10-01 (fdf8c06)
 
-- CI's pull request trigger no longer names `.github/workflows/**`, `atlas/**`, `codecov.yml`, `package.json`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `src/**` and `tsconfig.json`.
-- 1 file changed content, across 1 part.
+Nothing structural changed since 2026-10-01; 2 files changed content.
 
 ## What comes in
 
@@ -70,9 +69,11 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/pipeline/runner.ts → src/discovery/scanner.ts → src/discovery/git.ts → src/extractors/registry.ts → src/formatters/registry.ts → src/pipeline/quality.ts
+.github/workflows/ci.yml → src/index.ts → src/pipeline/runner.ts → src/discovery/scanner.ts → src/discovery/languages.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/pipeline/runner.ts also calls src/discovery/git.ts, src/extractors/registry.ts, src/formatters/registry.ts, src/pipeline/quality.ts and 2 more files.
 
 ## What this map cannot see
 

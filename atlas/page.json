@@ -18,37 +18,30 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 1,
+      "changed": 2,
       "moved": 0,
-      "parts": 1,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI's pull request trigger no longer names `.github/workflows/**`, `atlas/**`, `codecov.yml`, `package.json`, `site/astro.config.mjs`, `site/package-lock.json`, `site/package.json`, `src/**` and `tsconfig.json`.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "1 file changed content, across 1 part.",
+        "sentence": "Nothing structural changed since 2026-10-01; 2 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "b3caf9f83d8b53ce8b02e43e1dacc8e1b0b6cca5",
-      "generatedAt": "2026-09-30T20:11:59.242Z"
+      "commit": "fdf8c0656b44ec4138df8d7e9e712b78e6844343",
+      "generatedAt": "2026-10-01T02:12:30.633Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "fdf8c0656b44ec4138df8d7e9e712b78e6844343",
+  "commit": "84e1689d1b923f755152b7d9a730be7a00d8d606",
   "defaultBranch": "main",
   "derived": "5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.",
   "doors": [
@@ -235,9 +228,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.24.0",
+  "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-01T02:12:30.633Z",
+  "generatedAt": "2026-11-11T22:33:11.515Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
     "9 writes and 12 reads go to a path their caller passes, not to this repository.",
@@ -258,16 +251,26 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/repo-dataset",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/discovery/git.ts",
+        "src/extractors/registry.ts",
+        "src/formatters/registry.ts",
+        "src/pipeline/quality.ts",
+        "src/pipeline/dedup.ts",
+        "src/pipeline/balance.ts"
+      ],
+      "from": "src/pipeline/runner.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/pipeline/runner.ts",
     "src/discovery/scanner.ts",
-    "src/discovery/git.ts",
-    "src/extractors/registry.ts",
-    "src/formatters/registry.ts",
-    "src/pipeline/quality.ts"
+    "src/discovery/languages.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -275,6 +278,7 @@
   "testedBy": {
     "src": 32
   },
+  "testedCodeParts": 1,
   "unnamedWrites": 0,
   "unread": [],
   "unreadFiles": 0,
